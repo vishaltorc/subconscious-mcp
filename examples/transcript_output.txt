@@ -1,0 +1,79 @@
+Captured output of `python examples/transcript_client.py` against the real
+subconscious-mcp server over MCP stdio.
+
+>>> initialize
+{
+  "server": "subconscious-mcp",
+  "version": "1.27.1"
+}
+
+>>> list_tools
+[
+  "recall",
+  "remember",
+  "forget",
+  "stats"
+]
+
+>>> recall (cold) ->
+{
+  "hit": false,
+  "similarity": 0.0,
+  "answer": null,
+  "task_text": null,
+  "entry_id": null,
+  "stored_at": null,
+  "tags": []
+}
+
+>>> remember ->
+{
+  "stored": true,
+  "entry_id": "471ab504-1367-4bfc-be54-9b2df129ca7a",
+  "embedding_dim": 384
+}
+
+>>> recall (exact) ->
+{
+  "hit": true,
+  "similarity": 1.0000001192092896,
+  "answer": "Run `vercel --prod` after `vercel login`.",
+  "task_text": "How do I deploy a Next.js app to Vercel?",
+  "entry_id": "471ab504-1367-4bfc-be54-9b2df129ca7a",
+  "stored_at": 1779204237.010627,
+  "tags": ["vercel", "deploy"]
+}
+
+>>> recall (paraphrase) ->
+{
+  "hit": true,
+  "similarity": 0.7820930480957031,
+  "answer": "Run `vercel --prod` after `vercel login`.",
+  "task_text": "How do I deploy a Next.js app to Vercel?",
+  "entry_id": "471ab504-1367-4bfc-be54-9b2df129ca7a",
+  "stored_at": 1779204237.010627,
+  "tags": ["vercel", "deploy"]
+}
+
+>>> stats ->
+{
+  "total_entries": 1,
+  "last_hit_at": 1779204237.153638,
+  "hit_rate_last_100": 0.6667
+}
+
+>>> forget ->
+{
+  "forgotten": true
+}
+
+>>> recall (after forget) ->
+{
+  "hit": false,
+  "similarity": 0.0,
+  "answer": null,
+  "task_text": null,
+  "entry_id": null,
+  "stored_at": null,
+  "tags": []
+}

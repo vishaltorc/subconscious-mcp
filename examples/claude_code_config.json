@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "subconscious-mcp": {
+      "command": "subconscious-mcp",
+      "args": [],
+      "type": "stdio"
+    }
+  }
+}
