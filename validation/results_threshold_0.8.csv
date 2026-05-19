@@ -1,0 +1,1242 @@
+task_text,system_used,tokens_used,top_similarity,cached_answer,judged_correct,baseline_tokens_used
+Categorize The Great Gatsby into either the fiction or non-fiction genre.,S2,162,0.000000,"# The Great Gatsby - Genre Classification
+
+**Fiction**
+
+*The Great Gatsby* by F. Scott Fitzgerald is a work of **fiction**. It is a novel featuring invented characters, imaginary events, and a created setting (the fictional towns of West Egg and East Egg on Long Island), rather than documenting real people or actual historical events.
+
+While the novel is set during the real historical period of the 1920s Jazz Age and reflects genuine social conditions of that era, the story itself—including the protagonist Jay Gatsby and his romantic pursuit of Daisy Buchanan—is a product of the author's imagination.",,178
+"From the meeting details 'Meeting on 2024-03-15 at 09:30 in Room 4B', pull out the specific date, time, and venue.",S2,121,0.000000,"# Meeting Details Extracted
+
+| Detail | Value |
+|--------|-------|
+| **Date** | 2024-03-15 (March 15, 2024) |
+| **Time** | 09:30 (9:30 AM) |
+| **Venue** | Room 4B |",,129
+Summarise in a single sentence what the following statement conveys: 'Machine learning is a segment of artificial intelligence that facilitates systems in learning and improving from data without needing to be explicitly coded.',S2,69,0.031497,Machine learning enables systems to automatically learn and improve from data without requiring explicit programming instructions.,,70
+"Parse the meeting entry 'Meeting on 2024-03-15 at 09:30 in Room 4B' to determine when it occurs, what time it starts, and where it takes place.",S2,158,0.792837,"# Meeting Details Parsed
+
+| Field | Value |
+|-------|-------|
+| **Date** | March 15, 2024 (2024-03-15) |
+| **Time** | 09:30 (9:30 AM) |
+| **Location** | Room 4B |
+
+## Summary
+This meeting is scheduled for **Friday, March 15, 2024 at 9:30 AM in Room 4B**.",,189
+"If all roses are flowers and some flowers fade quickly, can we conclude all roses fade quickly?",S2,228,0.084212,"# No, we cannot conclude that.
+
+Here's why:
+
+**The logical structure:**
+- All roses are flowers ✓
+- Some flowers fade quickly ✓
+- Therefore, all roses fade quickly? ✗
+
+**The problem:**
+
+""Some flowers fade quickly"" tells us that *at least one flower* in the category has this property, but it doesn't tell us *which* flowers. The roses could be among the flowers that fade quickly, or they could be among those that don't.
+
+**A concrete example:**
+- All roses are flowers ✓
+- Some flowers (like daisies) fade quickly ✓
+- But roses might bloom for weeks ✓
+
+This is logically consistent with both premises while contradicting the proposed conclusion.
+
+**The takeaway:**
+
+To conclude all roses fade quickly, you'd need a statement like ""**all** flowers fade quickly,"" not just ""some.""",,224
+Determine whether The Great Gatsby should be categorized as a work of fiction or non-fiction.,S1,0,0.924706,"# The Great Gatsby - Genre Classification
+
+**Fiction**
+
+*The Great Gatsby* by F. Scott Fitzgerald is a work of **fiction**. It is a novel featuring invented characters, imaginary events, and a created setting (the fictional towns of West Egg and East Egg on Long Island), rather than documenting real people or actual historical events.
+
+While the novel is set during the real historical period of the 1920s Jazz Age and reflects genuine social conditions of that era, the story itself—including the protagonist Jay Gatsby and his romantic pursuit of Daisy Buchanan—is a product of the author's imagination.",True,302
+"From 'Meeting on 2024-03-15 at 09:30 in Room 4B', extract the date, time, and location.",S1,0,0.903528,"# Meeting Details Extracted
+
+| Detail | Value |
+|--------|-------|
+| **Date** | 2024-03-15 (March 15, 2024) |
+| **Time** | 09:30 (9:30 AM) |
+| **Venue** | Room 4B |",True,92
+Identify the chemical symbol for the element gold.,S2,42,0.092759,"The chemical symbol for gold is **Au**.
+
+This symbol comes from its Latin name, *aurum*.",,43
+How many bones are in the adult human body?,S2,88,0.094134,"An adult human body has 206 bones.
+
+This number can vary slightly from person to person due to anatomical differences. Babies are born with approximately 270 bones, many of which are made of cartilage. As a person grows, some of these bones fuse together, resulting in the smaller number in adults.",,88
+What is gold's chemical symbol?,S1,0,0.890993,"The chemical symbol for gold is **Au**.
+
+This symbol comes from its Latin name, *aurum*.",True,25
+Is a whale a fish or a mammal?,S2,114,0.329772,"A whale is a **mammal**, not a fish.
+
+Whales are mammals because they:
+- Breathe air through lungs
+- Give birth to live young
+- Nurse their calves with milk
+- Are warm-blooded
+- Have hair (at least at some point in their lives)
+
+Although whales live in the ocean like fish do, they evolved from land mammals and share more characteristics with mammals than with fish.",,116
+"If today is Wednesday and a meeting is in 10 days, what day of the week is the meeting?",S2,125,0.506143,"# Finding the Day of the Meeting
+
+Starting from Wednesday and adding 10 days:
+
+Wednesday + 10 days = Wednesday + 7 days + 3 days
+
+Since 7 days brings us back to Wednesday, I just need to count 3 more days:
+- Wednesday → Thursday (1)
+- Thursday → Friday (2)
+- Friday → Saturday (3)
+
+**The meeting is on Saturday.**",,132
+What is 17 multiplied by 24?,S2,31,0.284460,17 × 24 = 408,,31
+"Identify all nations mentioned in: 'The flight departs from London, stops in Dubai, and arrives in Tokyo.'",S2,69,0.268571,"# Nations Mentioned
+
+1. **United Kingdom** (London)
+2. **United Arab Emirates** (Dubai)
+3. **Japan** (Tokyo)",,69
+"If A is taller than B, and B is taller than C, who is the shortest?",S2,61,0.279084,"C is the shortest.
+
+If A > B and B > C (in terms of height), then C must be the shortest of the three.",,58
+Which writer composed Pride and Prejudice?,S2,48,0.361871,Jane Austen composed Pride and Prejudice. The novel was published in 1813 and is one of her most famous works.,,48
+"Extract the date, time, and location from the meeting scheduled for 2024-03-15 at 09:30 in Room 4B.",S1,0,0.893525,"# Meeting Details Extracted
+
+| Detail | Value |
+|--------|-------|
+| **Date** | 2024-03-15 (March 15, 2024) |
+| **Time** | 09:30 (9:30 AM) |
+| **Venue** | Room 4B |",True,91
+Determine 15 percent of the value 340.,S2,75,0.354649,"# Calculating 15% of 340
+
+To find 15% of 340:
+
+**Method:** Multiply 340 by 0.15
+
+340 × 0.15 = **51**
+
+**Answer: 51**",,83
+"At a store, individual apples are sold for $2 each. You obtain 5 apples and hand over $20 as payment. Calculate your change.",S2,108,0.308374,"# Calculating Change
+
+**Cost of apples:**
+- 5 apples × $2 per apple = $10
+
+**Change received:**
+- $20 (amount paid) − $10 (cost) = **$10**
+
+You would receive $10 in change.",,108
+Who wrote Pride and Prejudice?,S1,0,0.939100,Jane Austen composed Pride and Prejudice. The novel was published in 1813 and is one of her most famous works.,True,47
+"Make more concise: 'Since it was raining heavily, we decided to stay inside.'",S2,53,0.142948,"'We stayed inside because of heavy rain.'
+
+Or even shorter:
+
+'Heavy rain kept us inside.'",,41
+"Identify the date, time, and room number from the following meeting information: 'Meeting on 2024-03-15 at 09:30 in Room 4B'.",S1,0,0.865230,"# Meeting Details Parsed
+
+| Field | Value |
+|-------|-------|
+| **Date** | March 15, 2024 (2024-03-15) |
+| **Time** | 09:30 (9:30 AM) |
+| **Location** | Room 4B |
+
+## Summary
+This meeting is scheduled for **Friday, March 15, 2024 at 9:30 AM in Room 4B**.",True,101
+How is Bitcoin categorized: as fiat money or as a form of cryptocurrency?,S2,232,0.192272,"# Bitcoin's Classification
+
+Bitcoin is categorized as **cryptocurrency**, not fiat money. Here are the key distinctions:
+
+## Fiat Money
+- Issued and backed by governments
+- Has legal tender status
+- Value derives from government decree
+- Examples: US dollars, euros
+
+## Cryptocurrency
+- Decentralized digital currency
+- No government or central authority backing
+- Value based on supply, demand, and network utility
+- Uses cryptography and blockchain technology
+- Bitcoin is the original and most well-known example
+
+## Why This Matters
+Bitcoin is fundamentally different from fiat because it:
+- Operates without a central bank
+- Has a fixed supply (21 million coins)
+- Uses distributed ledger technology
+- Isn't legal tender in most countries (though El Salvador made it so in 2021)
+
+**In summary**: Bitcoin is classified as cryptocurrency, representing an entirely separate category of money from government-issued fiat currencies.",,258
+"Turn this sentence into an interrogative form: 'The Eiffel Tower is located in Paris, France.'",S2,95,0.209826,"# Interrogative Form
+
+**Is the Eiffel Tower located in Paris, France?**
+
+Or, for alternative interrogative forms:
+
+- **Where is the Eiffel Tower located?**
+- **Is the Eiffel Tower in Paris or somewhere else?**",,72
+"Pull out all digits that appear in: 'She bought 3 apples, 12 eggs, and 2 litres of milk.'",S2,76,0.418966,"# Digits found:
+
+3, 1, 2, 2
+
+Or as a set of unique digits: **1, 2, 3**",,78
+Identify the email address found in: 'Please contact us at support@example.com for assistance.',S2,48,0.229449,The email address found in that text is: **support@example.com**,,47
+Find the result of 17 times 24.,S2,72,0.790998,"17 × 24 = 408
+
+Here's how:
+- 17 × 20 = 340
+- 17 × 4 = 68
+- 340 + 68 = 408",,73
+"Botanically speaking, should a tomato be categorized as a fruit or a vegetable?",S2,205,0.280533,"Botanically, a tomato is definitely a **fruit**. Specifically, it's a berry—the ripened ovary of the tomato plant's flower, containing seeds.
+
+This is the famous distinction: botanists use ""fruit"" to mean the seed-bearing structure that develops from a flower's ovary, while ""vegetable"" is a culinary term with no strict botanical definition. Vegetables typically refer to edible plant parts like leaves, stems, or roots.
+
+That said, the U.S. Supreme Court actually weighed in on this in *Nix v. Hedden* (1893), ruling that tomatoes should be treated as vegetables for tariff purposes because they're commonly used in savory dishes rather than desserts. So legally and culinarily, it can go either way depending on context.",,155
+"From the sentence 'She bought 3 apples, 12 eggs, and 2 litres of milk,' retrieve every number mentioned.",S1,0,0.850080,"# Digits found:
+
+3, 1, 2, 2
+
+Or as a set of unique digits: **1, 2, 3**",False,79
+"Arrange snail, cheetah, human, and bicycle by speed, listing the fastest first and slowest last.",S2,155,0.364997,"# Speed Ranking (Fastest to Slowest)
+
+1. **Cheetah** (~70 mph / 112 km/h)
+2. **Bicycle** (~15-20 mph / 24-32 km/h for casual riding)
+3. **Human** (~15 mph / 24 km/h sprinting; ~3-4 mph / 5-6 km/h walking)
+4. **Snail** (~0.03 mph / 0.05 km/h)",,182
+Classify The Great Gatsby as fiction or non-fiction.,S1,0,0.959303,"# The Great Gatsby - Genre Classification
+
+**Fiction**
+
+*The Great Gatsby* by F. Scott Fitzgerald is a work of **fiction**. It is a novel featuring invented characters, imaginary events, and a created setting (the fictional towns of West Egg and East Egg on Long Island), rather than documenting real people or actual historical events.
+
+While the novel is set during the real historical period of the 1920s Jazz Age and reflects genuine social conditions of that era, the story itself—including the protagonist Jay Gatsby and his romantic pursuit of Daisy Buchanan—is a product of the author's imagination.",True,147
+Is a whale classified in the category of fish or mammals?,S1,0,0.830869,"A whale is a **mammal**, not a fish.
+
+Whales are mammals because they:
+- Breathe air through lungs
+- Give birth to live young
+- Nurse their calves with milk
+- Are warm-blooded
+- Have hair (at least at some point in their lives)
+
+Although whales live in the ocean like fish do, they evolved from land mammals and share more characteristics with mammals than with fish.",True,122
+How many skeletal bones does a fully grown human have?,S1,0,0.855738,"An adult human body has 206 bones.
+
+This number can vary slightly from person to person due to anatomical differences. Babies are born with approximately 270 bones, many of which are made of cartilage. As a person grows, some of these bones fuse together, resulting in the smaller number in adults.",True,87
+Identify the primary verb in the sentence: 'The scientist carefully analysed the experimental data.',S2,80,0.309270,"# Primary Verb
+
+The primary verb in the sentence is **analysed**.
+
+This is the main action verb that describes what the scientist did. The adverb ""carefully"" modifies the verb but is not part of the verb itself.",,88
+What email should be used according to: 'Please contact us at support@example.com for assistance.',S1,0,0.865699,The email address found in that text is: **support@example.com**,True,50
+"Translate to formal English: 'Hey, gonna grab coffee, wanna come?'",S2,44,0.231763,"""I am going to get coffee. Would you like to join me?""",,68
+Make more concise: 'We chose not to go outside due to the heavy rain.',S2,58,0.672515,"""We didn't go outside because of the heavy rain.""
+
+Or even more concise:
+
+""We stayed inside due to heavy rain.""",,58
+"Assuming today is Wednesday, determine what day of the week the meeting will occur if it is scheduled for 10 days from now.",S1,0,0.891384,"# Finding the Day of the Meeting
+
+Starting from Wednesday and adding 10 days:
+
+Wednesday + 10 days = Wednesday + 7 days + 3 days
+
+Since 7 days brings us back to Wednesday, I just need to count 3 more days:
+- Wednesday → Thursday (1)
+- Thursday → Friday (2)
+- Friday → Saturday (3)
+
+**The meeting is on Saturday.**",True,95
+"Make more concise: 'Because of the heavy rain outside, we decided not to go out.'",S1,0,0.876871,"""We didn't go outside because of the heavy rain.""
+
+Or even more concise:
+
+""We stayed inside due to heavy rain.""",True,60
+Should a whale be classified as a fish or as a mammal?,S1,0,0.896113,"A whale is a **mammal**, not a fish.
+
+Whales are mammals because they:
+- Breathe air through lungs
+- Give birth to live young
+- Nurse their calves with milk
+- Are warm-blooded
+- Have hair (at least at some point in their lives)
+
+Although whales live in the ocean like fish do, they evolved from land mammals and share more characteristics with mammals than with fish.",True,212
+"An apple costs $2 at a store. If you purchase 5 apples and give the cashier $20, how much money will you receive back?",S2,100,0.779262,"# Apple Purchase Calculation
+
+**Cost of 5 apples:**
+5 apples × $2 per apple = $10
+
+**Change received:**
+$20 − $10 = **$10**
+
+You will receive $10 back.",,101
+Convert to passive voice: 'The chef cooked the meal.',S2,120,0.274182,"# Passive Voice Conversion
+
+**Active:** The chef cooked the meal.
+
+**Passive:** The meal was cooked by the chef.
+
+---
+
+### Explanation:
+- The object ""the meal"" becomes the subject
+- The verb changes to ""was cooked"" (past tense of ""be"" + past participle)
+- The original subject ""the chef"" becomes the agent in a prepositional phrase (""by the chef"")",,126
+"Order the following from quickest to slowest: bicycle, snail, cheetah, human.",S1,0,0.890910,"# Speed Ranking (Fastest to Slowest)
+
+1. **Cheetah** (~70 mph / 112 km/h)
+2. **Bicycle** (~15-20 mph / 24-32 km/h for casual riding)
+3. **Human** (~15 mph / 24 km/h sprinting; ~3-4 mph / 5-6 km/h walking)
+4. **Snail** (~0.03 mph / 0.05 km/h)",True,98
+Find 15% of 340.,S1,0,0.905542,"# Calculating 15% of 340
+
+To find 15% of 340:
+
+**Method:** Multiply 340 by 0.15
+
+340 × 0.15 = **51**
+
+**Answer: 51**",True,47
+Transform into passive voice: 'The chef cooked the meal.',S1,0,0.971904,"# Passive Voice Conversion
+
+**Active:** The chef cooked the meal.
+
+**Passive:** The meal was cooked by the chef.
+
+---
+
+### Explanation:
+- The object ""the meal"" becomes the subject
+- The verb changes to ""was cooked"" (past tense of ""be"" + past participle)
+- The original subject ""the chef"" becomes the agent in a prepositional phrase (""by the chef"")",True,131
+"Given that it is currently Wednesday, on what day of the week will a meeting that is planned for 10 days later fall?",S1,0,0.863488,"# Finding the Day of the Meeting
+
+Starting from Wednesday and adding 10 days:
+
+Wednesday + 10 days = Wednesday + 7 days + 3 days
+
+Since 7 days brings us back to Wednesday, I just need to count 3 more days:
+- Wednesday → Thursday (1)
+- Thursday → Friday (2)
+- Friday → Saturday (3)
+
+**The meeting is on Saturday.**",True,112
+"Of all the planets in our solar system, which one orbits nearest to the Sun?",S2,40,0.248330,Mercury is the planet that orbits nearest to the Sun.,,40
+Extract the main verb from: 'The scientist carefully analysed the experimental data.',S1,0,0.925063,"# Primary Verb
+
+The primary verb in the sentence is **analysed**.
+
+This is the main action verb that describes what the scientist did. The adverb ""carefully"" modifies the verb but is not part of the verb itself.",True,85
+"Assuming A's height surpasses B's, and B's height surpasses C's, determine which person is the shortest.",S1,0,0.843791,"C is the shortest.
+
+If A > B and B > C (in terms of height), then C must be the shortest of the three.",True,96
+Decide whether The Great Gatsby belongs to the fictional or non-fictional literary classification.,S1,0,0.878225,"# The Great Gatsby - Genre Classification
+
+**Fiction**
+
+*The Great Gatsby* by F. Scott Fitzgerald is a work of **fiction**. It is a novel featuring invented characters, imaginary events, and a created setting (the fictional towns of West Egg and East Egg on Long Island), rather than documenting real people or actual historical events.
+
+While the novel is set during the real historical period of the 1920s Jazz Age and reflects genuine social conditions of that era, the story itself—including the protagonist Jay Gatsby and his romantic pursuit of Daisy Buchanan—is a product of the author's imagination.",True,233
+"Transform the following statement into a question: 'The Eiffel Tower is located in Paris, France.'",S1,0,0.845621,"# Interrogative Form
+
+**Is the Eiffel Tower located in Paris, France?**
+
+Or, for alternative interrogative forms:
+
+- **Where is the Eiffel Tower located?**
+- **Is the Eiffel Tower in Paris or somewhere else?**",True,62
+"Given that A exceeds B in height, and B exceeds C in height, which of the three is the least tall?",S1,0,0.817936,"C is the shortest.
+
+If A > B and B > C (in terms of height), then C must be the shortest of the three.",True,92
+"Given that every rose is a flower and certain flowers wilt rapidly, is it possible to deduce that every rose wilts rapidly?",S2,263,0.751567,"# No, this cannot be deduced.
+
+Here's why:
+
+**The logical structure:**
+- All roses are flowers
+- Some flowers wilt rapidly
+
+This doesn't tell us which flowers wilt rapidly. The flowers that wilt rapidly could be:
+- Only tulips
+- Only daisies
+- Some mix that excludes roses entirely
+- Or they could include some roses, but not necessarily all
+
+**A concrete example:**
+- All roses are flowers ✓
+- Some flowers (e.g., dandelions) wilt rapidly ✓
+- Conclusion: Not all roses wilt rapidly ✓
+
+This scenario satisfies both premises without the conclusion being true.
+
+**What you'd need:**
+To conclude that every rose wilts rapidly, you'd need to know that ""all flowers wilt rapidly"" — not just ""some flowers.""
+
+This is a helpful reminder that ""some"" and ""all"" are logically distinct, and you can't move from a claim about a subset to a claim about the entire set without additional information.",,248
+What chemical symbol represents gold?,S1,0,0.874875,"The chemical symbol for gold is **Au**.
+
+This symbol comes from its Latin name, *aurum*.",True,37
+"Make more concise: 'Due to the fact that it was raining heavily outside, we made the decision that we would not go outside.'",S1,0,0.860667,"""We didn't go outside because of the heavy rain.""
+
+Or even more concise:
+
+""We stayed inside due to heavy rain.""",True,72
+Determine what 24 multiplied by 17 equals.,S1,0,0.911431,17 × 24 = 408,True,76
+Calculate what number equals 15 percent of 340.,S1,0,0.903637,"# Calculating 15% of 340
+
+To find 15% of 340:
+
+**Method:** Multiply 340 by 0.15
+
+340 × 0.15 = **51**
+
+**Answer: 51**",True,51
+What year did World War II end?,S2,54,0.179240,"World War II ended in 1945. Germany surrendered on May 7-8, 1945, and Japan surrendered on September 2, 1945.",,52
+Would you categorize a whale as a fish or a mammal?,S1,0,0.880666,"A whale is a **mammal**, not a fish.
+
+Whales are mammals because they:
+- Breathe air through lungs
+- Give birth to live young
+- Nurse their calves with milk
+- Are warm-blooded
+- Have hair (at least at some point in their lives)
+
+Although whales live in the ocean like fish do, they evolved from land mammals and share more characteristics with mammals than with fish.",True,136
+"From a botanical perspective, is the tomato classified as a fruit or a vegetable?",S1,0,0.946340,"Botanically, a tomato is definitely a **fruit**. Specifically, it's a berry—the ripened ovary of the tomato plant's flower, containing seeds.
+
+This is the famous distinction: botanists use ""fruit"" to mean the seed-bearing structure that develops from a flower's ovary, while ""vegetable"" is a culinary term with no strict botanical definition. Vegetables typically refer to edible plant parts like leaves, stems, or roots.
+
+That said, the U.S. Supreme Court actually weighed in on this in *Nix v. Hedden* (1893), ruling that tomatoes should be treated as vegetables for tariff purposes because they're commonly used in savory dishes rather than desserts. So legally and culinarily, it can go either way depending on context.",True,167
+Calculate the product of 17 and 24.,S1,0,0.839397,17 × 24 = 408,False,31
+"In botanical terms, does a tomato qualify as a fruit or a vegetable?",S1,0,0.932475,"Botanically, a tomato is definitely a **fruit**. Specifically, it's a berry—the ripened ovary of the tomato plant's flower, containing seeds.
+
+This is the famous distinction: botanists use ""fruit"" to mean the seed-bearing structure that develops from a flower's ovary, while ""vegetable"" is a culinary term with no strict botanical definition. Vegetables typically refer to edible plant parts like leaves, stems, or roots.
+
+That said, the U.S. Supreme Court actually weighed in on this in *Nix v. Hedden* (1893), ruling that tomatoes should be treated as vegetables for tariff purposes because they're commonly used in savory dishes rather than desserts. So legally and culinarily, it can go either way depending on context.",True,165
+"A train moves at 90 km/h. Over a time period of 2.5 hours, what distance does it go?",S2,122,0.313861,"# Distance Calculation
+
+Using the formula: **Distance = Speed × Time**
+
+**Given:**
+- Speed = 90 km/h
+- Time = 2.5 hours
+
+**Solution:**
+Distance = 90 km/h × 2.5 h = **225 km**
+
+The train travels **225 kilometers** in 2.5 hours.",,121
+Extract the email address from the following text: 'Please contact us at support@example.com for assistance.',S2,45,0.777408,The email address is: **support@example.com**,,44
+What is the total number of bones found in an adult human skeleton?,S1,0,0.895301,"An adult human body has 206 bones.
+
+This number can vary slightly from person to person due to anatomical differences. Babies are born with approximately 270 bones, many of which are made of cartilage. As a person grows, some of these bones fuse together, resulting in the smaller number in adults.",True,99
+Determine the core action verb in this sentence: 'The scientist carefully analysed the experimental data.',S1,0,0.843207,"# Primary Verb
+
+The primary verb in the sentence is **analysed**.
+
+This is the main action verb that describes what the scientist did. The adverb ""carefully"" modifies the verb but is not part of the verb itself.",True,107
+"Is Bitcoin considered to be fiat currency, or does it function as cryptocurrency instead?",S1,0,0.851904,"# Bitcoin's Classification
+
+Bitcoin is categorized as **cryptocurrency**, not fiat money. Here are the key distinctions:
+
+## Fiat Money
+- Issued and backed by governments
+- Has legal tender status
+- Value derives from government decree
+- Examples: US dollars, euros
+
+## Cryptocurrency
+- Decentralized digital currency
+- No government or central authority backing
+- Value based on supply, demand, and network utility
+- Uses cryptography and blockchain technology
+- Bitcoin is the original and most well-known example
+
+## Why This Matters
+Bitcoin is fundamentally different from fiat because it:
+- Operates without a central bank
+- Has a fixed supply (21 million coins)
+- Uses distributed ledger technology
+- Isn't legal tender in most countries (though El Salvador made it so in 2021)
+
+**In summary**: Bitcoin is classified as cryptocurrency, representing an entirely separate category of money from government-issued fiat currencies.",True,237
+"You go to a store where apples are priced at $2 per apple. After buying 5 apples with a $20 bill, what is the amount of change you get?",S1,0,0.869336,"# Calculating Change
+
+**Cost of apples:**
+- 5 apples × $2 per apple = $10
+
+**Change received:**
+- $20 (amount paid) − $10 (cost) = **$10**
+
+You would receive $10 in change.",True,106
+What is the email address in: 'Please contact us at support@example.com for assistance.',S1,0,0.958808,The email address found in that text is: **support@example.com**,True,45
+"If we accept that all roses belong to the category of flowers and that some flowers lose their freshness swiftly, does it follow that all roses lose their freshness swiftly?",S2,288,0.780683,"No, it doesn't follow. Here's why:
+
+**The logical structure breaks down:**
+
+- All roses are flowers ✓
+- Some flowers lose freshness swiftly ✓
+- Therefore, all roses lose freshness swiftly ✗
+
+The problem is that ""some flowers"" doesn't tell us *which* flowers. Those flowers that lose freshness swiftly might be a specific subset—say, tulips and carnations—while roses (another subset) might retain freshness longer.
+
+**A helpful analogy:**
+- All cars are vehicles
+- Some vehicles require frequent repairs
+- Does it follow that all cars require frequent repairs? No—the unreliable vehicles might be motorcycles.
+
+**What would be needed to reach your conclusion:**
+You'd need a premise stating that *all* flowers (not just some) lose freshness swiftly. Then yes, since roses are flowers, they would too.
+
+This is a common logical error—confusing ""some"" with ""all"" in categorical reasoning. The key is that ""some"" leaves open where exactly those properties fall within the broader category.",,284
+Who is the author of Pride and Prejudice?,S1,0,0.881197,Jane Austen composed Pride and Prejudice. The novel was published in 1813 and is one of her most famous works.,True,54
+Change the following sentence to passive voice: 'The chef cooked the meal.',S1,0,0.909560,"# Passive Voice Conversion
+
+**Active:** The chef cooked the meal.
+
+**Passive:** The meal was cooked by the chef.
+
+---
+
+### Explanation:
+- The object ""the meal"" becomes the subject
+- The verb changes to ""was cooked"" (past tense of ""be"" + past participle)
+- The original subject ""the chef"" becomes the agent in a prepositional phrase (""by the chef"")",True,116
+"Calculate the quotient when 1,440 is divided by 36.",S2,155,0.453751,"# Calculating 1,440 ÷ 36
+
+I can solve this by breaking it down:
+
+1,440 ÷ 36 = 1,440 ÷ 36
+
+Let me simplify by dividing both numbers by common factors:
+- 1,440 ÷ 36 = (1,440 ÷ 4) ÷ (36 ÷ 4)
+- = 360 ÷ 9
+- = 40
+
+**The quotient is 40.**",,95
+A rectangle is 8 cm wide and 13 cm long. Find its area.,S2,102,0.392461,"# Area of a Rectangle
+
+**Formula:** Area = length × width
+
+**Given:**
+- Width = 8 cm
+- Length = 13 cm
+
+**Calculation:**
+Area = 13 cm × 8 cm = **104 cm²**
+
+The area of the rectangle is **104 square centimeters**.",,104
+Identify the creator of Pride and Prejudice.,S2,54,0.758304,Jane Austen is the creator of Pride and Prejudice. The novel was first published in 1813 and is one of her most famous works.,,50
+"Extract all countries from: 'The aircraft takes off from London, has a layover in Dubai, and lands in Tokyo.'",S2,70,0.799582,"# Countries Extracted
+
+1. **United Kingdom** (London)
+2. **United Arab Emirates** (Dubai)
+3. **Japan** (Tokyo)",,81
+"Convert to formal English: 'Hey, gonna grab coffee, wanna come?'",S1,0,0.928574,"""I am going to get coffee. Would you like to join me?""",True,62
+Which of the planets orbiting our Sun is at the smallest distance from it?,S1,0,0.846096,Mercury is the planet that orbits nearest to the Sun.,True,59
+"Convert the given statement into a question: 'The Eiffel Tower is located in Paris, France.'",S1,0,0.831217,"# Interrogative Form
+
+**Is the Eiffel Tower located in Paris, France?**
+
+Or, for alternative interrogative forms:
+
+- **Where is the Eiffel Tower located?**
+- **Is the Eiffel Tower in Paris or somewhere else?**",True,69
+"List snail, cheetah, human, and bicycle in descending order of their speeds.",S1,0,0.885270,"# Speed Ranking (Fastest to Slowest)
+
+1. **Cheetah** (~70 mph / 112 km/h)
+2. **Bicycle** (~15-20 mph / 24-32 km/h for casual riding)
+3. **Human** (~15 mph / 24 km/h sprinting; ~3-4 mph / 5-6 km/h walking)
+4. **Snail** (~0.03 mph / 0.05 km/h)",True,125
+Condense into a single sentence: 'Machine learning is a branch of artificial intelligence that allows systems to acquire knowledge from data without requiring explicit programming.',S1,0,0.826673,Machine learning enables systems to automatically learn and improve from data without requiring explicit programming instructions.,True,54
+"Convert to a question: 'The Eiffel Tower is located in Paris, France.'",S1,0,0.812417,"# Interrogative Form
+
+**Is the Eiffel Tower located in Paris, France?**
+
+Or, for alternative interrogative forms:
+
+- **Where is the Eiffel Tower located?**
+- **Is the Eiffel Tower in Paris or somewhere else?**",True,60
+Rewrite in passive voice: 'The chef cooked the meal.',S1,0,0.930300,"# Passive Voice Conversion
+
+**Active:** The chef cooked the meal.
+
+**Passive:** The meal was cooked by the chef.
+
+---
+
+### Explanation:
+- The object ""the meal"" becomes the subject
+- The verb changes to ""was cooked"" (past tense of ""be"" + past participle)
+- The original subject ""the chef"" becomes the agent in a prepositional phrase (""by the chef"")",True,87
+"Rephrase in formal English the following casual expression: 'Hey, gonna grab coffee, wanna come?'",S1,0,0.878803,"""I am going to get coffee. Would you like to join me?""",True,108
+"The meeting is set to take place 10 days from today, which is Wednesday. What day of the week will that be?",S1,0,0.911280,"# Finding the Day of the Meeting
+
+Starting from Wednesday and adding 10 days:
+
+Wednesday + 10 days = Wednesday + 7 days + 3 days
+
+Since 7 days brings us back to Wednesday, I just need to count 3 more days:
+- Wednesday → Thursday (1)
+- Thursday → Friday (2)
+- Friday → Saturday (3)
+
+**The meeting is on Saturday.**",True,93
+"If the height ranking places A above B and B above C, who would be considered the shortest in this group?",S2,79,0.794704,"C would be considered the shortest in this group.
+
+If A is above B and B is above C in height ranking, that means:
+- A is tallest
+- B is in the middle
+- C is shortest",,79
+Make more concise: 'The heavy rainfall led us to decide against going outside.',S1,0,0.829304,"""We didn't go outside because of the heavy rain.""
+
+Or even more concise:
+
+""We stayed inside due to heavy rain.""",True,55
+In which year did the Second World War finish?,S2,67,0.788125,The Second World War finished in 1945. It ended in Europe in May (VE Day - May 8th) and in the Pacific in September (VJ Day - September 2nd) following Japan's surrender.,,54
+"A store offers apples at $2 apiece. If you acquire 5 of them and pay with $20, how much change do you get back?",S1,0,0.904746,"# Calculating Change
+
+**Cost of apples:**
+- 5 apples × $2 per apple = $10
+
+**Change received:**
+- $20 (amount paid) − $10 (cost) = **$10**
+
+You would receive $10 in change.",True,99
+Summarise in one sentence: 'Machine learning is a subset of artificial intelligence that enables systems to learn from data without being explicitly programmed.',S1,0,0.866589,Machine learning enables systems to automatically learn and improve from data without requiring explicit programming instructions.,True,60
+"Name every country referenced in the following statement: 'A flight leaves London, makes a stop in Dubai, and ends in Tokyo.'",S2,78,0.786985,"Based on the statement, here are the countries referenced:
+
+1. **United Kingdom** (London)
+2. **United Arab Emirates** (Dubai)
+3. **Japan** (Tokyo)",,78
+"Rank from fastest to slowest: snail, cheetah, human, bicycle.",S1,0,0.858995,"# Speed Ranking (Fastest to Slowest)
+
+1. **Cheetah** (~70 mph / 112 km/h)
+2. **Bicycle** (~15-20 mph / 24-32 km/h for casual riding)
+3. **Human** (~15 mph / 24 km/h sprinting; ~3-4 mph / 5-6 km/h walking)
+4. **Snail** (~0.03 mph / 0.05 km/h)",True,163
+"Split 1,440 by 36 and find the answer.",S2,74,0.687274,"# Dividing 1,440 by 36
+
+1,440 ÷ 36 = **40**
+
+**Verification:** 36 × 40 = 1,440 ✓",,73
+Should Bitcoin be classified as cryptocurrency or fiat currency?,S1,0,0.851241,"# Bitcoin's Classification
+
+Bitcoin is categorized as **cryptocurrency**, not fiat money. Here are the key distinctions:
+
+## Fiat Money
+- Issued and backed by governments
+- Has legal tender status
+- Value derives from government decree
+- Examples: US dollars, euros
+
+## Cryptocurrency
+- Decentralized digital currency
+- No government or central authority backing
+- Value based on supply, demand, and network utility
+- Uses cryptography and blockchain technology
+- Bitcoin is the original and most well-known example
+
+## Why This Matters
+Bitcoin is fundamentally different from fiat because it:
+- Operates without a central bank
+- Has a fixed supply (21 million coins)
+- Uses distributed ledger technology
+- Isn't legal tender in most countries (though El Salvador made it so in 2021)
+
+**In summary**: Bitcoin is classified as cryptocurrency, representing an entirely separate category of money from government-issued fiat currencies.",True,254
+What is the nearest planet to the Sun in our solar system?,S1,0,0.833620,Mercury is the planet that orbits nearest to the Sun.,True,60
+"Assuming every rose qualifies as a flower and a portion of flowers perish hastily, can we reasonably conclude that every rose perishes hastily?",S2,259,0.773223,"No, we cannot reasonably conclude that.
+
+Here's why this fails logically:
+
+**The logical structure:**
+- All roses are flowers
+- Some flowers perish hastily
+- Therefore, all roses perish hastily ❌
+
+This commits the fallacy of the **undistributed middle**. Just because roses belong to the larger category of flowers, and some flowers perish hastily, doesn't mean the roses are part of that ""some.""
+
+**A clearer analogy:**
+- All dogs are animals
+- Some animals are endangered
+- Therefore, all dogs are endangered ❌ (Obviously false)
+
+**What we could actually conclude:**
+- Some roses *might* perish hastily (if they happen to be among the flowers that do)
+- But we know nothing specific about roses as a group
+
+For the conclusion to work, we'd need the premise ""all flowers perish hastily"" or ""all hastily-perishing plants are roses""—but we don't have either.",,288
+A store sells apples for $2 each. You buy 5 and pay with $20. What is your change?,S1,0,0.859058,"# Calculating Change
+
+**Cost of apples:**
+- 5 apples × $2 per apple = $10
+
+**Change received:**
+- $20 (amount paid) − $10 (cost) = **$10**
+
+You would receive $10 in change.",True,82
+Can you tell me the chemical symbol of gold?,S1,0,0.898012,"The chemical symbol for gold is **Au**.
+
+This symbol comes from its Latin name, *aurum*.",True,41
+What is the main verb present in the following sentence? 'The scientist carefully analysed the experimental data.',S1,0,0.958505,"# Primary Verb
+
+The primary verb in the sentence is **analysed**.
+
+This is the main action verb that describes what the scientist did. The adverb ""carefully"" modifies the verb but is not part of the verb itself.",True,101
+A train travels at 90 km/h for 2.5 hours. How far does it travel?,S1,0,0.925905,"# Distance Calculation
+
+Using the formula: **Distance = Speed × Time**
+
+**Given:**
+- Speed = 90 km/h
+- Time = 2.5 hours
+
+**Solution:**
+Distance = 90 km/h × 2.5 h = **225 km**
+
+The train travels **225 kilometers** in 2.5 hours.",True,106
+"Translate the informal phrase 'Hey, gonna grab coffee, wanna come?' into formal English.",S1,0,0.964690,"""I am going to get coffee. Would you like to join me?""",True,165
+What is 15% of 340?,S1,0,0.844267,"# Calculating 15% of 340
+
+To find 15% of 340:
+
+**Method:** Multiply 340 by 0.15
+
+340 × 0.15 = **51**
+
+**Answer: 51**",True,41
+Does a whale belong to the fish family or the mammal family?,S2,131,0.759424,"Whales belong to the **mammal family**, not fish.
+
+Although whales live in water like fish, they are mammals because they:
+- Breathe air through lungs (not gills)
+- Give birth to live young
+- Nurse their young with milk
+- Are warm-blooded
+- Have hair (at least some, at some point in their lives)
+
+This is a common misconception because of how they live and look, but biologically they are classified as marine mammals.",,116
+Should Python be considered an interpreted language or a compiled language?,S2,319,0.226630,"# Python: Compiled and Interpreted
+
+The honest answer is **both** — it's more nuanced than a simple binary choice.
+
+## How Python Actually Works
+
+```python
+# When you run a .py file:
+# 1. Python compiler converts source code → bytecode (.pyc files)
+# 2. Python VM (interpreter) executes that bytecode
+```
+
+**Compilation phase:**
+- Source code is compiled to bytecode
+- Stored in `__pycache__/` directories
+- Happens automatically before execution
+
+**Interpretation phase:**
+- The Python Virtual Machine (CPython) interprets the bytecode
+- Line-by-line execution with runtime decisions
+
+## Why The Confusion?
+
+| Perspective | Answer |
+|---|---|
+| **User experience** | Interpreted (write code, run immediately) |
+| **Internal mechanics** | Compiled (to bytecode) + Interpreted (VM execution) |
+| **Speed** | Slower than compiled languages (C, Rust) |
+| **Technical accuracy** | Byte-compiled interpreted language |
+
+## Practical Implications
+
+```python
+# This works without explicit compilation
+print(""Hello, world!"")
+
+# But bytecode is created behind the scenes
+# import sys; print(sys.dont_write_bytecode)
+```
+
+## Best Answer
+
+**Python is a byte",,319
+"Sort these four entities by velocity from greatest to least: human, bicycle, cheetah, snail.",S1,0,0.802265,"# Speed Ranking (Fastest to Slowest)
+
+1. **Cheetah** (~70 mph / 112 km/h)
+2. **Bicycle** (~15-20 mph / 24-32 km/h for casual riding)
+3. **Human** (~15 mph / 24 km/h sprinting; ~3-4 mph / 5-6 km/h walking)
+4. **Snail** (~0.03 mph / 0.05 km/h)",True,135
+A rectangle has width 8 cm and length 13 cm. What is its area?,S1,0,0.930013,"# Area of a Rectangle
+
+**Formula:** Area = length × width
+
+**Given:**
+- Width = 8 cm
+- Length = 13 cm
+
+**Calculation:**
+Area = 13 cm × 8 cm = **104 cm²**
+
+The area of the rectangle is **104 square centimeters**.",True,91
+"Extract all numbers from: 'She bought 3 apples, 12 eggs, and 2 litres of milk.'",S1,0,0.941301,"# Digits found:
+
+3, 1, 2, 2
+
+Or as a set of unique digits: **1, 2, 3**",False,79
+Pride and Prejudice was written by whom?,S1,0,0.933368,Jane Austen composed Pride and Prejudice. The novel was published in 1813 and is one of her most famous works.,True,51
+"Can we infer that all roses deteriorate quickly, knowing that roses are flowers and some flowers deteriorate quickly?",S1,0,0.823924,"# No, we cannot conclude that.
+
+Here's why:
+
+**The logical structure:**
+- All roses are flowers ✓
+- Some flowers fade quickly ✓
+- Therefore, all roses fade quickly? ✗
+
+**The problem:**
+
+""Some flowers fade quickly"" tells us that *at least one flower* in the category has this property, but it doesn't tell us *which* flowers. The roses could be among the flowers that fade quickly, or they could be among those that don't.
+
+**A concrete example:**
+- All roses are flowers ✓
+- Some flowers (like daisies) fade quickly ✓
+- But roses might bloom for weeks ✓
+
+This is logically consistent with both premises while contradicting the proposed conclusion.
+
+**The takeaway:**
+
+To conclude all roses fade quickly, you'd need a statement like ""**all** flowers fade quickly,"" not just ""some.""",True,250
+Determine the count of bones that comprise the adult human skeletal system.,S2,232,0.720158,"# Bones in the Adult Human Skeleton
+
+The adult human skeletal system contains **206 bones**.
+
+## Key Points:
+
+- **Infants** are born with approximately **270 bones**, many of which are made of cartilage
+- **Children and adolescents** have additional bones that gradually fuse together during development
+- **Adults** end up with **206 bones** as some bones fuse during growth and maturation
+
+## Distribution:
+
+The 206 bones are distributed throughout the body:
+- **Spine**: 33 vertebrae (though some fuse, resulting in 24 distinct bones)
+- **Skull**: 22 bones
+- **Ribcage**: 24 ribs + sternum
+- **Limbs and girdles**: remaining bones of arms, legs, shoulders, and pelvis
+
+This number can vary slightly between individuals due to anatomical differences, particularly in the vertebral column and ribs.",,311
+"List all countries in: 'The flight departs from London, stops in Dubai, and arrives in Tokyo.'",S1,0,0.892279,"# Nations Mentioned
+
+1. **United Kingdom** (London)
+2. **United Arab Emirates** (Dubai)
+3. **Japan** (Tokyo)",True,81
+Which planet in our solar system is closest to the Sun?,S1,0,0.845349,Mercury is the planet that orbits nearest to the Sun.,True,31
+A train travels for 2.5 hours at a velocity of 90 km/h. Calculate the distance traveled.,S1,0,0.887803,"# Distance Calculation
+
+Using the formula: **Distance = Speed × Time**
+
+**Given:**
+- Speed = 90 km/h
+- Time = 2.5 hours
+
+**Solution:**
+Distance = 90 km/h × 2.5 h = **225 km**
+
+The train travels **225 kilometers** in 2.5 hours.",True,123
+"In our solar system, identify the planet that is positioned closest to the Sun.",S2,66,0.726520,"# Mercury
+
+Mercury is the closest planet to the Sun in our solar system. It orbits at an average distance of about 58 million kilometers (36 million miles) from the Sun.",,66
+"If a train moves at a speed of 90 km/h for a duration of 2.5 hours, what is the total distance it covers?",S1,0,0.921930,"# Distance Calculation
+
+Using the formula: **Distance = Speed × Time**
+
+**Given:**
+- Speed = 90 km/h
+- Time = 2.5 hours
+
+**Solution:**
+Distance = 90 km/h × 2.5 h = **225 km**
+
+The train travels **225 kilometers** in 2.5 hours.",True,123
+How much distance will a train cover in 2.5 hours if it travels at 90 km/h?,S1,0,0.830958,"# Distance Calculation
+
+Using the formula: **Distance = Speed × Time**
+
+**Given:**
+- Speed = 90 km/h
+- Time = 2.5 hours
+
+**Solution:**
+Distance = 90 km/h × 2.5 h = **225 km**
+
+The train travels **225 kilometers** in 2.5 hours.",True,116
+"Rephrase as a question: 'The Eiffel Tower is located in Paris, France.'",S2,61,0.773725,"# Where is the Eiffel Tower located?
+
+or
+
+# Is the Eiffel Tower located in Paris, France?",,64
+"Identify and list all numerical values present in: 'She bought 3 apples, 12 eggs, and 2 litres of milk.'",S1,0,0.826187,"# Digits found:
+
+3, 1, 2, 2
+
+Or as a set of unique digits: **1, 2, 3**",False,79
+When did World War II conclude?,S1,0,0.868316,"World War II ended in 1945. Germany surrendered on May 7-8, 1945, and Japan surrendered on September 2, 1945.",True,100
+What value represents 15% when applied to 340?,S1,0,0.851834,"# Calculating 15% of 340
+
+To find 15% of 340:
+
+**Method:** Multiply 340 by 0.15
+
+340 × 0.15 = **51**
+
+**Answer: 51**",True,62
+"Enumerate the countries found in: 'Starting from London, the flight passes through Dubai before reaching its final destination of Tokyo.'",S1,0,0.839830,"# Nations Mentioned
+
+1. **United Kingdom** (London)
+2. **United Arab Emirates** (Dubai)
+3. **Japan** (Tokyo)",True,80
+"In an adult human, what quantity of bones are present?",S1,0,0.906446,"An adult human body has 206 bones.
+
+This number can vary slightly from person to person due to anatomical differences. Babies are born with approximately 270 bones, many of which are made of cartilage. As a person grows, some of these bones fuse together, resulting in the smaller number in adults.",True,143
+Is the tomato considered a fruit or a vegetable when examined from a botanical standpoint?,S1,0,0.906725,"Botanically, a tomato is definitely a **fruit**. Specifically, it's a berry—the ripened ovary of the tomato plant's flower, containing seeds.
+
+This is the famous distinction: botanists use ""fruit"" to mean the seed-bearing structure that develops from a flower's ovary, while ""vegetable"" is a culinary term with no strict botanical definition. Vegetables typically refer to edible plant parts like leaves, stems, or roots.
+
+That said, the U.S. Supreme Court actually weighed in on this in *Nix v. Hedden* (1893), ruling that tomatoes should be treated as vegetables for tariff purposes because they're commonly used in savory dishes rather than desserts. So legally and culinarily, it can go either way depending on context.",True,231
+"If the present day is Wednesday and a meeting is scheduled 10 days in the future, which day of the week will the meeting take place?",S1,0,0.905492,"# Finding the Day of the Meeting
+
+Starting from Wednesday and adding 10 days:
+
+Wednesday + 10 days = Wednesday + 7 days + 3 days
+
+Since 7 days brings us back to Wednesday, I just need to count 3 more days:
+- Wednesday → Thursday (1)
+- Thursday → Friday (2)
+- Friday → Saturday (3)
+
+**The meeting is on Saturday.**",True,135
+"Divide 1,440 by 36.",S1,0,0.891337,"# Dividing 1,440 by 36
+
+1,440 ÷ 36 = **40**
+
+**Verification:** 36 × 40 = 1,440 ✓",True,37
+Express in passive voice form: 'The chef cooked the meal.',S1,0,0.918558,"# Passive Voice Conversion
+
+**Active:** The chef cooked the meal.
+
+**Passive:** The meal was cooked by the chef.
+
+---
+
+### Explanation:
+- The object ""the meal"" becomes the subject
+- The verb changes to ""was cooked"" (past tense of ""be"" + past participle)
+- The original subject ""the chef"" becomes the agent in a prepositional phrase (""by the chef"")",True,110
+"A is taller than B, B is taller than C. Among these three individuals, who has the shortest stature?",S1,0,0.914716,"C is the shortest.
+
+If A > B and B > C (in terms of height), then C must be the shortest of the three.",True,94
+What do you get when you multiply 17 by 24?,S1,0,0.929034,17 × 24 = 408,True,34
+Does Bitcoin fall under the category of fiat currency or digital cryptocurrency?,S1,0,0.841546,"# Bitcoin's Classification
+
+Bitcoin is categorized as **cryptocurrency**, not fiat money. Here are the key distinctions:
+
+## Fiat Money
+- Issued and backed by governments
+- Has legal tender status
+- Value derives from government decree
+- Examples: US dollars, euros
+
+## Cryptocurrency
+- Decentralized digital currency
+- No government or central authority backing
+- Value based on supply, demand, and network utility
+- Uses cryptography and blockchain technology
+- Bitcoin is the original and most well-known example
+
+## Why This Matters
+Bitcoin is fundamentally different from fiat because it:
+- Operates without a central bank
+- Has a fixed supply (21 million coins)
+- Uses distributed ledger technology
+- Isn't legal tender in most countries (though El Salvador made it so in 2021)
+
+**In summary**: Bitcoin is classified as cryptocurrency, representing an entirely separate category of money from government-issued fiat currencies.",True,252
+"Express in formal English: 'Hey, gonna grab coffee, wanna come?' (currently written in casual language)",S1,0,0.916374,"""I am going to get coffee. Would you like to join me?""",True,111
+Does Python function as a compiled language or as an interpreted language?,S1,0,0.874654,"# Python: Compiled and Interpreted
+
+The honest answer is **both** — it's more nuanced than a simple binary choice.
+
+## How Python Actually Works
+
+```python
+# When you run a .py file:
+# 1. Python compiler converts source code → bytecode (.pyc files)
+# 2. Python VM (interpreter) executes that bytecode
+```
+
+**Compilation phase:**
+- Source code is compiled to bytecode
+- Stored in `__pycache__/` directories
+- Happens automatically before execution
+
+**Interpretation phase:**
+- The Python Virtual Machine (CPython) interprets the bytecode
+- Line-by-line execution with runtime decisions
+
+## Why The Confusion?
+
+| Perspective | Answer |
+|---|---|
+| **User experience** | Interpreted (write code, run immediately) |
+| **Internal mechanics** | Compiled (to bytecode) + Interpreted (VM execution) |
+| **Speed** | Slower than compiled languages (C, Rust) |
+| **Technical accuracy** | Byte-compiled interpreted language |
+
+## Practical Implications
+
+```python
+# This works without explicit compilation
+print(""Hello, world!"")
+
+# But bytecode is created behind the scenes
+# import sys; print(sys.dont_write_bytecode)
+```
+
+## Best Answer
+
+**Python is a byte",True,320
+Create a one-sentence summary of the following: 'Machine learning represents a component of artificial intelligence that permits systems to gain knowledge from data independently of being directly programmed.',S1,0,0.839048,Machine learning enables systems to automatically learn and improve from data without requiring explicit programming instructions.,True,64
+Is a tomato botanically a fruit or a vegetable?,S1,0,0.899068,"Botanically, a tomato is definitely a **fruit**. Specifically, it's a berry—the ripened ovary of the tomato plant's flower, containing seeds.
+
+This is the famous distinction: botanists use ""fruit"" to mean the seed-bearing structure that develops from a flower's ovary, while ""vegetable"" is a culinary term with no strict botanical definition. Vegetables typically refer to edible plant parts like leaves, stems, or roots.
+
+That said, the U.S. Supreme Court actually weighed in on this in *Nix v. Hedden* (1893), ruling that tomatoes should be treated as vegetables for tariff purposes because they're commonly used in savory dishes rather than desserts. So legally and culinarily, it can go either way depending on context.",True,138
+Find and extract the principal verb from: 'The scientist carefully analysed the experimental data.',S1,0,0.890905,"# Primary Verb
+
+The primary verb in the sentence is **analysed**.
+
+This is the main action verb that describes what the scientist did. The adverb ""carefully"" modifies the verb but is not part of the verb itself.",True,125
+"Find and compile all numeric values from: 'She bought 3 apples, 12 eggs, and 2 litres of milk.'",S1,0,0.824022,"# Digits found:
+
+3, 1, 2, 2
+
+Or as a set of unique digits: **1, 2, 3**",False,92
+What type of language is Python—compiled or interpreted?,S1,0,0.907323,"# Python: Compiled and Interpreted
+
+The honest answer is **both** — it's more nuanced than a simple binary choice.
+
+## How Python Actually Works
+
+```python
+# When you run a .py file:
+# 1. Python compiler converts source code → bytecode (.pyc files)
+# 2. Python VM (interpreter) executes that bytecode
+```
+
+**Compilation phase:**
+- Source code is compiled to bytecode
+- Stored in `__pycache__/` directories
+- Happens automatically before execution
+
+**Interpretation phase:**
+- The Python Virtual Machine (CPython) interprets the bytecode
+- Line-by-line execution with runtime decisions
+
+## Why The Confusion?
+
+| Perspective | Answer |
+|---|---|
+| **User experience** | Interpreted (write code, run immediately) |
+| **Internal mechanics** | Compiled (to bytecode) + Interpreted (VM execution) |
+| **Speed** | Slower than compiled languages (C, Rust) |
+| **Technical accuracy** | Byte-compiled interpreted language |
+
+## Practical Implications
+
+```python
+# This works without explicit compilation
+print(""Hello, world!"")
+
+# But bytecode is created behind the scenes
+# import sys; print(sys.dont_write_bytecode)
+```
+
+## Best Answer
+
+**Python is a byte",True,264
+Is Python a compiled language or an interpreted language?,S1,0,0.939980,"# Python: Compiled and Interpreted
+
+The honest answer is **both** — it's more nuanced than a simple binary choice.
+
+## How Python Actually Works
+
+```python
+# When you run a .py file:
+# 1. Python compiler converts source code → bytecode (.pyc files)
+# 2. Python VM (interpreter) executes that bytecode
+```
+
+**Compilation phase:**
+- Source code is compiled to bytecode
+- Stored in `__pycache__/` directories
+- Happens automatically before execution
+
+**Interpretation phase:**
+- The Python Virtual Machine (CPython) interprets the bytecode
+- Line-by-line execution with runtime decisions
+
+## Why The Confusion?
+
+| Perspective | Answer |
+|---|---|
+| **User experience** | Interpreted (write code, run immediately) |
+| **Internal mechanics** | Compiled (to bytecode) + Interpreted (VM execution) |
+| **Speed** | Slower than compiled languages (C, Rust) |
+| **Technical accuracy** | Byte-compiled interpreted language |
+
+## Practical Implications
+
+```python
+# This works without explicit compilation
+print(""Hello, world!"")
+
+# But bytecode is created behind the scenes
+# import sys; print(sys.dont_write_bytecode)
+```
+
+## Best Answer
+
+**Python is a byte",True,296
+"Determine what 1,440 ÷ 36 equals.",S2,84,0.799271,"# 1,440 ÷ 36
+
+To solve this division problem:
+
+**1,440 ÷ 36 = 40**
+
+You can verify: 40 × 36 = 1,440 ✓",,85
+"If a rectangle has a width of 8 cm and a length of 13 cm, what is the total area?",S1,0,0.902371,"# Area of a Rectangle
+
+**Formula:** Area = length × width
+
+**Given:**
+- Width = 8 cm
+- Length = 13 cm
+
+**Calculation:**
+Area = 13 cm × 8 cm = **104 cm²**
+
+The area of the rectangle is **104 square centimeters**.",True,97
+What is the area of a rectangle with dimensions 13 cm by 8 cm?,S1,0,0.889692,"# Area of a Rectangle
+
+**Formula:** Area = length × width
+
+**Given:**
+- Width = 8 cm
+- Length = 13 cm
+
+**Calculation:**
+Area = 13 cm × 8 cm = **104 cm²**
+
+The area of the rectangle is **104 square centimeters**.",True,82
+Distill the main idea into one sentence: 'Machine learning is a division of artificial intelligence that empowers systems to improve through learning from data rather than through direct programming instructions.',S1,0,0.835907,Machine learning enables systems to automatically learn and improve from data without requiring explicit programming instructions.,True,71
+"Find the result of dividing 1,440 into 36 equal parts.",S1,0,0.848184,"# 1,440 ÷ 36
+
+To solve this division problem:
+
+**1,440 ÷ 36 = 40**
+
+You can verify: 40 × 36 = 1,440 ✓",True,112
+Find the contact email mentioned in: 'Please contact us at support@example.com for assistance.',S1,0,0.944581,The email address found in that text is: **support@example.com**,True,46
+In what year did World War II come to an end?,S1,0,0.963962,"World War II ended in 1945. Germany surrendered on May 7-8, 1945, and Japan surrendered on September 2, 1945.",True,62
+What is the chemical symbol for gold?,S1,0,0.898589,"The chemical symbol for gold is **Au**.
+
+This symbol comes from its Latin name, *aurum*.",True,27
+Is Python best classified as a compiled or interpreted programming language?,S1,0,0.906522,"# Python: Compiled and Interpreted
+
+The honest answer is **both** — it's more nuanced than a simple binary choice.
+
+## How Python Actually Works
+
+```python
+# When you run a .py file:
+# 1. Python compiler converts source code → bytecode (.pyc files)
+# 2. Python VM (interpreter) executes that bytecode
+```
+
+**Compilation phase:**
+- Source code is compiled to bytecode
+- Stored in `__pycache__/` directories
+- Happens automatically before execution
+
+**Interpretation phase:**
+- The Python Virtual Machine (CPython) interprets the bytecode
+- Line-by-line execution with runtime decisions
+
+## Why The Confusion?
+
+| Perspective | Answer |
+|---|---|
+| **User experience** | Interpreted (write code, run immediately) |
+| **Internal mechanics** | Compiled (to bytecode) + Interpreted (VM execution) |
+| **Speed** | Slower than compiled languages (C, Rust) |
+| **Technical accuracy** | Byte-compiled interpreted language |
+
+## Practical Implications
+
+```python
+# This works without explicit compilation
+print(""Hello, world!"")
+
+# But bytecode is created behind the scenes
+# import sys; print(sys.dont_write_bytecode)
+```
+
+## Best Answer
+
+**Python is a byte",True,295
+Identify if The Great Gatsby is a fictional narrative or a non-fictional account.,S1,0,0.842735,"# The Great Gatsby - Genre Classification
+
+**Fiction**
+
+*The Great Gatsby* by F. Scott Fitzgerald is a work of **fiction**. It is a novel featuring invented characters, imaginary events, and a created setting (the fictional towns of West Egg and East Egg on Long Island), rather than documenting real people or actual historical events.
+
+While the novel is set during the real historical period of the 1920s Jazz Age and reflects genuine social conditions of that era, the story itself—including the protagonist Jay Gatsby and his romantic pursuit of Daisy Buchanan—is a product of the author's imagination.",True,256
+Is Bitcoin classified as fiat currency or cryptocurrency?,S1,0,0.908982,"# Bitcoin's Classification
+
+Bitcoin is categorized as **cryptocurrency**, not fiat money. Here are the key distinctions:
+
+## Fiat Money
+- Issued and backed by governments
+- Has legal tender status
+- Value derives from government decree
+- Examples: US dollars, euros
+
+## Cryptocurrency
+- Decentralized digital currency
+- No government or central authority backing
+- Value based on supply, demand, and network utility
+- Uses cryptography and blockchain technology
+- Bitcoin is the original and most well-known example
+
+## Why This Matters
+Bitcoin is fundamentally different from fiat because it:
+- Operates without a central bank
+- Has a fixed supply (21 million coins)
+- Uses distributed ledger technology
+- Isn't legal tender in most countries (though El Salvador made it so in 2021)
+
+**In summary**: Bitcoin is classified as cryptocurrency, representing an entirely separate category of money from government-issued fiat currencies.",True,141
+A rectangular shape measures 8 cm across and 13 cm in length. Calculate its area.,S1,0,0.868412,"# Area of a Rectangle
+
+**Formula:** Area = length × width
+
+**Given:**
+- Width = 8 cm
+- Length = 13 cm
+
+**Calculation:**
+Area = 13 cm × 8 cm = **104 cm²**
+
+The area of the rectangle is **104 square centimeters**.",True,105
+What was the year that World War II ended?,S1,0,0.977427,"World War II ended in 1945. Germany surrendered on May 7-8, 1945, and Japan surrendered on September 2, 1945.",True,54

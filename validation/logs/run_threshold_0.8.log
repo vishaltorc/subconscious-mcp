@@ -1,0 +1,352 @@
+23:29:00 [INFO] Phase 1/3 — Generating 4 variants for each of 30 seeds
+23:29:01 [INFO]   Seed  1/30 | 4 variants | cumulative prep tokens: 164
+23:29:02 [INFO]   Seed  2/30 | 4 variants | cumulative prep tokens: 372
+23:29:04 [INFO]   Seed  3/30 | 4 variants | cumulative prep tokens: 612
+23:29:06 [INFO]   Seed  4/30 | 4 variants | cumulative prep tokens: 768
+23:29:08 [INFO]   Seed  5/30 | 4 variants | cumulative prep tokens: 948
+23:29:09 [INFO]   Seed  6/30 | 4 variants | cumulative prep tokens: 1098
+23:29:10 [INFO]   Seed  7/30 | 4 variants | cumulative prep tokens: 1250
+23:29:11 [INFO]   Seed  8/30 | 4 variants | cumulative prep tokens: 1394
+23:29:13 [INFO]   Seed  9/30 | 4 variants | cumulative prep tokens: 1560
+23:29:14 [INFO]   Seed 10/30 | 4 variants | cumulative prep tokens: 1738
+23:29:16 [INFO]   Seed 11/30 | 4 variants | cumulative prep tokens: 1928
+23:29:17 [INFO]   Seed 12/30 | 4 variants | cumulative prep tokens: 2089
+23:29:19 [INFO]   Seed 13/30 | 4 variants | cumulative prep tokens: 2279
+23:29:20 [INFO]   Seed 14/30 | 4 variants | cumulative prep tokens: 2446
+23:29:22 [INFO]   Seed 15/30 | 4 variants | cumulative prep tokens: 2618
+23:29:25 [INFO]   Seed 16/30 | 4 variants | cumulative prep tokens: 2860
+23:29:27 [INFO]   Seed 17/30 | 4 variants | cumulative prep tokens: 3134
+23:29:29 [INFO]   Seed 18/30 | 4 variants | cumulative prep tokens: 3372
+23:29:31 [INFO]   Seed 19/30 | 4 variants | cumulative prep tokens: 3582
+23:29:32 [INFO]   Seed 20/30 | 4 variants | cumulative prep tokens: 3809
+23:29:34 [INFO]   Seed 21/30 | 4 variants | cumulative prep tokens: 3988
+23:29:36 [INFO]   Seed 22/30 | 4 variants | cumulative prep tokens: 4266
+23:29:37 [INFO]   Seed 23/30 | 4 variants | cumulative prep tokens: 4476
+23:29:39 [INFO]   Seed 24/30 | 4 variants | cumulative prep tokens: 4687
+23:29:41 [INFO]   Seed 25/30 | 4 variants | cumulative prep tokens: 4903
+23:29:43 [INFO]   Seed 26/30 | 4 variants | cumulative prep tokens: 5165
+23:29:45 [INFO]   Seed 27/30 | 4 variants | cumulative prep tokens: 5459
+23:29:46 [INFO]   Seed 28/30 | 4 variants | cumulative prep tokens: 5671
+23:29:48 [INFO]   Seed 29/30 | 4 variants | cumulative prep tokens: 5901
+23:29:50 [INFO]   Seed 30/30 | 4 variants | cumulative prep tokens: 6103
+23:29:50 [INFO] Task stream ready: 150 tasks shuffled. Prep cost: 6103 tokens.
+
+23:29:50 [INFO] Phase 2/3 — Experiment WITH subconscious-mcp cache
+23:30:06 [INFO] Task   1 | S2  | tokens= 162 | sim=0.0000 | Categorize The Great Gatsby into either the fiction 
+23:30:08 [INFO] Task   2 | S2  | tokens= 121 | sim=0.0000 | From the meeting details 'Meeting on 2024-03-15 at 0
+23:30:09 [INFO] Task   3 | S2  | tokens=  69 | sim=0.0315 | Summarise in a single sentence what the following st
+23:30:11 [INFO] Task   4 | S2  | tokens= 158 | sim=0.7928 | Parse the meeting entry 'Meeting on 2024-03-15 at 09
+23:30:14 [INFO] Task   5 | S2  | tokens= 228 | sim=0.0842 | If all roses are flowers and some flowers fade quick
+23:30:15 [INFO] Task   6 | S1  | sim=0.9247 | judge=True  | Determine whether The Great Gatsby should be categor
+23:30:16 [INFO] Task   7 | S1  | sim=0.9035 | judge=True  | From 'Meeting on 2024-03-15 at 09:30 in Room 4B', ex
+23:30:18 [INFO] Task   8 | S2  | tokens=  42 | sim=0.0928 | Identify the chemical symbol for the element gold.
+23:30:19 [INFO] Task   9 | S2  | tokens=  88 | sim=0.0941 | How many bones are in the adult human body?
+23:30:21 [INFO] Task  10 | S1  | sim=0.8910 | judge=True  | What is gold's chemical symbol?
+23:30:23 [INFO] Task  11 | S2  | tokens= 114 | sim=0.3298 | Is a whale a fish or a mammal?
+23:30:24 [INFO] Task  12 | S2  | tokens= 125 | sim=0.5061 | If today is Wednesday and a meeting is in 10 days, w
+23:30:25 [INFO] Task  13 | S2  | tokens=  31 | sim=0.2845 | What is 17 multiplied by 24?
+23:30:27 [INFO] Task  14 | S2  | tokens=  69 | sim=0.2686 | Identify all nations mentioned in: 'The flight depar
+23:30:29 [INFO] Task  15 | S2  | tokens=  61 | sim=0.2791 | If A is taller than B, and B is taller than C, who i
+23:30:30 [INFO] Task  16 | S2  | tokens=  48 | sim=0.3619 | Which writer composed Pride and Prejudice?
+23:30:31 [INFO] Task  17 | S1  | sim=0.8935 | judge=True  | Extract the date, time, and location from the meetin
+23:30:33 [INFO] Task  18 | S2  | tokens=  75 | sim=0.3546 | Determine 15 percent of the value 340.
+23:30:34 [INFO] Task  19 | S2  | tokens= 108 | sim=0.3084 | At a store, individual apples are sold for $2 each. 
+23:30:35 [INFO] Task  20 | S1  | sim=0.9391 | judge=True  | Who wrote Pride and Prejudice?
+23:30:36 [INFO] Task  21 | S2  | tokens=  53 | sim=0.1429 | Make more concise: 'Since it was raining heavily, we
+23:30:37 [INFO] Task  22 | S1  | sim=0.8652 | judge=True  | Identify the date, time, and room number from the fo
+23:30:41 [INFO] Task  23 | S2  | tokens= 232 | sim=0.1923 | How is Bitcoin categorized: as fiat money or as a fo
+23:30:42 [INFO] Task  24 | S2  | tokens=  95 | sim=0.2098 | Turn this sentence into an interrogative form: 'The 
+23:30:43 [INFO] Task  25 | S2  | tokens=  76 | sim=0.4190 | Pull out all digits that appear in: 'She bought 3 ap
+23:30:45 [INFO] Task  26 | S2  | tokens=  48 | sim=0.2294 | Identify the email address found in: 'Please contact
+23:30:46 [INFO] Task  27 | S2  | tokens=  72 | sim=0.7910 | Find the result of 17 times 24.
+23:30:50 [INFO] Task  28 | S2  | tokens= 205 | sim=0.2805 | Botanically speaking, should a tomato be categorized
+23:30:51 [INFO] Task  29 | S1  | sim=0.8501 | judge=False | From the sentence 'She bought 3 apples, 12 eggs, and
+23:30:53 [INFO] Task  30 | S2  | tokens= 155 | sim=0.3650 | Arrange snail, cheetah, human, and bicycle by speed,
+23:30:54 [INFO] Task  31 | S1  | sim=0.9593 | judge=True  | Classify The Great Gatsby as fiction or non-fiction.
+23:30:55 [INFO] Task  32 | S1  | sim=0.8309 | judge=True  | Is a whale classified in the category of fish or mam
+23:30:56 [INFO] Task  33 | S1  | sim=0.8557 | judge=True  | How many skeletal bones does a fully grown human hav
+23:30:57 [INFO] Task  34 | S2  | tokens=  80 | sim=0.3093 | Identify the primary verb in the sentence: 'The scie
+23:30:58 [INFO] Task  35 | S1  | sim=0.8657 | judge=True  | What email should be used according to: 'Please cont
+23:30:59 [INFO] Task  36 | S2  | tokens=  44 | sim=0.2318 | Translate to formal English: 'Hey, gonna grab coffee
+23:31:01 [INFO] Task  37 | S2  | tokens=  58 | sim=0.6725 | Make more concise: 'We chose not to go outside due t
+23:31:01 [INFO] Task  38 | S1  | sim=0.8914 | judge=True  | Assuming today is Wednesday, determine what day of t
+23:31:02 [INFO] Task  39 | S1  | sim=0.8769 | judge=True  | Make more concise: 'Because of the heavy rain outsid
+23:31:03 [INFO] Task  40 | S1  | sim=0.8961 | judge=True  | Should a whale be classified as a fish or as a mamma
+23:31:04 [INFO] Task  41 | S2  | tokens= 100 | sim=0.7793 | An apple costs $2 at a store. If you purchase 5 appl
+23:31:07 [INFO] Task  42 | S2  | tokens= 120 | sim=0.2742 | Convert to passive voice: 'The chef cooked the meal.
+23:31:07 [INFO] Task  43 | S1  | sim=0.8909 | judge=True  | Order the following from quickest to slowest: bicycl
+23:31:09 [INFO] Task  44 | S1  | sim=0.9055 | judge=True  | Find 15% of 340.
+23:31:10 [INFO] Task  45 | S1  | sim=0.9719 | judge=True  | Transform into passive voice: 'The chef cooked the m
+23:31:11 [INFO] Task  46 | S1  | sim=0.8635 | judge=True  | Given that it is currently Wednesday, on what day of
+23:31:12 [INFO] Task  47 | S2  | tokens=  40 | sim=0.2483 | Of all the planets in our solar system, which one or
+23:31:13 [INFO] Task  48 | S1  | sim=0.9251 | judge=True  | Extract the main verb from: 'The scientist carefully
+23:31:14 [INFO] Task  49 | S1  | sim=0.8438 | judge=True  | Assuming A's height surpasses B's, and B's height su
+23:31:15 [INFO] Task  50 | S1  | sim=0.8782 | judge=True  | Decide whether The Great Gatsby belongs to the ficti
+23:31:16 [INFO] Task  51 | S1  | sim=0.8456 | judge=True  | Transform the following statement into a question: '
+23:31:17 [INFO] Task  52 | S1  | sim=0.8179 | judge=True  | Given that A exceeds B in height, and B exceeds C in
+23:31:21 [INFO] Task  53 | S2  | tokens= 263 | sim=0.7516 | Given that every rose is a flower and certain flower
+23:31:22 [INFO] Task  54 | S1  | sim=0.8749 | judge=True  | What chemical symbol represents gold?
+23:31:23 [INFO] Task  55 | S1  | sim=0.8607 | judge=True  | Make more concise: 'Due to the fact that it was rain
+23:31:24 [INFO] Task  56 | S1  | sim=0.9114 | judge=True  | Determine what 24 multiplied by 17 equals.
+23:31:25 [INFO] Task  57 | S1  | sim=0.9036 | judge=True  | Calculate what number equals 15 percent of 340.
+23:31:26 [INFO] Task  58 | S2  | tokens=  54 | sim=0.1792 | What year did World War II end?
+23:31:27 [INFO] Task  59 | S1  | sim=0.8807 | judge=True  | Would you categorize a whale as a fish or a mammal?
+23:31:28 [INFO] Task  60 | S1  | sim=0.9463 | judge=True  | From a botanical perspective, is the tomato classifi
+23:31:29 [INFO] Task  61 | S1  | sim=0.8394 | judge=False | Calculate the product of 17 and 24.
+23:31:30 [INFO] Task  62 | S1  | sim=0.9325 | judge=True  | In botanical terms, does a tomato qualify as a fruit
+23:31:32 [INFO] Task  63 | S2  | tokens= 122 | sim=0.3139 | A train moves at 90 km/h. Over a time period of 2.5 
+23:31:33 [INFO] Task  64 | S2  | tokens=  45 | sim=0.7774 | Extract the email address from the following text: '
+23:31:34 [INFO] Task  65 | S1  | sim=0.8953 | judge=True  | What is the total number of bones found in an adult 
+23:31:35 [INFO] Task  66 | S1  | sim=0.8432 | judge=True  | Determine the core action verb in this sentence: 'Th
+23:31:36 [INFO] Task  67 | S1  | sim=0.8519 | judge=True  | Is Bitcoin considered to be fiat currency, or does i
+23:31:38 [INFO] Task  68 | S1  | sim=0.8693 | judge=True  | You go to a store where apples are priced at $2 per 
+23:31:39 [INFO] Task  69 | S1  | sim=0.9588 | judge=True  | What is the email address in: 'Please contact us at 
+23:31:44 [INFO] Task  70 | S2  | tokens= 288 | sim=0.7807 | If we accept that all roses belong to the category o
+23:31:44 [INFO] Task  71 | S1  | sim=0.8812 | judge=True  | Who is the author of Pride and Prejudice?
+23:31:45 [INFO] Task  72 | S1  | sim=0.9096 | judge=True  | Change the following sentence to passive voice: 'The
+23:31:47 [INFO] Task  73 | S2  | tokens= 155 | sim=0.4538 | Calculate the quotient when 1,440 is divided by 36.
+23:31:50 [INFO] Task  74 | S2  | tokens= 102 | sim=0.3925 | A rectangle is 8 cm wide and 13 cm long. Find its ar
+23:31:51 [INFO] Task  75 | S2  | tokens=  54 | sim=0.7583 | Identify the creator of Pride and Prejudice.
+23:31:52 [INFO] Task  76 | S2  | tokens=  70 | sim=0.7996 | Extract all countries from: 'The aircraft takes off 
+23:31:53 [INFO] Task  77 | S1  | sim=0.9286 | judge=True  | Convert to formal English: 'Hey, gonna grab coffee, 
+23:31:54 [INFO] Task  78 | S1  | sim=0.8461 | judge=True  | Which of the planets orbiting our Sun is at the smal
+23:31:55 [INFO] Task  79 | S1  | sim=0.8312 | judge=True  | Convert the given statement into a question: 'The Ei
+23:31:56 [INFO] Task  80 | S1  | sim=0.8853 | judge=True  | List snail, cheetah, human, and bicycle in descendin
+23:31:57 [INFO] Task  81 | S1  | sim=0.8267 | judge=True  | Condense into a single sentence: 'Machine learning i
+23:31:58 [INFO] Task  82 | S1  | sim=0.8124 | judge=True  | Convert to a question: 'The Eiffel Tower is located 
+23:31:59 [INFO] Task  83 | S1  | sim=0.9303 | judge=True  | Rewrite in passive voice: 'The chef cooked the meal.
+23:32:00 [INFO] Task  84 | S1  | sim=0.8788 | judge=True  | Rephrase in formal English the following casual expr
+23:32:01 [INFO] Task  85 | S1  | sim=0.9113 | judge=True  | The meeting is set to take place 10 days from today,
+23:32:02 [INFO] Task  86 | S2  | tokens=  79 | sim=0.7947 | If the height ranking places A above B and B above C
+23:32:03 [INFO] Task  87 | S1  | sim=0.8293 | judge=True  | Make more concise: 'The heavy rainfall led us to dec
+23:32:05 [INFO] Task  88 | S2  | tokens=  67 | sim=0.7881 | In which year did the Second World War finish?
+23:32:06 [INFO] Task  89 | S1  | sim=0.9047 | judge=True  | A store offers apples at $2 apiece. If you acquire 5
+23:32:08 [INFO] Task  90 | S1  | sim=0.8666 | judge=True  | Summarise in one sentence: 'Machine learning is a su
+23:32:09 [INFO] Task  91 | S2  | tokens=  78 | sim=0.7870 | Name every country referenced in the following state
+23:32:10 [INFO] Task  92 | S1  | sim=0.8590 | judge=True  | Rank from fastest to slowest: snail, cheetah, human,
+23:32:11 [INFO] Task  93 | S2  | tokens=  74 | sim=0.6873 | Split 1,440 by 36 and find the answer.
+23:32:12 [INFO] Task  94 | S1  | sim=0.8512 | judge=True  | Should Bitcoin be classified as cryptocurrency or fi
+23:32:13 [INFO] Task  95 | S1  | sim=0.8336 | judge=True  | What is the nearest planet to the Sun in our solar s
+23:32:16 [INFO] Task  96 | S2  | tokens= 259 | sim=0.7732 | Assuming every rose qualifies as a flower and a port
+23:32:17 [INFO] Task  97 | S1  | sim=0.8591 | judge=True  | A store sells apples for $2 each. You buy 5 and pay 
+23:32:19 [INFO] Task  98 | S1  | sim=0.8980 | judge=True  | Can you tell me the chemical symbol of gold?
+23:32:20 [INFO] Task  99 | S1  | sim=0.9585 | judge=True  | What is the main verb present in the following sente
+23:32:21 [INFO] Task 100 | S1  | sim=0.9259 | judge=True  | A train travels at 90 km/h for 2.5 hours. How far do
+23:32:22 [INFO] Task 101 | S1  | sim=0.9647 | judge=True  | Translate the informal phrase 'Hey, gonna grab coffe
+23:32:23 [INFO] Task 102 | S1  | sim=0.8443 | judge=True  | What is 15% of 340?
+23:32:26 [INFO] Task 103 | S2  | tokens= 131 | sim=0.7594 | Does a whale belong to the fish family or the mammal
+23:32:30 [INFO] Task 104 | S2  | tokens= 319 | sim=0.2266 | Should Python be considered an interpreted language 
+23:32:31 [INFO] Task 105 | S1  | sim=0.8023 | judge=True  | Sort these four entities by velocity from greatest t
+23:32:33 [INFO] Task 106 | S1  | sim=0.9300 | judge=True  | A rectangle has width 8 cm and length 13 cm. What is
+23:32:34 [INFO] Task 107 | S1  | sim=0.9413 | judge=False | Extract all numbers from: 'She bought 3 apples, 12 e
+23:32:34 [INFO] Task 108 | S1  | sim=0.9334 | judge=True  | Pride and Prejudice was written by whom?
+23:32:35 [INFO] Task 109 | S1  | sim=0.8239 | judge=True  | Can we infer that all roses deteriorate quickly, kno
+23:32:39 [INFO] Task 110 | S2  | tokens= 232 | sim=0.7202 | Determine the count of bones that comprise the adult
+23:32:40 [INFO] Task 111 | S1  | sim=0.8923 | judge=True  | List all countries in: 'The flight departs from Lond
+23:32:44 [INFO] Task 112 | S1  | sim=0.8453 | judge=True  | Which planet in our solar system is closest to the S
+23:32:46 [INFO] Task 113 | S1  | sim=0.8878 | judge=True  | A train travels for 2.5 hours at a velocity of 90 km
+23:32:47 [INFO] Task 114 | S2  | tokens=  66 | sim=0.7265 | In our solar system, identify the planet that is pos
+23:32:48 [INFO] Task 115 | S1  | sim=0.9219 | judge=True  | If a train moves at a speed of 90 km/h for a duratio
+23:32:49 [INFO] Task 116 | S1  | sim=0.8310 | judge=True  | How much distance will a train cover in 2.5 hours if
+23:32:51 [INFO] Task 117 | S2  | tokens=  61 | sim=0.7737 | Rephrase as a question: 'The Eiffel Tower is located
+23:32:51 [INFO] Task 118 | S1  | sim=0.8262 | judge=False | Identify and list all numerical values present in: '
+23:32:52 [INFO] Task 119 | S1  | sim=0.8683 | judge=True  | When did World War II conclude?
+23:32:53 [INFO] Task 120 | S1  | sim=0.8518 | judge=True  | What value represents 15% when applied to 340?
+23:32:55 [INFO] Task 121 | S1  | sim=0.8398 | judge=True  | Enumerate the countries found in: 'Starting from Lon
+23:32:56 [INFO] Task 122 | S1  | sim=0.9064 | judge=True  | In an adult human, what quantity of bones are presen
+23:32:58 [INFO] Task 123 | S1  | sim=0.9067 | judge=True  | Is the tomato considered a fruit or a vegetable when
+23:32:59 [INFO] Task 124 | S1  | sim=0.9055 | judge=True  | If the present day is Wednesday and a meeting is sch
+23:32:59 [INFO] Task 125 | S1  | sim=0.8913 | judge=True  | Divide 1,440 by 36.
+23:33:01 [INFO] Task 126 | S1  | sim=0.9186 | judge=True  | Express in passive voice form: 'The chef cooked the 
+23:33:02 [INFO] Task 127 | S1  | sim=0.9147 | judge=True  | A is taller than B, B is taller than C. Among these 
+23:33:03 [INFO] Task 128 | S1  | sim=0.9290 | judge=True  | What do you get when you multiply 17 by 24?
+23:33:05 [INFO] Task 129 | S1  | sim=0.8415 | judge=True  | Does Bitcoin fall under the category of fiat currenc
+23:33:06 [INFO] Task 130 | S1  | sim=0.9164 | judge=True  | Express in formal English: 'Hey, gonna grab coffee, 
+23:33:07 [INFO] Task 131 | S1  | sim=0.8747 | judge=True  | Does Python function as a compiled language or as an
+23:33:09 [INFO] Task 132 | S1  | sim=0.8390 | judge=True  | Create a one-sentence summary of the following: 'Mac
+23:33:10 [INFO] Task 133 | S1  | sim=0.8991 | judge=True  | Is a tomato botanically a fruit or a vegetable?
+23:33:11 [INFO] Task 134 | S1  | sim=0.8909 | judge=True  | Find and extract the principal verb from: 'The scien
+23:33:12 [INFO] Task 135 | S1  | sim=0.8240 | judge=False | Find and compile all numeric values from: 'She bough
+23:33:13 [INFO] Task 136 | S1  | sim=0.9073 | judge=True  | What type of language is Python—compiled or interpre
+23:33:15 [INFO] Task 137 | S1  | sim=0.9400 | judge=True  | Is Python a compiled language or an interpreted lang
+23:33:17 [INFO] Task 138 | S2  | tokens=  84 | sim=0.7993 | Determine what 1,440 ÷ 36 equals.
+23:33:18 [INFO] Task 139 | S1  | sim=0.9024 | judge=True  | If a rectangle has a width of 8 cm and a length of 1
+23:33:19 [INFO] Task 140 | S1  | sim=0.8897 | judge=True  | What is the area of a rectangle with dimensions 13 c
+23:33:23 [INFO] Task 141 | S1  | sim=0.8359 | judge=True  | Distill the main idea into one sentence: 'Machine le
+23:33:24 [INFO] Task 142 | S1  | sim=0.8482 | judge=True  | Find the result of dividing 1,440 into 36 equal part
+23:33:25 [INFO] Task 143 | S1  | sim=0.9446 | judge=True  | Find the contact email mentioned in: 'Please contact
+23:33:26 [INFO] Task 144 | S1  | sim=0.9640 | judge=True  | In what year did World War II come to an end?
+23:33:27 [INFO] Task 145 | S1  | sim=0.8986 | judge=True  | What is the chemical symbol for gold?
+23:33:29 [INFO] Task 146 | S1  | sim=0.9065 | judge=True  | Is Python best classified as a compiled or interpret
+23:33:30 [INFO] Task 147 | S1  | sim=0.8427 | judge=True  | Identify if The Great Gatsby is a fictional narrativ
+23:33:31 [INFO] Task 148 | S1  | sim=0.9090 | judge=True  | Is Bitcoin classified as fiat currency or cryptocurr
+23:33:32 [INFO] Task 149 | S1  | sim=0.8684 | judge=True  | A rectangular shape measures 8 cm across and 13 cm i
+23:33:33 [INFO] Task 150 | S1  | sim=0.9774 | judge=True  | What was the year that World War II ended?
+23:33:33 [INFO] Experiment done — S1=101 S2=49 | cache tokens=5480 | judge overhead=15085
+23:33:33 [INFO] Cache state at end of Phase 2: {'total_entries': 49, 'last_hit_at': 1779213812.359385, 'hit_rate_last_100': 0.8}
+23:33:35 [INFO] 
+Phase 3/3 — Baseline WITHOUT cache
+23:33:37 [INFO] Baseline   1 | tokens= 178 | Categorize The Great Gatsby into either the fiction 
+23:33:40 [INFO] Baseline   2 | tokens= 129 | From the meeting details 'Meeting on 2024-03-15 at 0
+23:33:41 [INFO] Baseline   3 | tokens=  70 | Summarise in a single sentence what the following st
+23:33:43 [INFO] Baseline   4 | tokens= 189 | Parse the meeting entry 'Meeting on 2024-03-15 at 09
+23:33:47 [INFO] Baseline   5 | tokens= 224 | If all roses are flowers and some flowers fade quick
+23:33:51 [INFO] Baseline   6 | tokens= 302 | Determine whether The Great Gatsby should be categor
+23:33:52 [INFO] Baseline   7 | tokens=  92 | From 'Meeting on 2024-03-15 at 09:30 in Room 4B', ex
+23:33:53 [INFO] Baseline   8 | tokens=  43 | Identify the chemical symbol for the element gold.
+23:33:54 [INFO] Baseline   9 | tokens=  88 | How many bones are in the adult human body?
+23:33:55 [INFO] Baseline  10 | tokens=  25 | What is gold's chemical symbol?
+23:33:57 [INFO] Baseline  11 | tokens= 116 | Is a whale a fish or a mammal?
+23:33:59 [INFO] Baseline  12 | tokens= 132 | If today is Wednesday and a meeting is in 10 days, w
+23:34:01 [INFO] Baseline  13 | tokens=  31 | What is 17 multiplied by 24?
+23:34:02 [INFO] Baseline  14 | tokens=  69 | Identify all nations mentioned in: 'The flight depar
+23:34:03 [INFO] Baseline  15 | tokens=  58 | If A is taller than B, and B is taller than C, who i
+23:34:04 [INFO] Baseline  16 | tokens=  48 | Which writer composed Pride and Prejudice?
+23:34:05 [INFO] Baseline  17 | tokens=  91 | Extract the date, time, and location from the meetin
+23:34:06 [INFO] Baseline  18 | tokens=  83 | Determine 15 percent of the value 340.
+23:34:08 [INFO] Baseline  19 | tokens= 108 | At a store, individual apples are sold for $2 each. 
+23:34:09 [INFO] Baseline  20 | tokens=  47 | Who wrote Pride and Prejudice?
+23:34:14 [INFO] Baseline  21 | tokens=  41 | Make more concise: 'Since it was raining heavily, we
+23:34:15 [INFO] Baseline  22 | tokens= 101 | Identify the date, time, and room number from the fo
+23:34:21 [INFO] Baseline  23 | tokens= 258 | How is Bitcoin categorized: as fiat money or as a fo
+23:34:22 [INFO] Baseline  24 | tokens=  72 | Turn this sentence into an interrogative form: 'The 
+23:34:24 [INFO] Baseline  25 | tokens=  78 | Pull out all digits that appear in: 'She bought 3 ap
+23:34:25 [INFO] Baseline  26 | tokens=  47 | Identify the email address found in: 'Please contact
+23:34:26 [INFO] Baseline  27 | tokens=  73 | Find the result of 17 times 24.
+23:34:29 [INFO] Baseline  28 | tokens= 155 | Botanically speaking, should a tomato be categorized
+23:34:30 [INFO] Baseline  29 | tokens=  79 | From the sentence 'She bought 3 apples, 12 eggs, and
+23:34:35 [INFO] Baseline  30 | tokens= 182 | Arrange snail, cheetah, human, and bicycle by speed,
+23:34:37 [INFO] Baseline  31 | tokens= 147 | Classify The Great Gatsby as fiction or non-fiction.
+23:34:39 [INFO] Baseline  32 | tokens= 122 | Is a whale classified in the category of fish or mam
+23:34:41 [INFO] Baseline  33 | tokens=  87 | How many skeletal bones does a fully grown human hav
+23:34:42 [INFO] Baseline  34 | tokens=  88 | Identify the primary verb in the sentence: 'The scie
+23:34:43 [INFO] Baseline  35 | tokens=  50 | What email should be used according to: 'Please cont
+23:34:46 [INFO] Baseline  36 | tokens=  68 | Translate to formal English: 'Hey, gonna grab coffee
+23:34:47 [INFO] Baseline  37 | tokens=  58 | Make more concise: 'We chose not to go outside due t
+23:34:48 [INFO] Baseline  38 | tokens=  95 | Assuming today is Wednesday, determine what day of t
+23:34:49 [INFO] Baseline  39 | tokens=  60 | Make more concise: 'Because of the heavy rain outsid
+23:34:52 [INFO] Baseline  40 | tokens= 212 | Should a whale be classified as a fish or as a mamma
+23:34:53 [INFO] Baseline  41 | tokens= 101 | An apple costs $2 at a store. If you purchase 5 appl
+23:34:56 [INFO] Baseline  42 | tokens= 126 | Convert to passive voice: 'The chef cooked the meal.
+23:34:58 [INFO] Baseline  43 | tokens=  98 | Order the following from quickest to slowest: bicycl
+23:35:00 [INFO] Baseline  44 | tokens=  47 | Find 15% of 340.
+23:35:02 [INFO] Baseline  45 | tokens= 131 | Transform into passive voice: 'The chef cooked the m
+23:35:03 [INFO] Baseline  46 | tokens= 112 | Given that it is currently Wednesday, on what day of
+23:35:04 [INFO] Baseline  47 | tokens=  40 | Of all the planets in our solar system, which one or
+23:35:06 [INFO] Baseline  48 | tokens=  85 | Extract the main verb from: 'The scientist carefully
+23:35:07 [INFO] Baseline  49 | tokens=  96 | Assuming A's height surpasses B's, and B's height su
+23:35:10 [INFO] Baseline  50 | tokens= 233 | Decide whether The Great Gatsby belongs to the ficti
+23:35:11 [INFO] Baseline  51 | tokens=  62 | Transform the following statement into a question: '
+23:35:13 [INFO] Baseline  52 | tokens=  92 | Given that A exceeds B in height, and B exceeds C in
+23:35:16 [INFO] Baseline  53 | tokens= 248 | Given that every rose is a flower and certain flower
+23:35:17 [INFO] Baseline  54 | tokens=  37 | What chemical symbol represents gold?
+23:35:18 [INFO] Baseline  55 | tokens=  72 | Make more concise: 'Due to the fact that it was rain
+23:35:19 [INFO] Baseline  56 | tokens=  76 | Determine what 24 multiplied by 17 equals.
+23:35:21 [INFO] Baseline  57 | tokens=  51 | Calculate what number equals 15 percent of 340.
+23:35:22 [INFO] Baseline  58 | tokens=  52 | What year did World War II end?
+23:35:24 [INFO] Baseline  59 | tokens= 136 | Would you categorize a whale as a fish or a mammal?
+23:35:27 [INFO] Baseline  60 | tokens= 167 | From a botanical perspective, is the tomato classifi
+23:35:27 [INFO] Baseline  61 | tokens=  31 | Calculate the product of 17 and 24.
+23:35:30 [INFO] Baseline  62 | tokens= 165 | In botanical terms, does a tomato qualify as a fruit
+23:35:31 [INFO] Baseline  63 | tokens= 121 | A train moves at 90 km/h. Over a time period of 2.5 
+23:35:32 [INFO] Baseline  64 | tokens=  44 | Extract the email address from the following text: '
+23:35:34 [INFO] Baseline  65 | tokens=  99 | What is the total number of bones found in an adult 
+23:35:35 [INFO] Baseline  66 | tokens= 107 | Determine the core action verb in this sentence: 'Th
+23:35:38 [INFO] Baseline  67 | tokens= 237 | Is Bitcoin considered to be fiat currency, or does i
+23:35:40 [INFO] Baseline  68 | tokens= 106 | You go to a store where apples are priced at $2 per 
+23:35:41 [INFO] Baseline  69 | tokens=  45 | What is the email address in: 'Please contact us at 
+23:35:45 [INFO] Baseline  70 | tokens= 284 | If we accept that all roses belong to the category o
+23:35:46 [INFO] Baseline  71 | tokens=  54 | Who is the author of Pride and Prejudice?
+23:35:48 [INFO] Baseline  72 | tokens= 116 | Change the following sentence to passive voice: 'The
+23:35:49 [INFO] Baseline  73 | tokens=  95 | Calculate the quotient when 1,440 is divided by 36.
+23:35:54 [INFO] Baseline  74 | tokens= 104 | A rectangle is 8 cm wide and 13 cm long. Find its ar
+23:35:55 [INFO] Baseline  75 | tokens=  50 | Identify the creator of Pride and Prejudice.
+23:35:57 [INFO] Baseline  76 | tokens=  81 | Extract all countries from: 'The aircraft takes off 
+23:36:00 [INFO] Baseline  77 | tokens=  62 | Convert to formal English: 'Hey, gonna grab coffee, 
+23:36:01 [INFO] Baseline  78 | tokens=  59 | Which of the planets orbiting our Sun is at the smal
+23:36:02 [INFO] Baseline  79 | tokens=  69 | Convert the given statement into a question: 'The Ei
+23:36:04 [INFO] Baseline  80 | tokens= 125 | List snail, cheetah, human, and bicycle in descendin
+23:36:05 [INFO] Baseline  81 | tokens=  54 | Condense into a single sentence: 'Machine learning i
+23:36:06 [INFO] Baseline  82 | tokens=  60 | Convert to a question: 'The Eiffel Tower is located 
+23:36:09 [INFO] Baseline  83 | tokens=  87 | Rewrite in passive voice: 'The chef cooked the meal.
+23:36:12 [INFO] Baseline  84 | tokens= 108 | Rephrase in formal English the following casual expr
+23:36:13 [INFO] Baseline  85 | tokens=  93 | The meeting is set to take place 10 days from today,
+23:36:14 [INFO] Baseline  86 | tokens=  79 | If the height ranking places A above B and B above C
+23:36:15 [INFO] Baseline  87 | tokens=  55 | Make more concise: 'The heavy rainfall led us to dec
+23:36:16 [INFO] Baseline  88 | tokens=  54 | In which year did the Second World War finish?
+23:36:17 [INFO] Baseline  89 | tokens=  99 | A store offers apples at $2 apiece. If you acquire 5
+23:36:19 [INFO] Baseline  90 | tokens=  60 | Summarise in one sentence: 'Machine learning is a su
+23:36:20 [INFO] Baseline  91 | tokens=  78 | Name every country referenced in the following state
+23:36:22 [INFO] Baseline  92 | tokens= 163 | Rank from fastest to slowest: snail, cheetah, human,
+23:36:23 [INFO] Baseline  93 | tokens=  73 | Split 1,440 by 36 and find the answer.
+23:36:27 [INFO] Baseline  94 | tokens= 254 | Should Bitcoin be classified as cryptocurrency or fi
+23:36:28 [INFO] Baseline  95 | tokens=  60 | What is the nearest planet to the Sun in our solar s
+23:36:31 [INFO] Baseline  96 | tokens= 288 | Assuming every rose qualifies as a flower and a port
+23:36:33 [INFO] Baseline  97 | tokens=  82 | A store sells apples for $2 each. You buy 5 and pay 
+23:36:34 [INFO] Baseline  98 | tokens=  41 | Can you tell me the chemical symbol of gold?
+23:36:36 [INFO] Baseline  99 | tokens= 101 | What is the main verb present in the following sente
+23:36:38 [INFO] Baseline 100 | tokens= 106 | A train travels at 90 km/h for 2.5 hours. How far do
+23:36:40 [INFO] Baseline 101 | tokens= 165 | Translate the informal phrase 'Hey, gonna grab coffe
+23:36:41 [INFO] Baseline 102 | tokens=  41 | What is 15% of 340?
+23:36:43 [INFO] Baseline 103 | tokens= 116 | Does a whale belong to the fish family or the mammal
+23:36:47 [INFO] Baseline 104 | tokens= 319 | Should Python be considered an interpreted language 
+23:36:49 [INFO] Baseline 105 | tokens= 135 | Sort these four entities by velocity from greatest t
+23:36:50 [INFO] Baseline 106 | tokens=  91 | A rectangle has width 8 cm and length 13 cm. What is
+23:36:51 [INFO] Baseline 107 | tokens=  79 | Extract all numbers from: 'She bought 3 apples, 12 e
+23:36:53 [INFO] Baseline 108 | tokens=  51 | Pride and Prejudice was written by whom?
+23:36:56 [INFO] Baseline 109 | tokens= 250 | Can we infer that all roses deteriorate quickly, kno
+23:36:59 [INFO] Baseline 110 | tokens= 311 | Determine the count of bones that comprise the adult
+23:37:00 [INFO] Baseline 111 | tokens=  81 | List all countries in: 'The flight departs from Lond
+23:37:02 [INFO] Baseline 112 | tokens=  31 | Which planet in our solar system is closest to the S
+23:37:03 [INFO] Baseline 113 | tokens= 123 | A train travels for 2.5 hours at a velocity of 90 km
+23:37:04 [INFO] Baseline 114 | tokens=  66 | In our solar system, identify the planet that is pos
+23:37:06 [INFO] Baseline 115 | tokens= 123 | If a train moves at a speed of 90 km/h for a duratio
+23:37:08 [INFO] Baseline 116 | tokens= 116 | How much distance will a train cover in 2.5 hours if
+23:37:09 [INFO] Baseline 117 | tokens=  64 | Rephrase as a question: 'The Eiffel Tower is located
+23:37:10 [INFO] Baseline 118 | tokens=  79 | Identify and list all numerical values present in: '
+23:37:11 [INFO] Baseline 119 | tokens= 100 | When did World War II conclude?
+23:37:13 [INFO] Baseline 120 | tokens=  62 | What value represents 15% when applied to 340?
+23:37:15 [INFO] Baseline 121 | tokens=  80 | Enumerate the countries found in: 'Starting from Lon
+23:37:17 [INFO] Baseline 122 | tokens= 143 | In an adult human, what quantity of bones are presen
+23:37:20 [INFO] Baseline 123 | tokens= 231 | Is the tomato considered a fruit or a vegetable when
+23:37:22 [INFO] Baseline 124 | tokens= 135 | If the present day is Wednesday and a meeting is sch
+23:37:23 [INFO] Baseline 125 | tokens=  37 | Divide 1,440 by 36.
+23:37:25 [INFO] Baseline 126 | tokens= 110 | Express in passive voice form: 'The chef cooked the 
+23:37:26 [INFO] Baseline 127 | tokens=  94 | A is taller than B, B is taller than C. Among these 
+23:37:27 [INFO] Baseline 128 | tokens=  34 | What do you get when you multiply 17 by 24?
+23:37:30 [INFO] Baseline 129 | tokens= 252 | Does Bitcoin fall under the category of fiat currenc
+23:37:32 [INFO] Baseline 130 | tokens= 111 | Express in formal English: 'Hey, gonna grab coffee, 
+23:37:36 [INFO] Baseline 131 | tokens= 320 | Does Python function as a compiled language or as an
+23:37:38 [INFO] Baseline 132 | tokens=  64 | Create a one-sentence summary of the following: 'Mac
+23:37:40 [INFO] Baseline 133 | tokens= 138 | Is a tomato botanically a fruit or a vegetable?
+23:37:42 [INFO] Baseline 134 | tokens= 125 | Find and extract the principal verb from: 'The scien
+23:37:43 [INFO] Baseline 135 | tokens=  92 | Find and compile all numeric values from: 'She bough
+23:37:46 [INFO] Baseline 136 | tokens= 264 | What type of language is Python—compiled or interpre
+23:37:49 [INFO] Baseline 137 | tokens= 296 | Is Python a compiled language or an interpreted lang
+23:37:51 [INFO] Baseline 138 | tokens=  85 | Determine what 1,440 ÷ 36 equals.
+23:37:53 [INFO] Baseline 139 | tokens=  97 | If a rectangle has a width of 8 cm and a length of 1
+23:37:54 [INFO] Baseline 140 | tokens=  82 | What is the area of a rectangle with dimensions 13 c
+23:37:56 [INFO] Baseline 141 | tokens=  71 | Distill the main idea into one sentence: 'Machine le
+23:37:57 [INFO] Baseline 142 | tokens= 112 | Find the result of dividing 1,440 into 36 equal part
+23:37:59 [INFO] Baseline 143 | tokens=  46 | Find the contact email mentioned in: 'Please contact
+23:38:00 [INFO] Baseline 144 | tokens=  62 | In what year did World War II come to an end?
+23:38:01 [INFO] Baseline 145 | tokens=  27 | What is the chemical symbol for gold?
+23:38:05 [INFO] Baseline 146 | tokens= 295 | Is Python best classified as a compiled or interpret
+23:38:08 [INFO] Baseline 147 | tokens= 256 | Identify if The Great Gatsby is a fictional narrativ
+23:38:11 [INFO] Baseline 148 | tokens= 141 | Is Bitcoin classified as fiat currency or cryptocurr
+23:38:12 [INFO] Baseline 149 | tokens= 105 | A rectangular shape measures 8 cm across and 13 cm i
+23:38:13 [INFO] Baseline 150 | tokens=  54 | What was the year that World War II ended?
+23:38:13 [INFO] Baseline done — total tokens=16669
+23:38:13 [INFO] ──────────────────────────────────────────────────────────
+23:38:13 [INFO] DUAL-PROCESS EXPERIMENT RESULTS
+23:38:13 [INFO] ──────────────────────────────────────────────────────────
+23:38:13 [INFO]   Tasks total              : 150
+23:38:13 [INFO]   Cache hit rate           : 101 / 150  = 67.3%
+23:38:13 [INFO]   Cache hit accuracy       : 96 / 101 correct = 95.0%
+23:38:13 [INFO]   Tokens WITH cache        : 5480
+23:38:13 [INFO]   Tokens WITHOUT cache     : 16669
+23:38:13 [INFO]   Judge overhead (excl.)   : 15085
+23:38:13 [INFO]   Net token savings        : 67.1%
+23:38:13 [INFO] ──────────────────────────────────────────────────────────
+23:38:13 [INFO] Results saved → results.csv
+23:38:14 [INFO] Chart saved → tokens_per_task.png
