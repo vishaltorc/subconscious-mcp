@@ -6,6 +6,8 @@ The server runs as an MCP `stdio` process on your machine and exposes four tools
 
 Embeddings come from `sentence-transformers/all-MiniLM-L6-v2` (384-dim, runs on CPU). Storage is a persistent local [ChromaDB](https://www.trychroma.com/) collection. No data leaves your machine.
 
+<!-- mcp-name: io.github.vishaltorc/subconscious-mcp -->
+
 ---
 
 ## Install
