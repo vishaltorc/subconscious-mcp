@@ -1,0 +1,38 @@
+# Version control
+.git
+.gitignore
+.github
+
+# Python virtual env / caches
+.venv
+.env
+.pytest_cache
+__pycache__
+**/__pycache__
+*.pyc
+*.pyo
+
+# Build artifacts
+dist
+build
+*.egg-info
+src/*.egg-info
+
+# Tests, docs, examples — not needed at runtime
+tests
+docs
+examples
+validation
+
+# Local-only / session artifacts
+update.md
+BUILD_REPORT.md
+server.json
+uv.lock
+
+# Editor / OS junk
+.DS_Store
+.vscode
+.idea
+*.log
+node_modules
