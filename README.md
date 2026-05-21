@@ -1,10 +1,12 @@
 # subconscious-mcp
 
-A **local-first, learning, semantic memory layer** for any MCP-compatible LLM agent.
+[![PyPI](https://img.shields.io/pypi/v/subconscious-mcp.svg)](https://pypi.org/project/subconscious-mcp/) [![Python](https://img.shields.io/pypi/pyversions/subconscious-mcp.svg)](https://pypi.org/project/subconscious-mcp/) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![MCP Registry](https://img.shields.io/badge/MCP%20Registry-active-blue)](https://registry.modelcontextprotocol.io/v0/servers?search=subconscious)
 
-The server runs as an MCP `stdio` process on your machine and exposes four tools — `recall`, `remember`, `forget`, `stats` — that let an agent ask "have I seen this task before?" and, if so, get back the previous answer in milliseconds without re-running the work.
+Local-first semantic memory for MCP agents. Recall, remember, forget, stats over stdio.
 
-Embeddings come from `sentence-transformers/all-MiniLM-L6-v2` (384-dim, runs on CPU). Storage is a persistent local [ChromaDB](https://www.trychroma.com/) collection. No data leaves your machine.
+The server runs as an MCP stdio process on your machine. It exposes four tools that let an agent ask "have I seen this task before?" and, if so, get the previous answer back in milliseconds without re-running the work.
+
+Embeddings come from sentence-transformers/all-MiniLM-L6-v2 (384-dim, runs on CPU). Storage is a persistent local ChromaDB collection. No data leaves your machine.
 
 <!-- mcp-name: io.github.vishaltorc/subconscious-mcp -->
 
@@ -13,7 +15,7 @@ Embeddings come from `sentence-transformers/all-MiniLM-L6-v2` (384-dim, runs on 
 ## Install
 
 ```bash
-# Once published:
+# From PyPI:
 pip install subconscious-mcp
 
 # Local development:
@@ -46,7 +48,7 @@ Add an `mcpServers` entry:
 ```json
 {
   "mcpServers": {
-    "subconscious": {
+    "subconscious-mcp": {
       "command": "subconscious-mcp",
       "args": []
     }
@@ -60,13 +62,13 @@ Then quit and restart Claude Desktop. The new tools appear under the 🔌 indica
 
 ### Claude Code
 
-Option A — register from the CLI (recommended):
+Option A. Register from the CLI (recommended):
 
 ```bash
 claude mcp add subconscious-mcp -- subconscious-mcp
 ```
 
-Option B — edit `~/.claude.json` (or your project's `.mcp.json`) and add:
+Option B. Edit `~/.claude.json` (or your project's `.mcp.json`) and add:
 
 ```json
 {
@@ -94,7 +96,7 @@ Semantic search for a previously remembered task.
 
 | arg | type | default | meaning |
 |---|---|---|---|
-| `task` | str | — | the task description to look up |
+| `task` | str | (required) | the task description to look up |
 | `threshold` | float | 0.85 | minimum cosine similarity for a hit |
 | `top_k` | int | 1 | how many candidates to consider |
 
@@ -112,7 +114,7 @@ Returns:
 }
 ```
 
-On a miss, `hit` is `false`, `answer` is `null`, and `similarity` is the **best similarity observed in `top_k`** — so callers can see how close they came.
+On a miss, `hit` is `false`, `answer` is `null`, and `similarity` is the **best similarity observed in `top_k`**. Callers can see how close they came.
 
 ### `remember(task, answer, tags=[], ttl_seconds=null)`
 
@@ -126,7 +128,7 @@ Delete the entry with this id. Returns `{"forgotten": true}` if it existed, else
 
 ### `stats()`
 
-Returns `{"total_entries", "last_hit_at", "hit_rate_last_100"}`. `hit_rate_last_100` is a sliding window over the most recent 100 recall calls — useful to see whether memory is actually paying off.
+Returns `{"total_entries", "last_hit_at", "hit_rate_last_100"}`. `hit_rate_last_100` is a sliding window over the most recent 100 recall calls. Useful to see whether memory is actually paying off.
 
 ---
 
@@ -143,7 +145,7 @@ Configuration is resolved in priority order:
 | `storage_dir` | `~/.subconscious-mcp/data` | `SUBCONSCIOUS_STORAGE_DIR` |
 | `embedding_model` | `all-MiniLM-L6-v2` | `SUBCONSCIOUS_EMBEDDING_MODEL` |
 | `default_threshold` | `0.85` | `SUBCONSCIOUS_DEFAULT_THRESHOLD` |
-| `default_ttl_seconds` | `null` | — |
+| `default_ttl_seconds` | `null` |  |
 | `log_level` | `INFO` | `SUBCONSCIOUS_LOG_LEVEL` |
 
 Inspect the resolved config without starting the server:
@@ -169,7 +171,7 @@ To wipe your memory: `rm -rf ~/.subconscious-mcp/data`.
 
 ## Demo session
 
-See [`examples/demo_session.md`](examples/demo_session.md) for a worked example of an agent calling `recall` (miss → `remember`), then on a later turn calling `recall` again with a paraphrase and getting a hit.
+See [`examples/demo_session.md`](examples/demo_session.md) for a worked example of an agent calling `recall` (miss, then `remember`), then on a later turn calling `recall` again with a paraphrase and getting a hit.
 
 ---
 
@@ -186,14 +188,14 @@ Your shell's `PATH` doesn't include the install location. Try `python -m subcons
 
 **Claude Desktop says "Server disconnected"**
 Check `~/.subconscious-mcp/logs/server.log` for the traceback. Most common causes:
-1. The model download failed (offline at first launch) — re-run with network connectivity.
+1. The model download failed (offline at first launch). Re-run with network connectivity.
 2. The `storage_dir` is on a read-only volume.
 
 **First recall is slow**
 The first invocation lazily loads the sentence-transformer model (~5s on a modest CPU). Subsequent calls reuse the loaded model and respond in milliseconds.
 
 **Recall keeps missing on obvious paraphrases**
-Lower the threshold (`recall(task=..., threshold=0.7)`) or raise `top_k` to see candidates. `all-MiniLM-L6-v2` is small and fast — for higher-quality matching set `SUBCONSCIOUS_EMBEDDING_MODEL=all-mpnet-base-v2`.
+Lower the threshold (`recall(task=..., threshold=0.7)`) or raise `top_k` to see candidates. `all-MiniLM-L6-v2` is small and fast. For higher-quality matching set `SUBCONSCIOUS_EMBEDDING_MODEL=all-mpnet-base-v2`.
 
 **Tests fail with a sentence-transformers download error**
 You're offline or behind a proxy. Set `HF_HUB_OFFLINE=1` once you've pre-downloaded the model, or run `python -c "from sentence_transformers import SentenceTransformer; SentenceTransformer('all-MiniLM-L6-v2')"` once with connectivity.

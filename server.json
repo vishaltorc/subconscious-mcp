@@ -2,17 +2,17 @@
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.vishaltorc/subconscious-mcp",
   "title": "Subconscious",
-  "description": "Local-first semantic memory layer for MCP agents. Recall, remember, forget, stats over stdio.",
+  "description": "Local-first semantic memory for MCP agents. Recall, remember, forget, stats over stdio.",
   "repository": {
     "url": "https://github.com/vishaltorc/subconscious-mcp",
     "source": "github"
   },
-  "version": "0.1.0",
+  "version": "0.1.1",
   "packages": [
     {
       "registryType": "pypi",
       "identifier": "subconscious-mcp",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "transport": {
         "type": "stdio"
       }

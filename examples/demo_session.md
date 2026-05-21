@@ -6,10 +6,10 @@ second turn, days later, asks the same thing in different words and hits.
 
 ---
 
-## Turn 1 — cache miss, agent computes and remembers
+## Turn 1. Cache miss: agent computes and remembers
 
 **User:**
-> Quick reminder — what's the command to deploy a Next.js app to Vercel in production?
+> Quick reminder. What's the command to deploy a Next.js app to Vercel in production?
 
 **Agent thinks:** I should check my subconscious before doing the work.
 
@@ -66,7 +66,7 @@ composes the answer. Once it has the answer, it writes it back to memory:
 
 ---
 
-## Turn 2 — three days later, paraphrased query, cache hit
+## Turn 2. Three days later: paraphrased query, cache hit
 
 **User (a new session, days later):**
 > What's the process for shipping a Next.js project on Vercel?
@@ -98,14 +98,14 @@ composes the answer. Once it has the answer, it writes it back to memory:
 ```
 
 **Agent (to user):**
-> Same as before — `vercel login`, then `vercel --prod` from the project root, with env vars configured in Project Settings first.
+> Same as before: `vercel login`, then `vercel --prod` from the project root, with env vars configured in Project Settings first.
 
 The agent skipped a full docs lookup. The 0.83 similarity reflects that the
 words are different but the meaning matches the stored task.
 
 ---
 
-## Turn 3 — checking how well the cache is working
+## Turn 3. Checking how well the cache is working
 
 ```json
 // tool call
@@ -121,7 +121,7 @@ words are different but the meaning matches the stored task.
 }
 ```
 
-A 34% hit rate over the last 100 recalls — about a third of tasks are repeats.
+A 34% hit rate over the last 100 recalls. About a third of tasks are repeats.
 
 ---
 

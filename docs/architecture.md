@@ -61,7 +61,7 @@ that captures the `@mcp.tool()` registrations.
 
 ### `all-MiniLM-L6-v2`
 - Small (~80MB), fast on CPU, 384-dim vectors.
-- Trained on >1B sentence pairs — surprisingly good at paraphrase matching.
+- Trained on >1B sentence pairs, surprisingly good at paraphrase matching.
 - Easily swapped via `SUBCONSCIOUS_EMBEDDING_MODEL` if you want `all-mpnet-base-v2` (higher quality, ~3x slower).
 
 ### Cosine similarity
@@ -81,7 +81,7 @@ that captures the `@mcp.tool()` registrations.
 
 ### Ring buffer for `hit_rate_last_100`
 - A `collections.deque(maxlen=100)` of booleans is O(1) append and O(n) sum.
-- Lives in memory only — restart resets the window. For a persistent metric, log each outcome and aggregate offline.
+- Lives in memory only. Restart resets the window. For a persistent metric, log each outcome and aggregate offline.
 
 ## What's deliberately out of scope (v0.1)
 
