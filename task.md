@@ -1,4 +1,4 @@
-# task.md — finish and ship subconscious-mcp v0.2.0 ("echolocation")
+# task.md: finish and ship subconscious-mcp v0.2.0 ("echolocation")
 
 Handoff file. Written to be executed top-to-bottom by a human or an agent
 session running on a machine with this repo cloned and full network access
@@ -10,9 +10,9 @@ the failure instead of continuing.
 
 - Branch `claude/admiring-albattani-d5783r` (commit `c44412c`) contains the
   complete v0.2.0 implementation:
-  - `echo(task, top_k)` tool — nearest entries with similarities, no answers
-  - echo log — JSONL record of every recall at `<storage_dir>/echo_log.jsonl`
-  - `drift_report(min_hits, min_spread)` tool — first-fill semantic drift
+  - `echo(task, top_k)` tool: nearest entries with similarities, no answers
+  - echo log: JSONL record of every recall at `<storage_dir>/echo_log.jsonl`
+  - `drift_report(min_hits, min_spread)` tool: first-fill semantic drift
     detection from the echo log (the mitigation deferred in
     `validation/results.md`)
   - config knobs `echo_log_enabled` / `echo_log_max_bytes`, docs, examples,
@@ -37,7 +37,7 @@ Do not paste tokens into MCP client configs, chat sessions, or this file.
 
 ---
 
-## Task 1 — Run the full test suite (closes the verification gap)
+## Task 1: Run the full test suite (closes the verification gap)
 
 ```bash
 cd <repo-root>
@@ -58,7 +58,7 @@ green; a failure is most likely a similarity-threshold assumption in a new
 test, e.g. `test_recall_writes_echo_log` assumes unrelated sentences have
 cosine similarity > 0).
 
-## Task 2 — Verify the MCP surface end to end
+## Task 2: Verify the MCP surface end to end
 
 ```bash
 # Make sure the venv's bin is on PATH so the client can spawn the server:
@@ -77,7 +77,7 @@ claude mcp add subconscious-mcp -- subconscious-mcp
 **Acceptance:** version is 0.2.0, config shows the two new keys, client
 lists six tools.
 
-## Task 3 — Regenerate the example transcript
+## Task 3: Regenerate the example transcript
 
 ```bash
 .venv/bin/python examples/transcript_client.py | tee examples/transcript_output.txt
@@ -88,16 +88,16 @@ Notes:
   SDK spawns the server with a minimal environment, so an exported env var
   may not propagate; the reliable way is a temporary
   `~/.subconscious-mcp/config.json` containing
-  `{"storage_dir": "/tmp/subconscious-mcp-demo"}` — remove it (and
+  `{"storage_dir": "/tmp/subconscious-mcp-demo"}`: remove it (and
   `/tmp/subconscious-mcp-demo`) afterwards.
 
 **Acceptance:** the new transcript shows `list_tools` with six tools, an
 `echo (sonar ping)` result with similarities but **no `answer` field**, and
 a `drift_report` result. Commit the regenerated file to the branch.
 
-## Task 4 — Merge and tag
+## Task 4: Merge and tag
 
-1. Merge `claude/admiring-albattani-d5783r` into `main` (PR or merge —
+1. Merge `claude/admiring-albattani-d5783r` into `main` (PR or merge , 
    owner's choice).
 2. Tag the release on main:
 
@@ -109,7 +109,7 @@ git push origin v0.2.0
 **Acceptance:** `main` contains the v0.2.0 changes; tag `v0.2.0` exists on
 the remote.
 
-## Task 5 — Publish to PyPI
+## Task 5: Publish to PyPI
 
 From the merged `main`:
 
@@ -124,7 +124,7 @@ rm -rf dist/
 **Acceptance:** in a fresh venv, `pip install subconscious-mcp==0.2.0`
 succeeds and `subconscious-mcp --version` prints 0.2.0.
 
-## Task 6 — Refresh the MCP Registry entry
+## Task 6: Refresh the MCP Registry entry
 
 `server.json` is already bumped to 0.2.0 with the new tagline. After the
 PyPI release is live:
@@ -138,11 +138,11 @@ mcp-publisher publish
 `https://registry.modelcontextprotocol.io/v0/servers?search=subconscious`
 shows version 0.2.0.
 
-## Task 7 — Drift-replay demo (the differentiated deliverable)
+## Task 7: Drift-replay demo (the differentiated deliverable)
 
 Goal: show that `drift_report` catches the "numbers vs digits" first-fill
 drift family from the threshold-0.8 validation run **before** any judge
-flags a wrong answer — using only echo-log data.
+flags a wrong answer: using only echo-log data.
 
 1. Inspect `validation/results_threshold_0.8.csv` to learn its schema
    (per-task rows; identify the cache-hit rows, the matched/stored task,
@@ -164,7 +164,7 @@ flags a wrong answer — using only echo-log data.
 committed with the precision/recall observations of the detector on this
 run.
 
-## Task 8 (optional) — The writeup
+## Task 8 (optional): The writeup
 
 Draft a blog post / short paper: "First-fill semantic drift, and detecting
 it by echolocation." Structure: the failure mode (from

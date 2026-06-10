@@ -61,7 +61,7 @@ that captures the `@mcp.tool()` registrations.
 The design borrows from bat sonar: send a ping, learn from the reflection,
 and learn as much from the *shape* of many reflections as from any single one.
 
-### `echo` — geometry without content
+### `echo`: geometry without content
 
 `echo(task, top_k)` embeds the task and returns the nearest non-expired
 entries with their similarities, **but not their answers**. It is a pure
@@ -74,7 +74,7 @@ sensing operation:
 - An agent can ping before recalling: a strong echo (0.8+) suggests recall
   will pay off; silence (< 0.3) says this is uncharted territory.
 
-### The echo log — every reflection, recorded
+### The echo log: every reflection, recorded
 
 Every `recall` appends one JSONL line to `<storage_dir>/echo_log.jsonl`:
 timestamp, query text, nearest entry id (even on a miss), best similarity,
@@ -89,7 +89,7 @@ hit/miss, and the threshold used. Design constraints:
 - **Local-first**: the log stays inside `storage_dir` and is wiped by the
   same `rm -rf` that wipes the collection.
 
-### `drift_report` — detecting first-fill semantic drift
+### `drift_report`: detecting first-fill semantic drift
 
 The validation study (`validation/results.md`) surfaced a failure mode
 named first-fill semantic drift: the first answer cached for a family of

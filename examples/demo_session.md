@@ -162,7 +162,7 @@ risking a low-threshold recall:
 ```
 
 No answers came back, only geometry. The agent sees the nearest memory is a
-*Next.js* deployment at 0.74 — close, but this task is about *Nuxt*. A
+*Next.js* deployment at 0.74: close, but this task is about *Nuxt*. A
 lowered-threshold recall would have absorbed the Next.js answer. The agent
 does the work fresh and remembers it as a new entry instead.
 
@@ -196,7 +196,7 @@ does the work fresh and remembers it as a new entry instead.
 ```
 
 One entry is serving five hits across four differently-phrased queries
-spanning a 0.12 similarity band — the signature of first-fill semantic
+spanning a 0.12 similarity band, the signature of first-fill semantic
 drift ("digits" vs "numbers" interpretations colliding). The agent
 `forget`s it and lets the family re-fill with more specific entries.
 
