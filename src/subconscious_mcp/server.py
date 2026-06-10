@@ -1,9 +1,11 @@
 """subconscious-mcp server entry point.
 
-Exposes four MCP tools over stdio:
+Exposes six MCP tools over stdio:
 
   - recall(task, threshold, top_k)
   - remember(task, answer, tags, ttl_seconds)
+  - echo(task, top_k)
+  - drift_report(min_hits, min_spread)
   - forget(entry_id)
   - stats()
 
@@ -62,8 +64,8 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         prog="subconscious-mcp",
         description=(
             "A local-first semantic memory MCP server. Exposes recall / remember / "
-            "forget / stats tools over stdio for any MCP-compatible client "
-            "(Claude Desktop, Claude Code, etc.)."
+            "echo / drift_report / forget / stats tools over stdio for any "
+            "MCP-compatible client (Claude Desktop, Claude Code, etc.)."
         ),
         epilog=(
             "Configuration is loaded in priority order:\n"

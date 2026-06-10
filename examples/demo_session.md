@@ -125,8 +125,87 @@ A 34% hit rate over the last 100 recalls. About a third of tasks are repeats.
 
 ---
 
+## Turn 4. Sonar before committing: `echo`
+
+The agent has a borderline task and wants to sense the territory before
+risking a low-threshold recall:
+
+```json
+// tool call
+{
+  "tool": "echo",
+  "args": { "task": "Ship a Nuxt app on Vercel", "top_k": 3 }
+}
+```
+
+```json
+// tool result
+{
+  "count": 47,
+  "echoes": [
+    {
+      "entry_id": "f5c4f0c9-2c33-4d56-9b07-2a3e7b4bcae3",
+      "similarity": 0.74,
+      "task_text": "How do I deploy a Next.js app to Vercel in production?",
+      "stored_at": 1731000000.12,
+      "tags": ["vercel", "next.js", "deploy"]
+    },
+    {
+      "entry_id": "0a1b2c3d-...",
+      "similarity": 0.41,
+      "task_text": "How do I configure a custom domain on Vercel?",
+      "stored_at": 1730820000.0,
+      "tags": ["vercel", "dns"]
+    }
+  ]
+}
+```
+
+No answers came back, only geometry. The agent sees the nearest memory is a
+*Next.js* deployment at 0.74 — close, but this task is about *Nuxt*. A
+lowered-threshold recall would have absorbed the Next.js answer. The agent
+does the work fresh and remembers it as a new entry instead.
+
+---
+
+## Turn 5. Reviewing the cache for drift
+
+```json
+// tool call
+{ "tool": "drift_report", "args": { "min_hits": 3, "min_spread": 0.08 } }
+```
+
+```json
+// tool result
+{
+  "analyzed_recalls": 412,
+  "entries_with_hits": 38,
+  "candidates": [
+    {
+      "entry_id": "77aa9b21-...",
+      "task_text": "Pull out all digits from the sentence about milk and eggs",
+      "still_stored": true,
+      "hits": 5,
+      "distinct_queries": 4,
+      "similarity_min": 0.82,
+      "similarity_max": 0.94,
+      "similarity_spread": 0.12
+    }
+  ]
+}
+```
+
+One entry is serving five hits across four differently-phrased queries
+spanning a 0.12 similarity band — the signature of first-fill semantic
+drift ("digits" vs "numbers" interpretations colliding). The agent
+`forget`s it and lets the family re-fill with more specific entries.
+
+---
+
 ## Takeaway
 
 `recall` is cheap (a single embedding + nearest-neighbour lookup). The
 threshold is the dial: tighten it (e.g. 0.9) for safety, loosen it (0.65–0.75)
-to catch more paraphrases at the cost of occasional false positives.
+to catch more paraphrases at the cost of occasional false positives. `echo`
+lets you sense before you commit, and `drift_report` turns the echo log into
+an early-warning system for cached answers that absorbed too much.

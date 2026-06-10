@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "subconscious-mcp"
-version = "0.1.1"
-description = "Local-first semantic memory for MCP agents. Recall, remember, forget, stats over stdio."
+version = "0.2.0"
+description = "Local-first semantic memory for MCP agents. Recall, remember, forget, echo, drift detection, stats over stdio."
 readme = "README.md"
 license = { text = "MIT" }
 authors = [{ name = "Vishal Jayaprakash" }]

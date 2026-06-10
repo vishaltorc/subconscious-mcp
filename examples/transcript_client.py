@@ -90,17 +90,31 @@ async def main() -> int:
             )
             _pretty("recall (paraphrase) ->", await _content_to_dict(paraphrase))
 
-            # 5. stats
+            # 5. echo: nearest neighbours, geometry only, no answers
+            pong = await session.call_tool(
+                "echo",
+                arguments={"task": "Ship a Nuxt app on Vercel", "top_k": 3},
+            )
+            _pretty("echo (sonar ping) ->", await _content_to_dict(pong))
+
+            # 6. drift_report over the echo log written by the recalls above
+            drift = await session.call_tool(
+                "drift_report",
+                arguments={"min_hits": 1, "min_spread": 0.0},
+            )
+            _pretty("drift_report ->", await _content_to_dict(drift))
+
+            # 7. stats
             stats = await session.call_tool("stats", arguments={})
             _pretty("stats ->", await _content_to_dict(stats))
 
-            # 6. forget
+            # 8. forget
             forgotten = await session.call_tool(
                 "forget", arguments={"entry_id": entry_id}
             )
             _pretty("forget ->", await _content_to_dict(forgotten))
 
-            # 7. recall after forget -> miss again
+            # 9. recall after forget -> miss again
             after = await session.call_tool(
                 "recall",
                 arguments={

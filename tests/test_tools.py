@@ -1,4 +1,4 @@
-"""End-to-end tests for the four MCP tools via a mocked FastMCP transport."""
+"""End-to-end tests for the six MCP tools via a mocked FastMCP transport."""
 
 from __future__ import annotations
 
@@ -30,9 +30,9 @@ def wired(memory: Memory) -> tuple[FakeMCP, Memory]:
     return mcp, memory
 
 
-def test_all_four_tools_registered(wired: tuple[FakeMCP, Memory]):
+def test_all_six_tools_registered(wired: tuple[FakeMCP, Memory]):
     mcp, _ = wired
-    assert set(mcp.tools) == {"recall", "remember", "forget", "stats"}
+    assert set(mcp.tools) == {"recall", "remember", "echo", "drift_report", "forget", "stats"}
 
 
 def test_tool_remember_then_recall(wired: tuple[FakeMCP, Memory]):
@@ -90,3 +90,27 @@ def test_tool_stats_after_mix_of_hits_and_misses(wired: tuple[FakeMCP, Memory]):
     assert s["total_entries"] == 1
     assert 0.0 <= s["hit_rate_last_100"] <= 1.0
     assert s["last_hit_at"] is not None
+
+
+def test_tool_echo_returns_geometry_only(wired: tuple[FakeMCP, Memory]):
+    mcp, _ = wired
+    mcp.tools["remember"](task="the sky is blue", answer="atmosphere scatters light")
+
+    pong = mcp.tools["echo"](task="why is the sky blue?", top_k=3)
+    assert pong["count"] == 1
+    assert len(pong["echoes"]) == 1
+    assert "answer" not in pong["echoes"][0]
+    assert pong["echoes"][0]["task_text"] == "the sky is blue"
+    assert 0.0 <= pong["echoes"][0]["similarity"] <= 1.0
+
+
+def test_tool_drift_report_after_recalls(wired: tuple[FakeMCP, Memory]):
+    mcp, _ = wired
+    mcp.tools["remember"](task="alpha", answer="a")
+    mcp.tools["recall"](task="alpha", threshold=0.85)
+
+    report = mcp.tools["drift_report"](min_hits=1, min_spread=0.0)
+    assert report["analyzed_recalls"] == 1
+    assert report["entries_with_hits"] == 1
+    # one hit from one distinct query is never a drift candidate
+    assert report["candidates"] == []

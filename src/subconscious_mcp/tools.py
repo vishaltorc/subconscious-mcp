@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 
 
 def register_tools(mcp: Any, memory: Memory) -> None:
-    """Attach the four subconscious tools to a FastMCP server."""
+    """Attach the six subconscious tools to a FastMCP server."""
 
     @mcp.tool()
     def recall(task: str, threshold: float = 0.85, top_k: int = 1) -> dict[str, Any]:
@@ -68,6 +68,55 @@ def register_tools(mcp: Any, memory: Memory) -> None:
             )
         except Exception:
             logger.exception("remember failed")
+            raise
+
+    @mcp.tool()
+    def echo(task: str, top_k: int = 5) -> dict[str, Any]:
+        """Sonar ping: find the nearest remembered entries WITHOUT their answers.
+
+        Use this to sense whether a task sits in known territory before
+        committing to a recall. Because no answer is returned, an echo can
+        never propagate a stale or wrong cached answer.
+
+        Args:
+            task: The task description to ping with.
+            top_k: How many nearest entries to report.
+
+        Returns:
+            ``{"count": total_entries, "echoes": [{entry_id, similarity,
+            task_text, stored_at, tags}, ...]}`` sorted by similarity
+            descending. Expired entries are excluded.
+        """
+        logger.debug("tool echo task=%r top_k=%s", task[:80], top_k)
+        try:
+            return memory.echo(task=task, top_k=top_k)
+        except Exception:
+            logger.exception("echo failed")
+            raise
+
+    @mcp.tool()
+    def drift_report(min_hits: int = 3, min_spread: float = 0.08) -> dict[str, Any]:
+        """Detect first-fill semantic drift candidates from the echo log.
+
+        Flags entries whose recall hits span a wide similarity band across
+        distinct query phrasings: a sign that one cached answer is absorbing
+        a family of queries that may carry different interpretations.
+
+        Args:
+            min_hits: Minimum recorded hits before an entry is considered.
+            min_spread: Minimum (max - min) hit similarity band to flag.
+
+        Returns:
+            ``{"analyzed_recalls": int, "entries_with_hits": int,
+            "candidates": [{entry_id, task_text, still_stored, hits,
+            distinct_queries, similarity_min, similarity_max,
+            similarity_spread}, ...]}`` sorted by spread descending.
+        """
+        logger.debug("tool drift_report min_hits=%s min_spread=%s", min_hits, min_spread)
+        try:
+            return memory.drift_report(min_hits=min_hits, min_spread=min_spread)
+        except Exception:
+            logger.exception("drift_report failed")
             raise
 
     @mcp.tool()

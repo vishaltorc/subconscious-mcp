@@ -26,6 +26,8 @@ class Config(BaseModel):
     default_threshold: float = Field(default=0.85, ge=0.0, le=1.0)
     default_ttl_seconds: int | None = Field(default=None)
     log_level: str = Field(default="INFO")
+    echo_log_enabled: bool = Field(default=True)
+    echo_log_max_bytes: int = Field(default=5_000_000, ge=1_000)
 
     @field_validator("storage_dir")
     @classmethod
@@ -72,6 +74,13 @@ def _load_from_env() -> dict[str, Any]:
             raise RuntimeError(f"SUBCONSCIOUS_DEFAULT_THRESHOLD must be a float: {v}") from e
     if v := os.getenv("SUBCONSCIOUS_LOG_LEVEL"):
         out["log_level"] = v
+    if v := os.getenv("SUBCONSCIOUS_ECHO_LOG_ENABLED"):
+        out["echo_log_enabled"] = v.strip().lower() not in {"0", "false", "no", "off"}
+    if v := os.getenv("SUBCONSCIOUS_ECHO_LOG_MAX_BYTES"):
+        try:
+            out["echo_log_max_bytes"] = int(v)
+        except ValueError as e:
+            raise RuntimeError(f"SUBCONSCIOUS_ECHO_LOG_MAX_BYTES must be an int: {v}") from e
     return out
 
 
