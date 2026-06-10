@@ -1,5 +1,3 @@
-Captured output of `python examples/transcript_client.py` against the real
-subconscious-mcp server over MCP stdio.
 
 >>> initialize
 {
@@ -11,6 +9,8 @@ subconscious-mcp server over MCP stdio.
 [
   "recall",
   "remember",
+  "echo",
+  "drift_report",
   "forget",
   "stats"
 ]
@@ -29,7 +29,7 @@ subconscious-mcp server over MCP stdio.
 >>> remember ->
 {
   "stored": true,
-  "entry_id": "471ab504-1367-4bfc-be54-9b2df129ca7a",
+  "entry_id": "36eeed81-0351-4c8d-a9ff-01b0df3d0788",
   "embedding_dim": 384
 }
 
@@ -39,9 +39,12 @@ subconscious-mcp server over MCP stdio.
   "similarity": 1.0000001192092896,
   "answer": "Run `vercel --prod` after `vercel login`.",
   "task_text": "How do I deploy a Next.js app to Vercel?",
-  "entry_id": "471ab504-1367-4bfc-be54-9b2df129ca7a",
-  "stored_at": 1779204237.010627,
-  "tags": ["vercel", "deploy"]
+  "entry_id": "36eeed81-0351-4c8d-a9ff-01b0df3d0788",
+  "stored_at": 1781087449.9952729,
+  "tags": [
+    "vercel",
+    "deploy"
+  ]
 }
 
 >>> recall (paraphrase) ->
@@ -50,15 +53,53 @@ subconscious-mcp server over MCP stdio.
   "similarity": 0.7820930480957031,
   "answer": "Run `vercel --prod` after `vercel login`.",
   "task_text": "How do I deploy a Next.js app to Vercel?",
-  "entry_id": "471ab504-1367-4bfc-be54-9b2df129ca7a",
-  "stored_at": 1779204237.010627,
-  "tags": ["vercel", "deploy"]
+  "entry_id": "36eeed81-0351-4c8d-a9ff-01b0df3d0788",
+  "stored_at": 1781087449.9952729,
+  "tags": [
+    "vercel",
+    "deploy"
+  ]
+}
+
+>>> echo (sonar ping) ->
+{
+  "count": 1,
+  "echoes": [
+    {
+      "entry_id": "36eeed81-0351-4c8d-a9ff-01b0df3d0788",
+      "similarity": 0.5501399040222168,
+      "task_text": "How do I deploy a Next.js app to Vercel?",
+      "stored_at": 1781087449.9952729,
+      "tags": [
+        "vercel",
+        "deploy"
+      ]
+    }
+  ]
+}
+
+>>> drift_report ->
+{
+  "analyzed_recalls": 3,
+  "entries_with_hits": 1,
+  "candidates": [
+    {
+      "entry_id": "36eeed81-0351-4c8d-a9ff-01b0df3d0788",
+      "task_text": "How do I deploy a Next.js app to Vercel?",
+      "still_stored": true,
+      "hits": 2,
+      "distinct_queries": 2,
+      "similarity_min": 0.7821,
+      "similarity_max": 1.0,
+      "similarity_spread": 0.2179
+    }
+  ]
 }
 
 >>> stats ->
 {
   "total_entries": 1,
-  "last_hit_at": 1779204237.153638,
+  "last_hit_at": 1781087450.1800508,
   "hit_rate_last_100": 0.6667
 }
 
