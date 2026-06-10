@@ -2,7 +2,7 @@
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.vishaltorc/subconscious-mcp",
   "title": "Subconscious",
-  "description": "Local-first semantic memory for MCP agents. Recall, remember, forget, echo, drift detection, stats over stdio.",
+  "description": "Local-first semantic memory for MCP agents. Recall, remember, forget, echo, drift, stats over stdio.",
   "repository": {
     "url": "https://github.com/vishaltorc/subconscious-mcp",
     "source": "github"
