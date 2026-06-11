@@ -31,6 +31,10 @@ def _build_server(config: Config):
     from mcp.server.fastmcp import FastMCP  # imported here so --help stays cheap
 
     mcp = FastMCP("subconscious-mcp")
+    # FastMCP in mcp 1.27.1 has no version kwarg; Server.version is the public
+    # field create_initialization_options() reads. Move into the constructor
+    # once the SDK exposes it.
+    mcp._mcp_server.version = __version__
     memory = Memory(config)
     register_tools(mcp, memory)
     return mcp, memory
