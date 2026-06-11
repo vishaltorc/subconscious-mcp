@@ -9,6 +9,7 @@ import pytest
 from subconscious_mcp.memory import Memory
 
 
+@pytest.mark.embedding
 def test_embed_returns_unit_vector(memory: Memory):
     vec = memory.embed("hello world")
     assert isinstance(vec, list)
@@ -18,6 +19,7 @@ def test_embed_returns_unit_vector(memory: Memory):
     assert magnitude == pytest.approx(1.0, abs=1e-3)
 
 
+@pytest.mark.embedding
 def test_store_and_recall_exact_match(memory: Memory):
     task = "How do I deploy a Next.js app to Vercel?"
     answer = "Run `vercel --prod` from the project root after `vercel login`."
@@ -34,6 +36,7 @@ def test_store_and_recall_exact_match(memory: Memory):
     assert result["task_text"] == task
 
 
+@pytest.mark.embedding
 def test_store_and_recall_paraphrased_match(memory: Memory):
     """Different words, same meaning, should still hit at a modest threshold."""
     original = "How do I deploy a Next.js app to Vercel?"
@@ -47,6 +50,7 @@ def test_store_and_recall_paraphrased_match(memory: Memory):
     assert result["answer"] == answer
 
 
+@pytest.mark.embedding
 def test_threshold_above_and_below(memory: Memory):
     memory.remember(
         task="The capital of France is Paris",
@@ -65,6 +69,7 @@ def test_threshold_above_and_below(memory: Memory):
     assert relaxed["similarity"] == miss["similarity"]
 
 
+@pytest.mark.embedding
 def test_forget_removes_entry(memory: Memory):
     stored = memory.remember(task="ephemeral fact", answer="will be deleted")
     entry_id = stored["entry_id"]
@@ -81,6 +86,7 @@ def test_forget_removes_entry(memory: Memory):
     assert recalled["hit"] is False
 
 
+@pytest.mark.embedding
 def test_ttl_expiry(memory: Memory):
     """An entry with a short TTL is filtered out of recall once expired."""
     memory.remember(
@@ -108,6 +114,7 @@ def test_recall_on_empty_returns_zero_similarity(memory: Memory):
     assert result["answer"] is None
 
 
+@pytest.mark.embedding
 def test_stats_reflects_activity(memory: Memory):
     s0 = memory.stats()
     assert s0["total_entries"] == 0
@@ -127,6 +134,7 @@ def test_stats_reflects_activity(memory: Memory):
     assert s1["last_hit_at"] is not None
 
 
+@pytest.mark.embedding
 def test_tags_round_trip(memory: Memory):
     memory.remember(
         task="tagged task",

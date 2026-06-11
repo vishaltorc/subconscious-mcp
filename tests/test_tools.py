@@ -2,12 +2,17 @@
 
 from __future__ import annotations
 
-from typing import Any, Callable
+from collections.abc import Callable
+from typing import Any
 
 import pytest
 
 from subconscious_mcp.memory import Memory
 from subconscious_mcp.tools import register_tools
+
+# Every test here exercises remember/recall through the tool layer, so the
+# whole module needs the sentence-transformers model.
+pytestmark = pytest.mark.embedding
 
 
 class FakeMCP:

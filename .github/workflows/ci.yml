@@ -1,0 +1,70 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  lint-and-fast-tests:
+    name: lint + fast tests (py${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+
+      - name: Install CPU torch first (avoids multi-GB CUDA wheels)
+        run: pip install torch --index-url https://download.pytorch.org/whl/cpu
+
+      - name: Install package + dev tools
+        run: pip install -e ".[dev]"
+
+      - name: ruff
+        run: ruff check src/ tests/ examples/
+
+      - name: No em dashes (repo convention)
+        run: |
+          if grep -rln $'\xe2\x80\x94' . --include='*.md' --include='*.toml' --include='*.json' --include='*.py'; then
+            echo "Em dashes found in the files above. Rewrite with periods, commas, or colons."
+            exit 1
+          fi
+
+      - name: Fast tests (no embedding model needed)
+        run: pytest -m "not embedding" -v
+        env:
+          HF_HUB_OFFLINE: "1"
+          TRANSFORMERS_OFFLINE: "1"
+
+  full-tests:
+    name: full suite with embeddings (py3.12)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Cache the sentence-transformers model
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/huggingface
+          key: hf-all-MiniLM-L6-v2-v1
+
+      - name: Install CPU torch first (avoids multi-GB CUDA wheels)
+        run: pip install torch --index-url https://download.pytorch.org/whl/cpu
+
+      - name: Install package + dev tools
+        run: pip install -e ".[dev]"
+
+      - name: Full test suite
+        run: pytest -v

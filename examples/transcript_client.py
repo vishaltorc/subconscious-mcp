@@ -42,7 +42,8 @@ async def main() -> int:
     async with stdio_client(params) as (read, write):
         async with ClientSession(read, write) as session:
             init = await session.initialize()
-            _pretty("initialize", {"server": init.serverInfo.name, "version": init.serverInfo.version})
+            info = {"server": init.serverInfo.name, "version": init.serverInfo.version}
+            _pretty("initialize", info)
 
             tools = await session.list_tools()
             _pretty("list_tools", [t.name for t in tools.tools])

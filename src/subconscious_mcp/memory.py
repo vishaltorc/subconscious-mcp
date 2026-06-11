@@ -24,7 +24,6 @@ import chromadb
 
 from .config import Config
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -157,7 +156,9 @@ class Memory:
         best_match: dict[str, Any] | None = None
         best_similarity = 0.0
 
-        for entry_id, distance, document, metadata in zip(ids, distances, documents, metadatas):
+        for entry_id, distance, document, metadata in zip(
+            ids, distances, documents, metadatas, strict=True
+        ):
             # cosine space: similarity = 1 - distance
             similarity = max(0.0, 1.0 - float(distance))
             expires_at = float(metadata.get("expires_at", -1.0))
@@ -212,7 +213,9 @@ class Memory:
 
         now = time.time()
         echoes: list[dict[str, Any]] = []
-        for entry_id, distance, document, metadata in zip(ids, distances, documents, metadatas):
+        for entry_id, distance, document, metadata in zip(
+            ids, distances, documents, metadatas, strict=True
+        ):
             similarity = max(0.0, 1.0 - float(distance))
             expires_at = float(metadata.get("expires_at", -1.0))
             if expires_at > 0 and expires_at <= now:

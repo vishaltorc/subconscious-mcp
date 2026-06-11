@@ -31,6 +31,7 @@ dependencies = [
 dev = [
     "pytest>=8.0.0",
     "pytest-asyncio>=0.23.0",
+    "ruff>=0.8.0",
 ]
 
 [project.scripts]
@@ -47,3 +48,14 @@ where = ["src"]
 testpaths = ["tests"]
 addopts = "-ra -q"
 asyncio_mode = "auto"
+markers = [
+    "embedding: needs the sentence-transformers model (slow; excluded in CI fast lane via -m 'not embedding')",
+]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+extend-exclude = ["validation"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B"]

@@ -11,7 +11,6 @@ from typing import Any
 
 from .memory import Memory
 
-
 logger = logging.getLogger(__name__)
 
 

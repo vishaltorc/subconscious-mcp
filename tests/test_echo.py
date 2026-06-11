@@ -24,6 +24,7 @@ def _write_log_lines(memory: Memory, records: list[dict]) -> None:
 # ---- echo() ---------------------------------------------------------------
 
 
+@pytest.mark.embedding
 def test_echo_returns_neighbors_without_answers(memory: Memory):
     memory.remember(task="How do I deploy a Next.js app to Vercel?", answer="vercel --prod")
     memory.remember(task="How do I bake sourdough bread?", answer="flour, water, salt, time")
@@ -47,6 +48,7 @@ def test_echo_on_empty_collection(memory: Memory):
     assert result == {"count": 0, "echoes": []}
 
 
+@pytest.mark.embedding
 def test_echo_excludes_expired(memory: Memory):
     memory.remember(task="short-lived ping target", answer="42", ttl_seconds=1)
     time.sleep(1.5)
@@ -55,6 +57,7 @@ def test_echo_excludes_expired(memory: Memory):
     assert result["echoes"] == []
 
 
+@pytest.mark.embedding
 def test_echo_does_not_affect_stats_or_log(memory: Memory):
     memory.remember(task="alpha", answer="a")
     memory.echo(task="alpha")
@@ -73,6 +76,7 @@ def test_echo_rejects_empty_task(memory: Memory):
 # ---- echo log -------------------------------------------------------------
 
 
+@pytest.mark.embedding
 def test_recall_writes_echo_log(memory: Memory):
     stored = memory.remember(task="the sky is blue", answer="atmosphere scatters light")
 
@@ -140,6 +144,7 @@ def test_drift_report_empty(memory: Memory):
     assert report == {"analyzed_recalls": 0, "entries_with_hits": 0, "candidates": []}
 
 
+@pytest.mark.embedding
 def test_drift_report_flags_wide_band_entry(memory: Memory):
     stored = memory.remember(
         task="Pull out all digits from the milk-and-eggs sentence",
