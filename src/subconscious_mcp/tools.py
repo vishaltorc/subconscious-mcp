@@ -117,6 +117,11 @@ def register_tools(mcp: Any, memory: Memory) -> None:
         except Exception:
             logger.exception("drift_report failed")
             raise
+    @mcp.tool()
+    def def purge_expired() -> str:
+        """Permanently delete all expired entries from ChromaDB."""
+        result = memory.purge_expired()
+        return f"Purged {result['purged']} expired entries."
 
     @mcp.tool()
     def forget(entry_id: str) -> dict[str, Any]:
