@@ -1,6 +1,6 @@
 # subconscious-mcp
 
-[![PyPI](https://img.shields.io/pypi/v/subconscious-mcp.svg)](https://pypi.org/project/subconscious-mcp/) [![Python](https://img.shields.io/pypi/pyversions/subconscious-mcp.svg)](https://pypi.org/project/subconscious-mcp/) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![MCP Registry](https://img.shields.io/badge/MCP%20Registry-active-blue)](https://registry.modelcontextprotocol.io/v0/servers?search=subconscious)
+[![CI](https://github.com/vishaltorc/subconscious-mcp/actions/workflows/ci.yml/badge.svg)](https://github.com/vishaltorc/subconscious-mcp/actions/workflows/ci.yml) [![PyPI](https://img.shields.io/pypi/v/subconscious-mcp.svg)](https://pypi.org/project/subconscious-mcp/) [![Python](https://img.shields.io/pypi/pyversions/subconscious-mcp.svg)](https://pypi.org/project/subconscious-mcp/) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![MCP Registry](https://img.shields.io/badge/MCP%20Registry-active-blue)](https://registry.modelcontextprotocol.io/v0/servers?search=subconscious)
 
 Local-first semantic memory for MCP agents. Recall, remember, forget, echo, drift detection, stats over stdio.
 
