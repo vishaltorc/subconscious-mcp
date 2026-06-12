@@ -99,6 +99,7 @@ Semantic search for a previously remembered task.
 | `task` | str | (required) | the task description to look up |
 | `threshold` | float | 0.85 | minimum cosine similarity for a hit |
 | `top_k` | int | 1 | how many candidates to consider |
+| `tags` | list[str] | null | optional; candidate must share at least one |
 
 Returns:
 
@@ -130,6 +131,7 @@ Sonar ping: return the nearest non-expired entries **without their answers**.
 |---|---|---|---|
 | `task` | str | (required) | the task description to ping with |
 | `top_k` | int | 5 | how many nearest entries to report |
+| `tags` | list[str] | null | optional; candidate must share at least one |
 
 Returns:
 

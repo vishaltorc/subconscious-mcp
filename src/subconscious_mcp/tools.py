@@ -18,13 +18,19 @@ def register_tools(mcp: Any, memory: Memory) -> None:
     """Attach the six subconscious tools to a FastMCP server."""
 
     @mcp.tool()
-    def recall(task: str, threshold: float = 0.85, top_k: int = 1) -> dict[str, Any]:
+    def recall(
+        task: str,
+        threshold: float = 0.85,
+        top_k: int = 1,
+        tags: list[str] | None = None,
+    ) -> dict[str, Any]:
         """Semantic lookup for a previously remembered task.
 
         Args:
             task: The task description to search for.
             threshold: Minimum cosine similarity to count as a hit (0-1).
             top_k: How many candidates to consider when picking the best match.
+            tags: optional; a candidate must share at least one of these tags.
 
         Returns:
             A dict containing ``hit`` (bool), ``similarity`` (float, best
@@ -33,7 +39,7 @@ def register_tools(mcp: Any, memory: Memory) -> None:
         """
         logger.debug("tool recall task=%r threshold=%s top_k=%s", task[:80], threshold, top_k)
         try:
-            return memory.recall(task=task, threshold=threshold, top_k=top_k)
+            return memory.recall(task=task, threshold=threshold, top_k=top_k, tags=tags)
         except Exception:
             logger.exception("recall failed")
             raise
@@ -70,7 +76,7 @@ def register_tools(mcp: Any, memory: Memory) -> None:
             raise
 
     @mcp.tool()
-    def echo(task: str, top_k: int = 5) -> dict[str, Any]:
+    def echo(task: str, top_k: int = 5, tags: list[str] | None = None) -> dict[str, Any]:
         """Sonar ping: find the nearest remembered entries WITHOUT their answers.
 
         Use this to sense whether a task sits in known territory before
@@ -80,6 +86,7 @@ def register_tools(mcp: Any, memory: Memory) -> None:
         Args:
             task: The task description to ping with.
             top_k: How many nearest entries to report.
+            tags: optional; a candidate must share at least one of these tags.
 
         Returns:
             ``{"count": total_entries, "echoes": [{entry_id, similarity,
@@ -88,7 +95,7 @@ def register_tools(mcp: Any, memory: Memory) -> None:
         """
         logger.debug("tool echo task=%r top_k=%s", task[:80], top_k)
         try:
-            return memory.echo(task=task, top_k=top_k)
+            return memory.echo(task=task, top_k=top_k, tags=tags)
         except Exception:
             logger.exception("echo failed")
             raise

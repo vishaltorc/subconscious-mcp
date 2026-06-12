@@ -137,12 +137,15 @@ class Memory:
         task: str,
         threshold: float | None = None,
         top_k: int = 1,
+        tags: list[str] | None = None,
     ) -> dict[str, Any]:
         """Look up the closest non-expired match. Returns hit/miss + best similarity."""
         if not isinstance(task, str) or not task.strip():
             raise ValueError("task must be a non-empty string")
         threshold = threshold if threshold is not None else self.config.default_threshold
         top_k = max(1, int(top_k))
+        wanted = set(tags) if tags else None
+        fetch_n = top_k * 3 if wanted else top_k
 
         if self.collection.count() == 0:
             self._log_echo(task, None, 0.0, False, threshold)
@@ -151,7 +154,7 @@ class Memory:
         query_emb = self.embed(task)
         results = self.collection.query(
             query_embeddings=[query_emb],
-            n_results=top_k,
+            n_results=fetch_n,
             include=["documents", "metadatas", "distances"],
         )
 
@@ -173,6 +176,10 @@ class Memory:
             if expires_at > 0 and expires_at <= now:
                 logger.debug("skipping expired entry_id=%s", entry_id)
                 continue
+            if wanted is not None:
+                entry_tags = set(json.loads(metadata.get("tags_json", "[]")))
+                if not (wanted & entry_tags):
+                    continue
             if similarity > best_similarity:
                 best_similarity = similarity
                 best_match = {
@@ -191,7 +198,12 @@ class Memory:
         self._log_echo(task, nearest_id, best_similarity, False, threshold)
         return self._record_miss(best_similarity)
 
-    def echo(self, task: str, top_k: int = 5) -> dict[str, Any]:
+    def echo(
+        self,
+        task: str,
+        top_k: int = 5,
+        tags: list[str] | None = None,
+    ) -> dict[str, Any]:
         """Sonar ping: return the nearest non-expired entries WITHOUT answers.
 
         Unlike :meth:`recall`, this returns geometry, not content: the caller
@@ -202,6 +214,8 @@ class Memory:
         if not isinstance(task, str) or not task.strip():
             raise ValueError("task must be a non-empty string")
         top_k = max(1, int(top_k))
+        wanted = set(tags) if tags else None
+        fetch_n = top_k * 3 if wanted else top_k
 
         total = self.collection.count()
         if total == 0:
@@ -210,7 +224,7 @@ class Memory:
         query_emb = self.embed(task)
         results = self.collection.query(
             query_embeddings=[query_emb],
-            n_results=min(top_k, total),
+            n_results=min(fetch_n, total),
             include=["documents", "metadatas", "distances"],
         )
 
@@ -228,6 +242,10 @@ class Memory:
             expires_at = float(metadata.get("expires_at", -1.0))
             if expires_at > 0 and expires_at <= now:
                 continue
+            if wanted is not None:
+                entry_tags = set(json.loads(metadata.get("tags_json", "[]")))
+                if not (wanted & entry_tags):
+                    continue
             echoes.append({
                 "entry_id": entry_id,
                 "similarity": similarity,
@@ -237,6 +255,7 @@ class Memory:
             })
 
         echoes.sort(key=lambda e: e["similarity"], reverse=True)
+        echoes = echoes[:top_k]
         return {"count": total, "echoes": echoes}
 
     def drift_report(self, min_hits: int = 3, min_spread: float = 0.08) -> dict[str, Any]:
