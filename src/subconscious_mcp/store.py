@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import sqlite3
 import time
+from contextlib import closing
 from pathlib import Path
 from typing import Any
 
@@ -33,19 +34,34 @@ class EpisodeStore:
     def __init__(self, db_path: Path) -> None:
         self.db_path = Path(db_path)
         self.db_path.parent.mkdir(parents=True, exist_ok=True)
-        with self._conn() as c:
+        with closing(self._conn()) as c, c:
             c.executescript(_SCHEMA)
 
     def _conn(self) -> sqlite3.Connection:
         conn = sqlite3.connect(self.db_path, timeout=5.0)
-        conn.execute("PRAGMA journal_mode=WAL")
-        conn.execute("PRAGMA busy_timeout=5000")
         conn.row_factory = sqlite3.Row
+        for attempt in range(10):
+            try:
+                conn.execute("PRAGMA journal_mode=WAL")
+                break
+            except sqlite3.OperationalError:
+                # The rollback-to-WAL header rewrite returns SQLITE_BUSY
+                # immediately (no busy handler) when processes race on a
+                # fresh database. WAL is persistent per-database, so if a
+                # sibling process won the race we can proceed.
+                mode = conn.execute("PRAGMA journal_mode").fetchone()[0]
+                if mode == "wal":
+                    break
+                time.sleep(0.05 * (attempt + 1))
+        else:
+            raise sqlite3.OperationalError(
+                f"could not enable WAL on {self.db_path} after 10 attempts"
+            )
         return conn
 
     def add_episode(self, *, namespace: str, project: str, session_id: str,
                     content: str, source: str, ts: float | None = None) -> int:
-        with self._conn() as c:
+        with closing(self._conn()) as c, c:
             cur = c.execute(
                 "INSERT INTO episodes (ts, namespace, project, session_id, content, source)"
                 " VALUES (?, ?, ?, ?, ?, ?)",
@@ -55,7 +71,7 @@ class EpisodeStore:
             return int(cur.lastrowid)
 
     def pending_episodes(self, limit: int = 100) -> list[dict[str, Any]]:
-        with self._conn() as c:
+        with closing(self._conn()) as c, c:
             rows = c.execute(
                 "SELECT * FROM episodes WHERE status = 'pending' ORDER BY id LIMIT ?",
                 (limit,),
@@ -65,12 +81,12 @@ class EpisodeStore:
     def mark(self, status: str, ids: list[int]) -> None:
         if not ids:
             return
-        with self._conn() as c:
+        with closing(self._conn()) as c, c:
             c.executemany("UPDATE episodes SET status = ? WHERE id = ?",
                           [(status, i) for i in ids])
 
     def recent_episodes(self, namespace: str, n: int = 3) -> list[dict[str, Any]]:
-        with self._conn() as c:
+        with closing(self._conn()) as c, c:
             rows = c.execute(
                 "SELECT * FROM episodes WHERE namespace = ? ORDER BY ts DESC LIMIT ?",
                 (namespace, n),
@@ -78,7 +94,7 @@ class EpisodeStore:
             return [dict(r) for r in rows]
 
     def count_for_namespace(self, namespace: str) -> int:
-        with self._conn() as c:
+        with closing(self._conn()) as c, c:
             row = c.execute("SELECT COUNT(*) AS n FROM episodes WHERE namespace = ?",
                             (namespace,)).fetchone()
             return int(row["n"])

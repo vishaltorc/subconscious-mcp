@@ -50,3 +50,29 @@ def test_two_connections_wal_concurrent_write(tmp_path):
     s1.add_episode(namespace="a", project="/x", session_id="1", content="one", source="t")
     s2.add_episode(namespace="a", project="/x", session_id="2", content="two", source="t")
     assert s1.count_for_namespace("a") == 2
+
+
+def test_journal_mode_is_wal(tmp_path):
+    import sqlite3
+    make(tmp_path)
+    mode = sqlite3.connect(tmp_path / "context.db").execute("PRAGMA journal_mode").fetchone()[0]
+    assert mode == "wal"
+
+
+def test_writer_succeeds_during_open_read_transaction(tmp_path):
+    # the real scenario: a hook writes while the server holds a read snapshot.
+    # In WAL this succeeds; in rollback-journal modes the writer would get
+    # "database is locked".
+    import sqlite3
+    s = make(tmp_path)
+    s.add_episode(namespace="a", project="/x", session_id="0", content="seed", source="t")
+    reader = sqlite3.connect(tmp_path / "context.db")
+    try:
+        reader.execute("BEGIN")
+        reader.execute("SELECT * FROM episodes").fetchall()  # hold a read snapshot
+        s.add_episode(namespace="a", project="/x", session_id="1", content="while-reading",
+                      source="t")
+    finally:
+        reader.rollback()
+        reader.close()
+    assert s.count_for_namespace("a") == 2
