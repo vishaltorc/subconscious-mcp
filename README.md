@@ -203,6 +203,8 @@ Configuration is resolved in priority order:
 | `log_level` | `INFO` | `SUBCONSCIOUS_LOG_LEVEL` |
 | `echo_log_enabled` | `true` | `SUBCONSCIOUS_ECHO_LOG_ENABLED` |
 | `echo_log_max_bytes` | `5000000` | `SUBCONSCIOUS_ECHO_LOG_MAX_BYTES` |
+| `namespace` | `default` | `SUBCONSCIOUS_NAMESPACE` |
+| `capture_enabled` | `true` | `SUBCONSCIOUS_CAPTURE_ENABLED` |
 
 Inspect the resolved config without starting the server:
 

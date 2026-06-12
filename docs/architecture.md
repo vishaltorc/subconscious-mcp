@@ -144,7 +144,6 @@ them into more specific entries, or tighten the threshold.
 
 ## What's deliberately out of scope (v0.2)
 
-- **Multi-user / multi-collection**: a single user, single collection.
 - **Server-side filtering by tag**: tags are stored but not used in recall.
 - **Background expiry sweep**: relies on filter-at-read.
 - **Hot-reload of config**: config is read once at startup.
@@ -153,3 +152,6 @@ them into more specific entries, or tighten the threshold.
   on them (forget / split / re-answer) stays a deliberate caller decision.
 
 Each of these is a natural extension if usage demands it.
+
+Namespaces shipped in v0.3: a config-level `namespace` gives each project its
+own collection and echo log (the default namespace keeps the legacy names).

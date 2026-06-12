@@ -27,7 +27,6 @@ from .config import Config
 logger = logging.getLogger(__name__)
 
 
-COLLECTION_NAME = "subconscious"
 RING_BUFFER_SIZE = 100
 ECHO_LOG_FILENAME = "echo_log.jsonl"
 
@@ -55,17 +54,26 @@ class Memory:
         return self._client
 
     @property
+    def collection_name(self) -> str:
+        """Per-namespace collection name; the default namespace keeps the
+        legacy v0.2 name so existing users upgrade without losing memory."""
+        ns = self.config.namespace
+        return "subconscious" if ns == "default" else f"subconscious_{ns}"
+
+    @property
     def collection(self) -> Any:
         if self._collection is None:
             self._collection = self.client.get_or_create_collection(
-                name=COLLECTION_NAME,
+                name=self.collection_name,
                 metadata={"hnsw:space": "cosine"},
             )
         return self._collection
 
     @property
     def echo_log_path(self) -> Path:
-        return self.config.storage_path / ECHO_LOG_FILENAME
+        ns = self.config.namespace
+        name = ECHO_LOG_FILENAME if ns == "default" else f"echo_log_{ns}.jsonl"
+        return self.config.storage_path / name
 
     @property
     def encoder(self) -> Any:
