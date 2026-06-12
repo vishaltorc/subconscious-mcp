@@ -12,20 +12,9 @@ from typing import Any
 
 from pydantic import BaseModel, Field, field_validator
 
+from subconscious_mcp.naming import sanitize_namespace
+
 DEFAULT_CONFIG_PATH = Path.home() / ".subconscious-mcp" / "config.json"
-
-
-def sanitize_namespace(value: str) -> str:
-    """ASCII [a-z0-9_-] only, others become '-', edges must be alphanumeric, max 64.
-
-    chromadb collection names (verified against 1.5.9) require characters from
-    [a-zA-Z0-9._-] and must start AND end alphanumeric; we prefix
-    'subconscious_' so the start is safe, but the end must be stripped.
-    """
-    allowed = set("abcdefghijklmnopqrstuvwxyz0123456789-_")
-    cleaned = "".join(c if c in allowed else "-" for c in value.lower())
-    cleaned = cleaned[:64].strip("-_")
-    return cleaned or "default"
 
 
 class Config(BaseModel):

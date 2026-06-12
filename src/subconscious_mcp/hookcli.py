@@ -13,6 +13,7 @@ import time
 from pathlib import Path
 from typing import Any
 
+from subconscious_mcp.naming import sanitize_namespace
 from subconscious_mcp.redact import redact
 from subconscious_mcp.store import EpisodeStore
 
@@ -44,9 +45,19 @@ def _git_root(cwd: Path) -> Path | None:
 
 
 def derive_namespace(cwd: Path) -> str:
-    from subconscious_mcp.config import sanitize_namespace
     root = _git_root(cwd) or cwd
     return sanitize_namespace(root.name)
+
+
+def _log_failure(log_dir: Path, context: str, exc: Exception) -> None:
+    """Append one line to hook.log. Itself swallows everything."""
+    try:
+        log_dir.mkdir(parents=True, exist_ok=True)
+        line = f"{time.time():.3f} {context} {type(exc).__name__}: {exc}\n"
+        with (log_dir / "hook.log").open("a", encoding="utf-8") as f:
+            f.write(line)
+    except Exception:
+        pass
 
 
 def _text_of(message: object) -> str | None:
@@ -63,7 +74,11 @@ def _text_of(message: object) -> str | None:
 
 
 def extract_resolution_pair(transcript_path: Path) -> tuple[str, str] | None:
-    """Last user text + last assistant text from a bounded tail read."""
+    """Last (user text, following assistant text) pair from a bounded tail read.
+
+    An assistant text only ever pairs with the most recent PRECEDING user
+    text; a trailing unanswered user turn never steals an older outcome.
+    """
     try:
         size = transcript_path.stat().st_size
         with transcript_path.open("rb") as f:
@@ -72,7 +87,8 @@ def extract_resolution_pair(transcript_path: Path) -> tuple[str, str] | None:
             raw = f.read().decode("utf-8", errors="replace")
     except OSError:
         return None
-    last_user = last_assistant = None
+    last_user: str | None = None
+    pair: tuple[str, str] | None = None
     for line in raw.splitlines():
         line = line.strip()
         if not line:
@@ -81,16 +97,16 @@ def extract_resolution_pair(transcript_path: Path) -> tuple[str, str] | None:
             rec = json.loads(line)
         except json.JSONDecodeError:
             continue
+        if not isinstance(rec, dict):
+            continue
         text = _text_of(rec.get("message"))
         if not text:
             continue
         if rec.get("type") == "user":
             last_user = text
-        elif rec.get("type") == "assistant":
-            last_assistant = text
-    if last_user and last_assistant:
-        return (last_user, last_assistant)
-    return None
+        elif rec.get("type") == "assistant" and last_user is not None:
+            pair = (last_user, text)
+    return pair
 
 
 def handle_stop(payload: dict[str, Any], db_path: Path, capture_enabled: bool) -> int:
@@ -106,12 +122,14 @@ def handle_stop(payload: dict[str, Any], db_path: Path, capture_enabled: bool) -
         if pair is None:
             return 0
         task, answer = pair
-        content = redact(f"TASK: {task[:1000]}\nOUTCOME: {answer[:2000]}")
+        task_r = redact(task)[:1000]
+        answer_r = redact(answer)[:2000]
+        content = f"TASK: {task_r}\nOUTCOME: {answer_r}"
         EpisodeStore(db_path).add_episode(
             namespace=derive_namespace(cwd), project=str(cwd),
             session_id=str(payload.get("session_id", "")),
             content=content, source="stop_hook",
         )
-    except Exception:
-        pass
+    except Exception as exc:
+        _log_failure(db_path.parent / "logs", "handle_stop", exc)
     return 0
