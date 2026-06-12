@@ -6,9 +6,20 @@ from subconscious_mcp.config import Config, sanitize_namespace
 
 def test_sanitize_namespace_basic():
     assert sanitize_namespace("my-project") == "my-project"
-    assert sanitize_namespace("My Project!") == "my-project-"  # space and ! become -
+    # space/! become -, then trailing punctuation stripped
+    assert sanitize_namespace("My Project!") == "my-project"
+    # ASCII only; chromadb rejects unicode names
+    assert sanitize_namespace("café") == "caf"
     assert sanitize_namespace("") == "default"
     assert sanitize_namespace("x" * 100) == "x" * 64
+
+
+def test_sanitized_names_accepted_by_chromadb(tmp_path):
+    import chromadb
+    client = chromadb.PersistentClient(path=str(tmp_path))
+    for hostile in ["My Project!", "café", "---", "x" * 100, "über-app!!"]:
+        name = f"subconscious_{sanitize_namespace(hostile)}"
+        client.get_or_create_collection(name=name, metadata={"hnsw:space": "cosine"})
 
 
 def test_config_namespace_default():

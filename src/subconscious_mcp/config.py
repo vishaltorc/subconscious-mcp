@@ -16,9 +16,16 @@ DEFAULT_CONFIG_PATH = Path.home() / ".subconscious-mcp" / "config.json"
 
 
 def sanitize_namespace(value: str) -> str:
-    """Lowercase, keep [a-z0-9_-], everything else becomes '-', max 64 chars."""
-    cleaned = "".join(c if (c.isalnum() or c in "-_") else "-" for c in value.lower())
-    return cleaned[:64] or "default"
+    """ASCII [a-z0-9_-] only, others become '-', edges must be alphanumeric, max 64.
+
+    chromadb collection names (verified against 1.5.9) require characters from
+    [a-zA-Z0-9._-] and must start AND end alphanumeric; we prefix
+    'subconscious_' so the start is safe, but the end must be stripped.
+    """
+    allowed = set("abcdefghijklmnopqrstuvwxyz0123456789-_")
+    cleaned = "".join(c if c in allowed else "-" for c in value.lower())
+    cleaned = cleaned[:64].strip("-_")
+    return cleaned or "default"
 
 
 class Config(BaseModel):
