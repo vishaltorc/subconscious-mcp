@@ -25,3 +25,29 @@ def test_redacts_bearer_and_env_assignments():
 def test_leaves_normal_text_alone():
     s = "fixed the deploy by running vercel --prod after vercel login"
     assert redact(s) == s
+
+
+def test_redacts_aws_slack_and_pem():
+    s = ("aws AKIA0123456789ABCDEF and slack xoxb-1234567890-abcdefghij\n"
+         "-----BEGIN RSA PRIVATE KEY-----")
+    out = redact(s)
+    assert "AKIA0123456789ABCDEF" not in out
+    assert "xoxb-1234567890" not in out
+    assert "BEGIN RSA PRIVATE KEY" not in out
+
+
+def test_env_assignment_preserves_key_name():
+    assert redact("OPENAI_API_KEY=sk_value_here123") == "OPENAI_API_KEY=[REDACTED]"
+    assert redact("export DB_PASSWORD=hunter2") == "export DB_PASSWORD=[REDACTED]"
+
+
+def test_github_fine_grained_token():
+    out = redact("github_pat_11ABCDEFG0123456789_abcdefghijklmnop")
+    assert "github_pat_11ABC" not in out
+
+
+def test_redact_is_fast_on_adversarial_input():
+    import time
+    start = time.perf_counter()
+    redact("KEY" * 30_000)
+    assert time.perf_counter() - start < 0.5
