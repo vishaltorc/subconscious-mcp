@@ -1,6 +1,6 @@
 # Contributing to subconscious-mcp
 
-Thanks for looking. The whole codebase is 612 lines across four files; you can read all of it in under an hour. This doc gets you from clone to green PR.
+Thanks for looking. The whole codebase is about 1,350 lines across eight files; you can read all of it in under an hour. This doc gets you from clone to green PR.
 
 ## Setup
 
@@ -16,11 +16,12 @@ The first embedding call downloads the all-MiniLM-L6-v2 model (~80MB) into your 
 ## Tests: two lanes
 
 ```bash
-# Fast lane: no model needed, runs in under a second. Use while iterating.
+# Fast lane: ~70 tests, no model needed, runs in under a second. Use while iterating.
 .venv/bin/pytest -m "not embedding"
 
-# Full suite: loads the model per fixture, ~5 minutes. Run before pushing
-# if you touched src/subconscious_mcp/memory.py or anything embedding-adjacent.
+# Full suite: 91 tests, loads the model per fixture, ~5 minutes. Run before
+# pushing if you touched src/subconscious_mcp/memory.py or anything
+# embedding-adjacent.
 .venv/bin/pytest
 ```
 
@@ -30,10 +31,14 @@ CI runs the fast lane plus ruff on every PR (Python 3.11 and 3.12) and the full 
 
 | File | Lines | What it owns |
 |---|---|---|
-| src/subconscious_mcp/server.py | ~123 | CLI, logging, FastMCP wiring |
-| src/subconscious_mcp/tools.py | ~150 | Six thin @mcp.tool() shims |
-| src/subconscious_mcp/memory.py | ~382 | Embeddings, ChromaDB, echo log, drift detection |
-| src/subconscious_mcp/config.py | ~93 | env > json > defaults resolution |
+| src/subconscious_mcp/memory.py | ~495 | Embeddings, ChromaDB, echo log, drift detection, episode ingest, near-duplicate guard |
+| src/subconscious_mcp/hookcli.py | ~248 | Claude Code hook handlers + install-hooks (model-free) |
+| src/subconscious_mcp/server.py | ~173 | CLI, logging, FastMCP wiring, startup ingest |
+| src/subconscious_mcp/tools.py | ~166 | Six thin @mcp.tool() shims |
+| src/subconscious_mcp/config.py | ~105 | env > json > defaults resolution |
+| src/subconscious_mcp/store.py | ~100 | SQLite episode inbox (context.db); only writer of that file |
+| src/subconscious_mcp/redact.py | ~51 | Best-effort secret redaction for ambient capture |
+| src/subconscious_mcp/naming.py | ~15 | Namespace name hygiene (sanitization) |
 
 Design rationale lives in [docs/architecture.md](docs/architecture.md). The validation study that motivated the echolocation features is in [validation/](validation/).
 

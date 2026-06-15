@@ -111,6 +111,69 @@ with zero extra LLM or embedding calls; the data is a by-product of normal
 operation. Flagged entries are review candidates: `forget` them, split
 them into more specific entries, or tighten the threshold.
 
+## Ambient capture
+
+v0.3 adds optional ambient capture through Claude Code hooks. The design is
+shaped by one boundary: **the SQLite inbox**.
+
+### The inbox boundary
+
+```
+┌────────────────────┐   write only    ┌──────────────┐
+│  Stop hook         │ ──────────────► │              │
+│  (separate process)│                 │  context.db  │
+└────────────────────┘                 │  (SQLite)    │
+┌────────────────────┐   read recent   │   inbox      │
+│  SessionStart hook │ ◄────────────── │              │
+│  (separate process)│                 └──────────────┘
+└────────────────────┘                        │ ingest at startup
+                                               ▼
+                                        ┌──────────────┐
+                                        │  MCP server  │
+                                        │  (ChromaDB)  │
+                                        └──────────────┘
+```
+
+Hooks are separate, short-lived processes spawned by Claude Code. They write
+ONLY to `context.db` via `EpisodeStore` (`store.py`), which is the single
+module that touches that file. The MCP server is the ONLY ChromaDB writer:
+at startup it calls `ingest_pending()`, embeds each pending episode, adds it
+to the collection, and marks it ingested in the inbox.
+
+Why the split:
+
+- **ChromaDB has no multi-writer story.** Two processes writing the same
+  persistent collection risk index corruption. Funneling every write through
+  one process (the server) sidesteps that entirely; the inbox is the
+  hand-off.
+- **Hooks must stay model-free and fast.** `hookcli.py` never imports
+  sentence-transformers, ChromaDB, or `memory.py`. A hook reads a bounded
+  tail of the transcript, redacts, and inserts one SQLite row, all well
+  inside the <100ms budget a `Stop` hook should respect. Embedding (slow,
+  heavy) is deferred to the server.
+
+### Episode segregation
+
+Ingested episodes are tagged `kind=episode` in their ChromaDB metadata.
+`recall` skips any `kind=episode` row, so mechanically captured episodes
+never appear in recall answers and cannot degrade the validated recall
+accuracy (~95% in the validation study), which is measured over curated
+`remember` entries only. Episodes are still visible to `echo` (each echo
+carries its `kind`) and surface in the `SessionStart` context dump, so the
+captured signal is available for sensing and orientation without polluting
+the answer path. (`stats().total_entries` counts episodes too, since it
+reports the raw collection size.)
+
+### Write-time near-duplicate guard
+
+`remember` probes the nearest curated neighbour before storing and warns when
+its similarity falls in the band `[0.75, 0.92]` (`NEAR_DUPLICATE_LOW`,
+`NEAR_DUPLICATE_HIGH` in `memory.py`). This is the write-time complement to
+the read-time `drift_report`: drift is caught either as it is recorded
+(write) or as it accumulates in the echo log (read). The probe ignores
+`kind=episode` rows, so ambient capture never triggers a curated-duplicate
+warning.
+
 ## Why these choices
 
 ### ChromaDB
@@ -142,9 +205,21 @@ them into more specific entries, or tighten the threshold.
 - A `collections.deque(maxlen=100)` of booleans is O(1) append and O(n) sum.
 - Lives in memory only. Restart resets the window. For a persistent metric, log each outcome and aggregate offline.
 
-## What's deliberately out of scope (v0.2)
+## Tag filtering (v0.3)
 
-- **Server-side filtering by tag**: tags are stored but not used in recall.
+`recall` and `echo` accept an optional `tags` list; a candidate must share at
+least one tag to qualify. The implementation is a **post-filter**: the query
+fetches `top_k * 3` nearest neighbours, then drops any whose tags miss. So a
+true tag match can fall outside the fetched window when many closer
+non-matching entries crowd it out, in which case the result is a miss (and a
+miss `similarity` can read `0.0` even though a tagged entry exists). The
+remedy is a larger `top_k`, which widens the over-fetch window. A server-side
+metadata `where` clause would be exact but ChromaDB's filter semantics over
+JSON-encoded tag lists are awkward; the over-fetch keeps the read path simple
+and is sufficient at this scale.
+
+## What's deliberately out of scope
+
 - **Background expiry sweep**: relies on filter-at-read.
 - **Hot-reload of config**: config is read once at startup.
 - **Streaming results**: every tool returns a single dict.
