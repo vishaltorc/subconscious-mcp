@@ -132,6 +132,38 @@ class Memory:
             "embedding_dim": len(embedding),
         }
 
+    def ingest_pending(self, limit: int = 100) -> dict[str, int]:
+        """Embed pending episodes from context.db into the collection.
+
+        Episodes are tagged kind=episode and excluded from recall answers
+        (segregation): ambient capture quality is mechanical, so episodes
+        inform echo and context surfaces without touching curated recall
+        accuracy.
+        """
+        from subconscious_mcp.store import EpisodeStore
+        store = EpisodeStore(self.config.storage_path / "context.db")
+        pending = [e for e in store.pending_episodes(limit=limit)
+                   if e["namespace"] == self.config.namespace]
+        done: list[int] = []
+        for ep in pending:
+            try:
+                entry_id = f"episode-{ep['id']}"
+                self.collection.add(
+                    ids=[entry_id],
+                    embeddings=[self.embed(ep["content"])],
+                    documents=[ep["content"]],
+                    metadatas=[{
+                        "stored_at": ep["ts"], "expires_at": -1.0,
+                        "tags_json": json.dumps(["episode"]),
+                        "kind": "episode", "source": ep["source"],
+                    }],
+                )
+                done.append(ep["id"])
+            except Exception:
+                logger.exception("episode ingest failed id=%s", ep["id"])
+        store.mark("ingested", done)
+        return {"ingested": len(done)}
+
     def recall(
         self,
         task: str,
@@ -175,6 +207,8 @@ class Memory:
             expires_at = float(metadata.get("expires_at", -1.0))
             if expires_at > 0 and expires_at <= now:
                 logger.debug("skipping expired entry_id=%s", entry_id)
+                continue
+            if metadata.get("kind") == "episode":
                 continue
             if wanted is not None:
                 entry_tags = set(json.loads(metadata.get("tags_json", "[]")))

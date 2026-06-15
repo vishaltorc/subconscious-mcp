@@ -149,7 +149,13 @@ def main(argv: list[str] | None = None) -> int:
         print(config.model_dump_json(indent=2), file=sys.stderr)
         return 0
 
-    mcp, _ = _build_server(config)
+    mcp, memory = _build_server(config)
+    try:
+        ingested = memory.ingest_pending()
+        if ingested["ingested"]:
+            log.info("ingested %d pending episodes", ingested["ingested"])
+    except Exception:
+        log.exception("startup ingest failed; serving without it")
     try:
         # FastMCP.run() defaults to stdio transport, which is what every
         # local MCP client (Claude Desktop, Claude Code) expects.
