@@ -95,11 +95,50 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         action="store_true",
         help="Print the resolved configuration to stderr and exit (does not start the server).",
     )
+
+    sub = parser.add_subparsers(dest="command")
+
+    hook_p = sub.add_parser(
+        "hook",
+        help="Run a Claude Code hook handler (reads the hook payload from stdin).",
+    )
+    hook_p.add_argument(
+        "--event",
+        required=True,
+        choices=["session-start", "stop", "log-only"],
+        help="Which hook event this invocation handles.",
+    )
+
+    ih = sub.add_parser(
+        "install-hooks",
+        help="Install subconscious-mcp hooks into a Claude Code settings.json.",
+    )
+    ih.add_argument(
+        "--settings",
+        default=str(Path.home() / ".claude" / "settings.json"),
+        help="Path to the Claude Code settings.json to modify.",
+    )
+    ih.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Print the planned changes without writing them.",
+    )
+
     return parser.parse_args(argv)
 
 
 def main(argv: list[str] | None = None) -> int:
     args = _parse_args(argv)
+
+    # Hook handlers must not pay server-side import or logging costs.
+    if args.command == "hook":
+        from subconscious_mcp.hookcli import run_hook_command
+
+        return run_hook_command(args.event)
+    if args.command == "install-hooks":
+        print("install-hooks is not implemented yet (coming in the next commit)")
+        return 2
+
     config = load_config(args.config)
     _setup_logging(config)
     log = logging.getLogger(__name__)

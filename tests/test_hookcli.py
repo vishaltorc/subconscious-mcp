@@ -7,6 +7,7 @@ from pathlib import Path
 from subconscious_mcp.hookcli import (
     derive_namespace,
     extract_resolution_pair,
+    handle_session_start,
     handle_stop,
     log_payload_sample,
 )
@@ -149,3 +150,27 @@ def test_redaction_happens_before_truncation(tmp_path):
     handle_stop(payload, db_path=tmp_path / "context.db", capture_enabled=True)
     rows = EpisodeStore(tmp_path / "context.db").pending_episodes()
     assert "sk-a" not in rows[0]["content"]
+
+
+def test_session_start_prints_recent_context(tmp_path, capsys, monkeypatch):
+    monkeypatch.setattr("subconscious_mcp.hookcli._git_root", lambda cwd: None)
+    db = tmp_path / "context.db"
+    proj = tmp_path / "projx"
+    proj.mkdir()
+    ns = derive_namespace(proj)
+    EpisodeStore(db).add_episode(namespace=ns, project=str(proj), session_id="s1",
+                                 content="TASK: a\nOUTCOME: b", source="stop_hook")
+    rc = handle_session_start({"cwd": str(proj)}, db_path=db)
+    out = capsys.readouterr().out
+    assert rc == 0
+    assert "TASK: a" in out
+    assert "1 stored" in out
+
+
+def test_session_start_empty_namespace_silent(tmp_path, capsys, monkeypatch):
+    monkeypatch.setattr("subconscious_mcp.hookcli._git_root", lambda cwd: None)
+    proj = tmp_path / "fresh"
+    proj.mkdir()
+    rc = handle_session_start({"cwd": str(proj)}, db_path=tmp_path / "context.db")
+    assert rc == 0
+    assert capsys.readouterr().out == ""

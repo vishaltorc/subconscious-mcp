@@ -9,6 +9,7 @@ from __future__ import annotations
 import json
 import os
 import subprocess
+import sys
 import time
 from pathlib import Path
 from typing import Any
@@ -132,4 +133,48 @@ def handle_stop(payload: dict[str, Any], db_path: Path, capture_enabled: bool) -
         )
     except Exception as exc:
         _log_failure(db_path.parent / "logs", "handle_stop", exc)
+    return 0
+
+
+def handle_session_start(payload: dict[str, Any], db_path: Path) -> int:
+    """Print recent project context for Claude Code to absorb. Never raises."""
+    try:
+        cwd = Path(payload.get("cwd") or os.getcwd())
+        ns = derive_namespace(cwd)
+        store = EpisodeStore(db_path)
+        recent = store.recent_episodes(namespace=ns, n=3)
+        if not recent:
+            return 0
+        total = store.count_for_namespace(ns)
+        lines = [f"## subconscious-mcp: recent context for this project ({ns})"]
+        for ep in recent:
+            lines.append(f"- {ep['content'][:400]}")
+        lines.append(
+            f"({total} stored episodes; subconscious-mcp memory is active. "
+            "Call the recall tool before starting non-trivial work.)"
+        )
+        print("\n".join(lines))
+    except Exception as exc:
+        _log_failure(db_path.parent / "logs", "handle_session_start", exc)
+    return 0
+
+
+def run_hook_command(event: str) -> int:
+    try:
+        raw = sys.stdin.read()
+        payload = json.loads(raw) if raw.strip() else {}
+    except Exception:
+        payload = {}
+    if not isinstance(payload, dict):
+        payload = {}
+    from subconscious_mcp.config import load_config
+    cfg = load_config()
+    db_path = cfg.storage_path / "context.db"
+    if event == "log-only":
+        log_payload_sample(payload, cfg.storage_path / "logs" / "payload_samples")
+        return 0
+    if event == "stop":
+        return handle_stop(payload, db_path=db_path, capture_enabled=cfg.capture_enabled)
+    if event == "session-start":
+        return handle_session_start(payload, db_path=db_path)
     return 0
