@@ -180,6 +180,9 @@ def run_hook_command(event: str) -> int:
     return 0
 
 
+# Idempotency keys on the exact command string. If a future version changes a
+# command string, re-running install-hooks appends the new one alongside the old
+# (both fire); bump with a migration step if that ever happens.
 _HOOK_EVENTS = {
     "Stop": "subconscious-mcp hook --event stop",
     "SessionStart": "subconscious-mcp hook --event session-start",
@@ -200,14 +203,29 @@ def install_hooks(settings_path: Path, dry_run: bool) -> bool:
     Returns True if a change is (or would be) made.
     """
     try:
-        raw = settings_path.read_text(encoding="utf-8") if settings_path.exists() else "{}"
-        data = json.loads(raw)
+        data = (
+            json.loads(settings_path.read_text(encoding="utf-8"))
+            if settings_path.exists()
+            else {}
+        )
     except json.JSONDecodeError:
         raise SystemExit(f"refusing to touch malformed JSON at {settings_path}") from None
+    if not isinstance(data, dict):
+        raise SystemExit(
+            f"refusing to touch settings whose top level is not an object: {settings_path}"
+        ) from None
     hooks = data.setdefault("hooks", {})
+    if not isinstance(hooks, dict):
+        raise SystemExit(
+            f"refusing to touch settings whose 'hooks' is not an object: {settings_path}"
+        ) from None
     changed = False
     for event, command in _HOOK_EVENTS.items():
         groups = hooks.setdefault(event, [])
+        if not isinstance(groups, list):
+            raise SystemExit(
+                f"refusing to touch settings whose 'hooks.{event}' is not a list: {settings_path}"
+            ) from None
         if not _has_command(groups, command):
             groups.append({"matcher": "", "hooks": [{"type": "command", "command": command}]})
             changed = True
@@ -223,6 +241,8 @@ def install_hooks(settings_path: Path, dry_run: bool) -> bool:
         backup.write_text(settings_path.read_text(encoding="utf-8"), encoding="utf-8")
         print(f"backup written: {backup}")
     settings_path.parent.mkdir(parents=True, exist_ok=True)
-    settings_path.write_text(rendered, encoding="utf-8")
+    tmp = settings_path.with_name(f"{settings_path.name}.tmp")
+    tmp.write_text(rendered, encoding="utf-8")
+    os.replace(tmp, settings_path)
     print(f"hooks installed in {settings_path}")
     return True

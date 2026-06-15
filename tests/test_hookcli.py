@@ -4,6 +4,8 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import pytest
+
 from subconscious_mcp.hookcli import (
     derive_namespace,
     extract_resolution_pair,
@@ -262,3 +264,28 @@ def test_install_hooks_dry_run_touches_nothing(tmp_path):
     changed = install_hooks(settings, dry_run=True)
     assert changed is True
     assert not settings.exists()
+
+
+def test_install_hooks_rejects_malformed_json(tmp_path):
+    settings = tmp_path / "settings.json"
+    settings.write_text("{not json", encoding="utf-8")
+    with pytest.raises(SystemExit):
+        install_hooks(settings, dry_run=False)
+    assert settings.read_text() == "{not json"  # untouched
+    assert list(tmp_path.glob("settings.json.bak.*")) == []
+
+
+@pytest.mark.parametrize("bad", ['[]', '{"hooks": "nope"}', '{"hooks": {"Stop": "x"}}'])
+def test_install_hooks_rejects_wrong_shape(tmp_path, bad):
+    settings = tmp_path / "settings.json"
+    settings.write_text(bad, encoding="utf-8")
+    with pytest.raises(SystemExit):
+        install_hooks(settings, dry_run=False)
+    assert settings.read_text() == bad  # untouched, no partial state
+    assert list(tmp_path.glob("settings.json.bak.*")) == []
+
+
+def test_install_hooks_no_tmp_file_left_behind(tmp_path):
+    settings = tmp_path / "settings.json"
+    install_hooks(settings, dry_run=False)
+    assert not (tmp_path / "settings.json.tmp").exists()  # os.replace consumed it
