@@ -31,6 +31,15 @@ logger = logging.getLogger(__name__)
 RING_BUFFER_SIZE = 100
 ECHO_LOG_FILENAME = "echo_log.jsonl"
 
+# Near-duplicate warning band on remember(). A nearest curated neighbour whose
+# cosine similarity falls in [low, high] is flagged as a write-time first-fill
+# drift candidate. Above high is treated as update-territory (basically the same
+# task) and is intentionally not warned. The band is independent of
+# default_threshold (0.85), so it straddles the recall threshold by design.
+# Promote to Config in v0.3.1 once field data informs the right default.
+NEAR_DUPLICATE_LOW = 0.75
+NEAR_DUPLICATE_HIGH = 0.92
+
 
 class Memory:
     """Embed, store, retrieve, and forget task -> answer pairs."""
@@ -135,7 +144,7 @@ class Memory:
                 if meta.get("kind") == "episode":
                     continue
                 sim = max(0.0, 1.0 - float(dist))
-                if 0.75 <= sim <= 0.92:
+                if NEAR_DUPLICATE_LOW <= sim <= NEAR_DUPLICATE_HIGH:
                     warning = {"warning": "near_duplicate", "nearest_task": doc,
                                "nearest_similarity": round(sim, 4), "nearest_entry_id": pid}
                 break   # only the nearest non-episode neighbour decides
