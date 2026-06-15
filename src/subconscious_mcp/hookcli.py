@@ -178,3 +178,51 @@ def run_hook_command(event: str) -> int:
     if event == "session-start":
         return handle_session_start(payload, db_path=db_path)
     return 0
+
+
+_HOOK_EVENTS = {
+    "Stop": "subconscious-mcp hook --event stop",
+    "SessionStart": "subconscious-mcp hook --event session-start",
+}
+
+
+def _has_command(groups: list, command: str) -> bool:
+    for grp in groups:
+        for h in grp.get("hooks", []):
+            if h.get("command") == command:
+                return True
+    return False
+
+
+def install_hooks(settings_path: Path, dry_run: bool) -> bool:
+    """Merge our two hook entries into Claude Code settings.
+
+    Returns True if a change is (or would be) made.
+    """
+    try:
+        raw = settings_path.read_text(encoding="utf-8") if settings_path.exists() else "{}"
+        data = json.loads(raw)
+    except json.JSONDecodeError:
+        raise SystemExit(f"refusing to touch malformed JSON at {settings_path}") from None
+    hooks = data.setdefault("hooks", {})
+    changed = False
+    for event, command in _HOOK_EVENTS.items():
+        groups = hooks.setdefault(event, [])
+        if not _has_command(groups, command):
+            groups.append({"matcher": "", "hooks": [{"type": "command", "command": command}]})
+            changed = True
+    if not changed:
+        print(f"already installed in {settings_path}")
+        return False
+    rendered = json.dumps(data, indent=2) + "\n"
+    if dry_run:
+        print(f"would write to {settings_path}:\n{rendered}")
+        return True
+    if settings_path.exists():
+        backup = settings_path.with_name(f"{settings_path.name}.bak.{int(time.time())}")
+        backup.write_text(settings_path.read_text(encoding="utf-8"), encoding="utf-8")
+        print(f"backup written: {backup}")
+    settings_path.parent.mkdir(parents=True, exist_ok=True)
+    settings_path.write_text(rendered, encoding="utf-8")
+    print(f"hooks installed in {settings_path}")
+    return True

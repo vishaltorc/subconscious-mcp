@@ -9,6 +9,7 @@ from subconscious_mcp.hookcli import (
     extract_resolution_pair,
     handle_session_start,
     handle_stop,
+    install_hooks,
     log_payload_sample,
 )
 from subconscious_mcp.store import EpisodeStore
@@ -218,3 +219,46 @@ def test_run_hook_command_session_start_routing(tmp_path, monkeypatch, capsys):
     rc = run_hook_command("session-start")
     assert rc == 0
     assert "TASK: routed" in capsys.readouterr().out
+
+
+def test_install_hooks_fresh_settings(tmp_path):
+    settings = tmp_path / "settings.json"
+    changed = install_hooks(settings, dry_run=False)
+    assert changed is True
+    data = json.loads(settings.read_text())
+    cmds = [h["command"] for ev in ("Stop", "SessionStart")
+            for grp in data["hooks"][ev] for h in grp["hooks"]]
+    assert "subconscious-mcp hook --event stop" in cmds
+    assert "subconscious-mcp hook --event session-start" in cmds
+
+
+def test_install_hooks_idempotent(tmp_path):
+    settings = tmp_path / "settings.json"
+    install_hooks(settings, dry_run=False)
+    before = settings.read_text()
+    changed = install_hooks(settings, dry_run=False)
+    assert changed is False
+    assert settings.read_text() == before
+
+
+def test_install_hooks_preserves_existing(tmp_path):
+    settings = tmp_path / "settings.json"
+    existing_stop = [{"matcher": "", "hooks": [{"type": "command", "command": "echo existing"}]}]
+    settings.write_text(json.dumps({
+        "model": "opus",
+        "hooks": {"Stop": existing_stop},
+    }))
+    install_hooks(settings, dry_run=False)
+    data = json.loads(settings.read_text())
+    all_stop = [h["command"] for grp in data["hooks"]["Stop"] for h in grp["hooks"]]
+    assert "echo existing" in all_stop
+    assert data["model"] == "opus"
+    backups = list(tmp_path.glob("settings.json.bak.*"))
+    assert len(backups) == 1
+
+
+def test_install_hooks_dry_run_touches_nothing(tmp_path):
+    settings = tmp_path / "settings.json"
+    changed = install_hooks(settings, dry_run=True)
+    assert changed is True
+    assert not settings.exists()

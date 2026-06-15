@@ -136,8 +136,9 @@ def main(argv: list[str] | None = None) -> int:
 
         return run_hook_command(args.event)
     if args.command == "install-hooks":
-        print("install-hooks is not implemented yet (coming in the next commit)")
-        return 2
+        from subconscious_mcp.hookcli import install_hooks
+        install_hooks(Path(args.settings), dry_run=args.dry_run)
+        return 0
 
     config = load_config(args.config)
     _setup_logging(config)
