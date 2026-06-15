@@ -174,3 +174,47 @@ def test_session_start_empty_namespace_silent(tmp_path, capsys, monkeypatch):
     rc = handle_session_start({"cwd": str(proj)}, db_path=tmp_path / "context.db")
     assert rc == 0
     assert capsys.readouterr().out == ""
+
+
+def test_run_hook_command_log_only_routing(tmp_path, monkeypatch):
+    import io
+
+    from subconscious_mcp.hookcli import run_hook_command
+
+    monkeypatch.setenv("SUBCONSCIOUS_STORAGE_DIR", str(tmp_path / "data"))
+    monkeypatch.setattr("sys.stdin", io.StringIO('{"hook_event_name": "Stop", "cwd": "/x"}'))
+    rc = run_hook_command("log-only")
+    assert rc == 0
+    samples = list((tmp_path / "data" / "logs" / "payload_samples").glob("*.json"))
+    assert len(samples) == 1
+
+
+def test_run_hook_command_non_dict_stdin_is_safe(tmp_path, monkeypatch):
+    import io
+
+    from subconscious_mcp.hookcli import run_hook_command
+
+    monkeypatch.setenv("SUBCONSCIOUS_STORAGE_DIR", str(tmp_path / "data"))
+    monkeypatch.setattr("sys.stdin", io.StringIO("42"))  # valid JSON, not a dict
+    rc = run_hook_command("stop")
+    assert rc == 0  # coerced to {}, no transcript_path, clean no-op
+
+
+def test_run_hook_command_session_start_routing(tmp_path, monkeypatch, capsys):
+    import io
+
+    from subconscious_mcp.hookcli import run_hook_command
+
+    monkeypatch.setattr("subconscious_mcp.hookcli._git_root", lambda cwd: None)
+    monkeypatch.setenv("SUBCONSCIOUS_STORAGE_DIR", str(tmp_path / "data"))
+    proj = tmp_path / "projy"
+    proj.mkdir()
+    db = tmp_path / "data" / "context.db"
+    db.parent.mkdir(parents=True, exist_ok=True)
+    ns = derive_namespace(proj)
+    EpisodeStore(db).add_episode(namespace=ns, project=str(proj), session_id="s1",
+                                 content="TASK: routed\nOUTCOME: ok", source="stop_hook")
+    monkeypatch.setattr("sys.stdin", io.StringIO(f'{{"cwd": "{proj}"}}'))
+    rc = run_hook_command("session-start")
+    assert rc == 0
+    assert "TASK: routed" in capsys.readouterr().out
