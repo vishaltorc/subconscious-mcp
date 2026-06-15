@@ -88,6 +88,57 @@ A copy-pasteable file is in [`examples/claude_desktop_config.json`](examples/cla
 
 ---
 
+## Ambient memory
+
+Beyond the explicit tools, subconscious-mcp can capture your work automatically through Claude Code hooks. Three commands get you there:
+
+```bash
+pip install subconscious-mcp
+claude mcp add subconscious-mcp -- subconscious-mcp
+subconscious-mcp install-hooks
+```
+
+`install-hooks` edits your Claude Code `settings.json` (default `~/.claude/settings.json`) to register two hooks: a `SessionStart` hook and a `Stop` hook. It backs up the existing file first (`settings.json.bak.<timestamp>`), writes atomically, and is idempotent: running it again when both hooks are already present is a no-op. Pass `--dry-run` to print the planned change without writing, and `--settings <path>` to target a different settings file.
+
+What gets captured: when a session ends, the `Stop` hook reads the tail of the transcript, extracts the last user-request to assistant-outcome exchange, redacts secrets (best effort, see [Privacy](#privacy)), and writes one episode per session into `~/.subconscious-mcp/data/context.db` (a plain SQLite inbox). The hooks never load the embedding model or ChromaDB; the MCP server embeds and ingests pending episodes at its next startup.
+
+What `SessionStart` injects: at the start of a session it prints this project's most recent episodes (up to 3) plus a one-line nudge to call `recall` before starting non-trivial work. Claude Code absorbs that text as context.
+
+Capture is per-project automatically. The namespace is derived from the git repository root folder name (falling back to the current directory basename), so each project's episodes and curated memory stay isolated without any configuration. Set `namespace` explicitly in config to override.
+
+---
+
+## Privacy
+
+Everything stays on your machine. Episodes captured by the ambient hooks live in `~/.subconscious-mcp/data/context.db`, a plain SQLite file you can inspect with any SQL client:
+
+```bash
+sqlite3 ~/.subconscious-mcp/data/context.db 'SELECT ts, namespace, substr(content,1,80) FROM episodes ORDER BY ts DESC LIMIT 10'
+```
+
+Before an episode is written, the captured text passes through a best-effort redactor. It currently masks these shapes:
+
+- OpenAI / Anthropic `sk-` keys (including `sk-ant-`, `sk-proj-`)
+- PyPI tokens (`pypi-`)
+- GitHub classic tokens (`ghp_`, `gho_`, `ghu_`, `ghs_`, `ghr_`) and fine-grained tokens (`github_pat_`)
+- Slack tokens (`xoxb-`, `xoxa-`, `xoxp-`, `xoxr-`, `xoxs-`)
+- AWS access key ids (`AKIA...`)
+- `Bearer` authorization tokens
+- PEM private key headers (`-----BEGIN ... PRIVATE KEY-----`)
+- `KEY=value` env assignments where the name ends in `KEY` / `TOKEN` / `SECRET` / `PASSWORD` / `PASSWD` (the value is masked, the name is kept)
+
+Redaction is best effort, not a guarantee. Known gaps it does NOT catch: AWS secret access keys (bare 40-char strings), bare JWTs outside a `Bearer` prefix, passwords inside connection strings (`postgres://user:pass@host`), Stripe secret keys (`sk_live_` / `sk_test_`, underscore form), and npm tokens. Treat capture as a convenience, not a vault.
+
+To turn capture off entirely, set `capture_enabled=false` in config or `SUBCONSCIOUS_CAPTURE_ENABLED=false` in the environment. The `Stop` hook then captures nothing.
+
+To wipe everything subconscious-mcp has stored (curated memory, episodes, echo logs, server logs) in one line:
+
+```bash
+rm -rf ~/.subconscious-mcp
+```
+
+---
+
 ## Tools
 
 ### `recall(task, threshold=0.85, top_k=1)`
@@ -99,6 +150,7 @@ Semantic search for a previously remembered task.
 | `task` | str | (required) | the task description to look up |
 | `threshold` | float | 0.85 | minimum cosine similarity for a hit |
 | `top_k` | int | 1 | how many candidates to consider |
+| `tags` | list[str] | null | optional; candidate must share at least one |
 
 Returns:
 
@@ -116,11 +168,17 @@ Returns:
 
 On a miss, `hit` is `false`, `answer` is `null`, and `similarity` is the **best similarity observed in `top_k`**. Callers can see how close they came.
 
-### `remember(task, answer, tags=[], ttl_seconds=null)`
+When `tags` is supplied, the miss `similarity` reflects the best match within the fetched window intersected with the tag filter, and can be `0.0` even when a tag-matching entry exists beyond the window (raise `top_k` to widen the window).
+
+### `remember(task, answer, tags=[], ttl_seconds=null, skip_if_duplicate=false)`
 
 Persist a `(task, answer)` pair. Returns `{stored, entry_id, embedding_dim}`.
 
 `ttl_seconds=null` means never expire. Pass an integer to have the entry filtered out of future recalls after that many seconds.
+
+Before storing, the nearest curated entry is probed. If its cosine similarity falls in the near-duplicate band `[0.75, 0.92]`, the result also carries `warning="near_duplicate"` with `nearest_task`, `nearest_similarity`, and `nearest_entry_id` (a write-time first-fill drift guard that complements `drift_report`). The entry is still stored. Pass `skip_if_duplicate=true` to skip the write instead, in which case the result is `{stored: false, ...}` with the same warning fields. Ambient capture episodes never trigger the warning.
+
+The band `[0.75, 0.92]` is deliberately independent of `default_threshold` (0.85), so it straddles the recall threshold: the warning fires on neighbours that recall might or might not return. Similarities above 0.92 are treated as update-territory (basically the same task) and are intentionally not warned. To act on a warning, `recall` the `nearest_entry_id` (or look it up) to inspect the existing entry, then decide whether to merge, update, or proceed.
 
 ### `echo(task, top_k=5)`
 
@@ -130,6 +188,7 @@ Sonar ping: return the nearest non-expired entries **without their answers**.
 |---|---|---|---|
 | `task` | str | (required) | the task description to ping with |
 | `top_k` | int | 5 | how many nearest entries to report |
+| `tags` | list[str] | null | optional; candidate must share at least one |
 
 Returns:
 
@@ -137,12 +196,14 @@ Returns:
 {
   "count": 47,
   "echoes": [
-    {"entry_id": "uuid", "similarity": 0.91, "task_text": "...", "stored_at": 1731000000.0, "tags": ["..."]}
+    {"entry_id": "uuid", "similarity": 0.91, "task_text": "...", "stored_at": 1731000000.0, "tags": ["..."], "kind": "memory"}
   ]
 }
 ```
 
 Use it to sense whether a task sits in known territory before committing to a recall. Because no answer is returned, an echo can never propagate a stale or wrong cached answer. Echo calls don't count toward the hit rate and aren't written to the echo log.
+
+Each echo carries a `kind`: `"memory"` for curated `remember` entries, `"episode"` for ingested ambient capture. Episodes surface in `echo` but never in `recall` answers.
 
 ### `drift_report(min_hits=3, min_spread=0.08)`
 
@@ -203,6 +264,8 @@ Configuration is resolved in priority order:
 | `log_level` | `INFO` | `SUBCONSCIOUS_LOG_LEVEL` |
 | `echo_log_enabled` | `true` | `SUBCONSCIOUS_ECHO_LOG_ENABLED` |
 | `echo_log_max_bytes` | `5000000` | `SUBCONSCIOUS_ECHO_LOG_MAX_BYTES` |
+| `namespace` | `default` | `SUBCONSCIOUS_NAMESPACE` |
+| `capture_enabled` | `true` | `SUBCONSCIOUS_CAPTURE_ENABLED` |
 
 Inspect the resolved config without starting the server:
 
@@ -218,9 +281,12 @@ subconscious-mcp --print-config
 ~/.subconscious-mcp/
 ├── config.json            (optional, user-edited)
 ├── data/                  ChromaDB collection (sqlite + parquet)
-│   └── echo_log.jsonl     one line per recall: query, nearest entry, similarity, hit
+│   ├── echo_log.jsonl     one line per recall: query, nearest entry, similarity, hit
+│   └── context.db         SQLite inbox for ambient-capture episodes (shared across namespaces)
 └── logs/server.log        rotating, 2MB x 3 backups
 ```
+
+The tree above is the default namespace. With a non-default `namespace`, the echo log is named `echo_log_{namespace}.jsonl` instead, while `context.db` is shared across namespaces (each episode carries its own `namespace` column).
 
 The echo log self-compacts: when it exceeds `echo_log_max_bytes` (5MB default), the oldest half is dropped. Set `SUBCONSCIOUS_ECHO_LOG_ENABLED=0` to disable it entirely (this also disables `drift_report`).
 

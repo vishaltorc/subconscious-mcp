@@ -31,6 +31,10 @@ def _build_server(config: Config):
     from mcp.server.fastmcp import FastMCP  # imported here so --help stays cheap
 
     mcp = FastMCP("subconscious-mcp")
+    # FastMCP in mcp 1.27.1 has no version kwarg; Server.version is the public
+    # field create_initialization_options() reads. Move into the constructor
+    # once the SDK exposes it.
+    mcp._mcp_server.version = __version__
     memory = Memory(config)
     register_tools(mcp, memory)
     return mcp, memory
@@ -91,11 +95,51 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         action="store_true",
         help="Print the resolved configuration to stderr and exit (does not start the server).",
     )
+
+    sub = parser.add_subparsers(dest="command")
+
+    hook_p = sub.add_parser(
+        "hook",
+        help="Run a Claude Code hook handler (reads the hook payload from stdin).",
+    )
+    hook_p.add_argument(
+        "--event",
+        required=True,
+        choices=["session-start", "stop", "log-only"],
+        help="Which hook event this invocation handles.",
+    )
+
+    ih = sub.add_parser(
+        "install-hooks",
+        help="Install subconscious-mcp hooks into a Claude Code settings.json.",
+    )
+    ih.add_argument(
+        "--settings",
+        default=str(Path.home() / ".claude" / "settings.json"),
+        help="Path to the Claude Code settings.json to modify.",
+    )
+    ih.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Print the planned changes without writing them.",
+    )
+
     return parser.parse_args(argv)
 
 
 def main(argv: list[str] | None = None) -> int:
     args = _parse_args(argv)
+
+    # Hook handlers must not pay server-side import or logging costs.
+    if args.command == "hook":
+        from subconscious_mcp.hookcli import run_hook_command
+
+        return run_hook_command(args.event)
+    if args.command == "install-hooks":
+        from subconscious_mcp.hookcli import install_hooks
+        install_hooks(Path(args.settings), dry_run=args.dry_run)
+        return 0
+
     config = load_config(args.config)
     _setup_logging(config)
     log = logging.getLogger(__name__)
@@ -105,7 +149,13 @@ def main(argv: list[str] | None = None) -> int:
         print(config.model_dump_json(indent=2), file=sys.stderr)
         return 0
 
-    mcp, _ = _build_server(config)
+    mcp, memory = _build_server(config)
+    try:
+        ingested = memory.ingest_pending()
+        if ingested["ingested"]:
+            log.info("ingested %d pending episodes", ingested["ingested"])
+    except Exception:
+        log.exception("startup ingest failed; serving without it")
     try:
         # FastMCP.run() defaults to stdio transport, which is what every
         # local MCP client (Claude Desktop, Claude Code) expects.

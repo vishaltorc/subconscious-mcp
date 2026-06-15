@@ -2,7 +2,7 @@
 >>> initialize
 {
   "server": "subconscious-mcp",
-  "version": "1.27.1"
+  "version": "0.2.0"
 }
 
 >>> list_tools
@@ -29,7 +29,7 @@
 >>> remember ->
 {
   "stored": true,
-  "entry_id": "36eeed81-0351-4c8d-a9ff-01b0df3d0788",
+  "entry_id": "7680544e-0185-499f-9217-1479a9c89d96",
   "embedding_dim": 384
 }
 
@@ -39,8 +39,8 @@
   "similarity": 1.0000001192092896,
   "answer": "Run `vercel --prod` after `vercel login`.",
   "task_text": "How do I deploy a Next.js app to Vercel?",
-  "entry_id": "36eeed81-0351-4c8d-a9ff-01b0df3d0788",
-  "stored_at": 1781087449.9952729,
+  "entry_id": "7680544e-0185-499f-9217-1479a9c89d96",
+  "stored_at": 1781210224.407422,
   "tags": [
     "vercel",
     "deploy"
@@ -53,8 +53,8 @@
   "similarity": 0.7820930480957031,
   "answer": "Run `vercel --prod` after `vercel login`.",
   "task_text": "How do I deploy a Next.js app to Vercel?",
-  "entry_id": "36eeed81-0351-4c8d-a9ff-01b0df3d0788",
-  "stored_at": 1781087449.9952729,
+  "entry_id": "7680544e-0185-499f-9217-1479a9c89d96",
+  "stored_at": 1781210224.407422,
   "tags": [
     "vercel",
     "deploy"
@@ -66,10 +66,10 @@
   "count": 1,
   "echoes": [
     {
-      "entry_id": "36eeed81-0351-4c8d-a9ff-01b0df3d0788",
+      "entry_id": "7680544e-0185-499f-9217-1479a9c89d96",
       "similarity": 0.5501399040222168,
       "task_text": "How do I deploy a Next.js app to Vercel?",
-      "stored_at": 1781087449.9952729,
+      "stored_at": 1781210224.407422,
       "tags": [
         "vercel",
         "deploy"
@@ -84,7 +84,7 @@
   "entries_with_hits": 1,
   "candidates": [
     {
-      "entry_id": "36eeed81-0351-4c8d-a9ff-01b0df3d0788",
+      "entry_id": "7680544e-0185-499f-9217-1479a9c89d96",
       "task_text": "How do I deploy a Next.js app to Vercel?",
       "still_stored": true,
       "hits": 2,
@@ -99,7 +99,7 @@
 >>> stats ->
 {
   "total_entries": 1,
-  "last_hit_at": 1781087450.1800508,
+  "last_hit_at": 1781210224.619806,
   "hit_rate_last_100": 0.6667
 }
 

@@ -12,6 +12,8 @@ from typing import Any
 
 from pydantic import BaseModel, Field, field_validator
 
+from subconscious_mcp.naming import sanitize_namespace
+
 DEFAULT_CONFIG_PATH = Path.home() / ".subconscious-mcp" / "config.json"
 
 
@@ -27,6 +29,13 @@ class Config(BaseModel):
     log_level: str = Field(default="INFO")
     echo_log_enabled: bool = Field(default=True)
     echo_log_max_bytes: int = Field(default=5_000_000, ge=1_000)
+    namespace: str = Field(default="default")
+    capture_enabled: bool = Field(default=True)
+
+    @field_validator("namespace")
+    @classmethod
+    def _sanitize_ns(cls, v: str) -> str:
+        return sanitize_namespace(v)
 
     @field_validator("storage_dir")
     @classmethod
@@ -80,6 +89,10 @@ def _load_from_env() -> dict[str, Any]:
             out["echo_log_max_bytes"] = int(v)
         except ValueError as e:
             raise RuntimeError(f"SUBCONSCIOUS_ECHO_LOG_MAX_BYTES must be an int: {v}") from e
+    if v := os.getenv("SUBCONSCIOUS_NAMESPACE"):
+        out["namespace"] = v
+    if v := os.getenv("SUBCONSCIOUS_CAPTURE_ENABLED"):
+        out["capture_enabled"] = v.strip().lower() not in {"0", "false", "no", "off"}
     return out
 
 

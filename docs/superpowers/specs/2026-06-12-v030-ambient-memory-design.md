@@ -18,7 +18,7 @@ Memory that grows and helps without the agent volunteering tool calls. Install o
 | Item | Source | Note |
 |---|---|---|
 | serverInfo.version fix | issue #1, FIX-PLAN Task 1 | pass `__version__` to FastMCP |
-| Namespaces | issue #8, handoff/specs/namespaces.md | config-level only; collection `subconscious_{namespace}`; echo log per namespace; sanitized `[a-zA-Z0-9_-]+` max 64 |
+| Namespaces | issue #8, handoff/specs/namespaces.md | config-level only; collection `subconscious_{namespace}`; echo log per namespace; sanitized ASCII `[a-z0-9_-]+`, alphanumeric edges, max 64 (chromadb 1.5.9 rejects unicode and non-alphanumeric-ending names, verified empirically) |
 | Tag filtering | issue #3, handoff/specs/tag-filtering.md | post-filter after over-fetch (top_k x 3); optional `tags` param on recall and echo |
 
 ### 2. SQLite context store (`store.py`, new)

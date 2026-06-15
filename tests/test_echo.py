@@ -35,7 +35,8 @@ def test_echo_returns_neighbors_without_answers(memory: Memory):
     assert result["count"] == 3
     assert 1 <= len(result["echoes"]) <= 3
     for e in result["echoes"]:
-        assert set(e) == {"entry_id", "similarity", "task_text", "stored_at", "tags"}
+        assert set(e) == {"entry_id", "similarity", "task_text", "stored_at", "tags", "kind"}
+        assert e["kind"] == "memory"
         assert "answer" not in e
     # sorted by similarity descending; nearest is the Vercel entry
     sims = [e["similarity"] for e in result["echoes"]]

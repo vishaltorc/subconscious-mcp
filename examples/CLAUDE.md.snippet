@@ -1,0 +1,33 @@
+## Subconscious memory (subconscious-mcp)
+
+This project uses local semantic memory via the `subconscious-mcp` MCP server.
+Memory stays on disk under `~/.subconscious-mcp/` and is already isolated
+per-project (the namespace is derived from this repo).
+
+### Before non-trivial work
+
+Call `recall` with a one-sentence task description, then:
+
+1. Hit at >= 0.88: reuse the answer after a quick sanity check.
+2. Hit below 0.88: verify the answer fits this task before acting on it.
+3. Miss with best similarity > 0.7: call `echo` first. If the nearest entry
+   is a different task family, work fresh; only lower the threshold when echo
+   shows the same family.
+4. Miss at <= 0.7: do the work normally.
+
+### After solving something reusable
+
+Call `remember` with the task phrasing you would expect next time and a
+concise answer (commands, paths, decisions). Tag with this repo name.
+Do not remember secrets, API keys, one-off debugging, or stale file contents.
+
+If `remember` returns `warning="near_duplicate"`, inspect `nearest_entry_id`
+and decide: merge/update (forget the old one, re-remember combined) or proceed
+if it is genuinely distinct.
+
+### Hygiene
+
+Run `drift_report` periodically. For flagged entries, `forget` and re-remember
+more specific variants, or tighten the recall threshold for that family. Use
+`stats` to check `hit_rate_last_100`. Never trust a hit above 0.85 on
+interpretive tasks; verify first.

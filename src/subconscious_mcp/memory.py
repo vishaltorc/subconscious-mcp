@@ -23,13 +23,22 @@ from typing import Any
 import chromadb
 
 from .config import Config
+from .store import EpisodeStore
 
 logger = logging.getLogger(__name__)
 
 
-COLLECTION_NAME = "subconscious"
 RING_BUFFER_SIZE = 100
 ECHO_LOG_FILENAME = "echo_log.jsonl"
+
+# Near-duplicate warning band on remember(). A nearest curated neighbour whose
+# cosine similarity falls in [low, high] is flagged as a write-time first-fill
+# drift candidate. Above high is treated as update-territory (basically the same
+# task) and is intentionally not warned. The band is independent of
+# default_threshold (0.85), so it straddles the recall threshold by design.
+# Promote to Config in v0.3.1 once field data informs the right default.
+NEAR_DUPLICATE_LOW = 0.75
+NEAR_DUPLICATE_HIGH = 0.92
 
 
 class Memory:
@@ -55,17 +64,26 @@ class Memory:
         return self._client
 
     @property
+    def collection_name(self) -> str:
+        """Per-namespace collection name; the default namespace keeps the
+        legacy v0.2 name so existing users upgrade without losing memory."""
+        ns = self.config.namespace
+        return "subconscious" if ns == "default" else f"subconscious_{ns}"
+
+    @property
     def collection(self) -> Any:
         if self._collection is None:
             self._collection = self.client.get_or_create_collection(
-                name=COLLECTION_NAME,
+                name=self.collection_name,
                 metadata={"hnsw:space": "cosine"},
             )
         return self._collection
 
     @property
     def echo_log_path(self) -> Path:
-        return self.config.storage_path / ECHO_LOG_FILENAME
+        ns = self.config.namespace
+        name = ECHO_LOG_FILENAME if ns == "default" else f"echo_log_{ns}.jsonl"
+        return self.config.storage_path / name
 
     @property
     def encoder(self) -> Any:
@@ -88,8 +106,20 @@ class Memory:
         answer: str,
         tags: list[str] | None = None,
         ttl_seconds: int | None = None,
+        skip_if_duplicate: bool = False,
     ) -> dict[str, Any]:
-        """Store a (task, answer) pair. Returns ``{stored, entry_id, embedding_dim}``."""
+        """Store a (task, answer) pair. Returns ``{stored, entry_id, embedding_dim}``.
+
+        Before storing, probe the nearest curated neighbour. If its cosine
+        similarity falls in the near-duplicate band [0.75, 0.92], merge
+        ``{warning: "near_duplicate", nearest_task, nearest_similarity,
+        nearest_entry_id}`` into the return. The band catches first-fill drift
+        families (e.g. "pull out digits" vs "extract numbers") at WRITE time,
+        complementing read-time ``drift_report``. Ambient episodes
+        (``kind=episode``) never trigger the warning. With
+        ``skip_if_duplicate=True``, a near-duplicate is NOT stored and the
+        return is ``{stored: False, ...warning}``.
+        """
         if not isinstance(task, str) or not task.strip():
             raise ValueError("task must be a non-empty string")
         if not isinstance(answer, str):
@@ -100,6 +130,27 @@ class Memory:
         # embed first (may include a slow first-time model load); then anchor
         # stored_at/expires_at to the moment of the actual write.
         embedding = self.embed(task)
+
+        warning: dict[str, Any] = {}
+        if self.collection.count() > 0:
+            probe = self.collection.query(query_embeddings=[embedding], n_results=3,
+                                          include=["documents", "metadatas", "distances"])
+            pids = probe.get("ids", [[]])[0]
+            pdists = probe.get("distances", [[]])[0]
+            pdocs = probe.get("documents", [[]])[0]
+            pmetas = probe.get("metadatas", [[]])[0]
+            for pid, dist, doc, meta in zip(pids, pdists, pdocs, pmetas, strict=True):
+                # MANDATORY: ambient episodes must not trigger curated-duplicate warnings
+                if meta.get("kind") == "episode":
+                    continue
+                sim = max(0.0, 1.0 - float(dist))
+                if NEAR_DUPLICATE_LOW <= sim <= NEAR_DUPLICATE_HIGH:
+                    warning = {"warning": "near_duplicate", "nearest_task": doc,
+                               "nearest_similarity": round(sim, 4), "nearest_entry_id": pid}
+                break   # only the nearest non-episode neighbour decides
+        if warning and skip_if_duplicate:
+            return {"stored": False, **warning}
+
         stored_at = time.time()
         expires_at: float | None = (stored_at + ttl_seconds) if ttl_seconds is not None else None
 
@@ -122,19 +173,54 @@ class Memory:
             "stored": True,
             "entry_id": entry_id,
             "embedding_dim": len(embedding),
+            **warning,
         }
+
+    def ingest_pending(self, limit: int = 100) -> dict[str, int]:
+        """Embed pending episodes from context.db into the collection.
+
+        Episodes are tagged kind=episode and excluded from recall answers
+        (segregation): ambient capture quality is mechanical, so episodes
+        inform echo and context surfaces without touching curated recall
+        accuracy.
+        """
+        store = EpisodeStore(self.config.storage_path / "context.db")
+        pending = [e for e in store.pending_episodes(limit=limit)
+                   if e["namespace"] == self.config.namespace]
+        done: list[int] = []
+        for ep in pending:
+            try:
+                entry_id = f"episode-{ep['id']}"
+                self.collection.add(
+                    ids=[entry_id],
+                    embeddings=[self.embed(ep["content"])],
+                    documents=[ep["content"]],
+                    metadatas=[{
+                        "stored_at": ep["ts"], "expires_at": -1.0,
+                        "tags_json": json.dumps(["episode"]),
+                        "kind": "episode", "source": ep["source"],
+                    }],
+                )
+                done.append(ep["id"])
+            except Exception:
+                logger.exception("episode ingest failed id=%s", ep["id"])
+        store.mark("ingested", done)
+        return {"ingested": len(done)}
 
     def recall(
         self,
         task: str,
         threshold: float | None = None,
         top_k: int = 1,
+        tags: list[str] | None = None,
     ) -> dict[str, Any]:
         """Look up the closest non-expired match. Returns hit/miss + best similarity."""
         if not isinstance(task, str) or not task.strip():
             raise ValueError("task must be a non-empty string")
         threshold = threshold if threshold is not None else self.config.default_threshold
         top_k = max(1, int(top_k))
+        wanted = set(tags) if tags else None
+        fetch_n = top_k * 3 if wanted else top_k
 
         if self.collection.count() == 0:
             self._log_echo(task, None, 0.0, False, threshold)
@@ -143,7 +229,7 @@ class Memory:
         query_emb = self.embed(task)
         results = self.collection.query(
             query_embeddings=[query_emb],
-            n_results=top_k,
+            n_results=fetch_n,
             include=["documents", "metadatas", "distances"],
         )
 
@@ -165,6 +251,12 @@ class Memory:
             if expires_at > 0 and expires_at <= now:
                 logger.debug("skipping expired entry_id=%s", entry_id)
                 continue
+            if metadata.get("kind") == "episode":
+                continue
+            if wanted is not None:
+                entry_tags = set(json.loads(metadata.get("tags_json", "[]")))
+                if not (wanted & entry_tags):
+                    continue
             if similarity > best_similarity:
                 best_similarity = similarity
                 best_match = {
@@ -183,7 +275,12 @@ class Memory:
         self._log_echo(task, nearest_id, best_similarity, False, threshold)
         return self._record_miss(best_similarity)
 
-    def echo(self, task: str, top_k: int = 5) -> dict[str, Any]:
+    def echo(
+        self,
+        task: str,
+        top_k: int = 5,
+        tags: list[str] | None = None,
+    ) -> dict[str, Any]:
         """Sonar ping: return the nearest non-expired entries WITHOUT answers.
 
         Unlike :meth:`recall`, this returns geometry, not content: the caller
@@ -194,6 +291,8 @@ class Memory:
         if not isinstance(task, str) or not task.strip():
             raise ValueError("task must be a non-empty string")
         top_k = max(1, int(top_k))
+        wanted = set(tags) if tags else None
+        fetch_n = top_k * 3 if wanted else top_k
 
         total = self.collection.count()
         if total == 0:
@@ -202,7 +301,7 @@ class Memory:
         query_emb = self.embed(task)
         results = self.collection.query(
             query_embeddings=[query_emb],
-            n_results=min(top_k, total),
+            n_results=min(fetch_n, total),
             include=["documents", "metadatas", "distances"],
         )
 
@@ -220,15 +319,21 @@ class Memory:
             expires_at = float(metadata.get("expires_at", -1.0))
             if expires_at > 0 and expires_at <= now:
                 continue
+            if wanted is not None:
+                entry_tags = set(json.loads(metadata.get("tags_json", "[]")))
+                if not (wanted & entry_tags):
+                    continue
             echoes.append({
                 "entry_id": entry_id,
                 "similarity": similarity,
                 "task_text": document,
                 "stored_at": metadata.get("stored_at"),
                 "tags": json.loads(metadata.get("tags_json", "[]")),
+                "kind": metadata.get("kind", "memory"),
             })
 
         echoes.sort(key=lambda e: e["similarity"], reverse=True)
+        echoes = echoes[:top_k]
         return {"count": total, "echoes": echoes}
 
     def drift_report(self, min_hits: int = 3, min_spread: float = 0.08) -> dict[str, Any]:
@@ -289,7 +394,12 @@ class Memory:
         return {"forgotten": present}
 
     def stats(self) -> dict[str, Any]:
-        """Total entries, last hit timestamp, hit rate over the last 100 recalls."""
+        """Total entries, last hit timestamp, hit rate over the last 100 recalls.
+
+        ``total_entries`` counts ALL entries in the collection, including
+        ingested ambient episodes (``kind=episode``), not only curated
+        ``remember()`` entries.
+        """
         total = self.collection.count()
         recent = list(self._recent_calls)
         hit_rate = (sum(1 for h in recent if h) / len(recent)) if recent else 0.0
