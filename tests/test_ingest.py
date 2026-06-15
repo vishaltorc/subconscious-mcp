@@ -54,3 +54,16 @@ def test_echo_sees_episodes(mem):
     pong = mem.echo(task="anything", top_k=5)
     assert pong["count"] == 1
     assert len(pong["echoes"]) == 1
+
+
+def test_echo_exposes_kind(mem):
+    # curated remember -> kind "memory"; ingested episode -> kind "episode"
+    mem.remember(task="curated", answer="a")
+    store = EpisodeStore(mem.config.storage_path / "context.db")
+    store.add_episode(namespace="default", project="/x", session_id="s",
+                      content="TASK: t\nOUTCOME: o", source="stop_hook")
+    mem.ingest_pending()
+    pong = mem.echo(task="anything", top_k=5)
+    kinds = {e["task_text"]: e["kind"] for e in pong["echoes"]}
+    assert kinds["curated"] == "memory"
+    assert kinds["TASK: t\nOUTCOME: o"] == "episode"

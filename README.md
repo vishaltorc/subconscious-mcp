@@ -117,11 +117,13 @@ Returns:
 
 On a miss, `hit` is `false`, `answer` is `null`, and `similarity` is the **best similarity observed in `top_k`**. Callers can see how close they came.
 
-### `remember(task, answer, tags=[], ttl_seconds=null)`
+### `remember(task, answer, tags=[], ttl_seconds=null, skip_if_duplicate=false)`
 
 Persist a `(task, answer)` pair. Returns `{stored, entry_id, embedding_dim}`.
 
 `ttl_seconds=null` means never expire. Pass an integer to have the entry filtered out of future recalls after that many seconds.
+
+Before storing, the nearest curated entry is probed. If its cosine similarity falls in the near-duplicate band `[0.75, 0.92]`, the result also carries `warning="near_duplicate"` with `nearest_task`, `nearest_similarity`, and `nearest_entry_id` (a write-time first-fill drift guard that complements `drift_report`). The entry is still stored. Pass `skip_if_duplicate=true` to skip the write instead, in which case the result is `{stored: false, ...}` with the same warning fields. Ambient capture episodes never trigger the warning.
 
 ### `echo(task, top_k=5)`
 
@@ -139,12 +141,14 @@ Returns:
 {
   "count": 47,
   "echoes": [
-    {"entry_id": "uuid", "similarity": 0.91, "task_text": "...", "stored_at": 1731000000.0, "tags": ["..."]}
+    {"entry_id": "uuid", "similarity": 0.91, "task_text": "...", "stored_at": 1731000000.0, "tags": ["..."], "kind": "memory"}
   ]
 }
 ```
 
 Use it to sense whether a task sits in known territory before committing to a recall. Because no answer is returned, an echo can never propagate a stale or wrong cached answer. Echo calls don't count toward the hit rate and aren't written to the echo log.
+
+Each echo carries a `kind`: `"memory"` for curated `remember` entries, `"episode"` for ingested ambient capture. Episodes surface in `echo` but never in `recall` answers.
 
 ### `drift_report(min_hits=3, min_spread=0.08)`
 

@@ -23,6 +23,7 @@ from typing import Any
 import chromadb
 
 from .config import Config
+from .store import EpisodeStore
 
 logger = logging.getLogger(__name__)
 
@@ -96,8 +97,20 @@ class Memory:
         answer: str,
         tags: list[str] | None = None,
         ttl_seconds: int | None = None,
+        skip_if_duplicate: bool = False,
     ) -> dict[str, Any]:
-        """Store a (task, answer) pair. Returns ``{stored, entry_id, embedding_dim}``."""
+        """Store a (task, answer) pair. Returns ``{stored, entry_id, embedding_dim}``.
+
+        Before storing, probe the nearest curated neighbour. If its cosine
+        similarity falls in the near-duplicate band [0.75, 0.92], merge
+        ``{warning: "near_duplicate", nearest_task, nearest_similarity,
+        nearest_entry_id}`` into the return. The band catches first-fill drift
+        families (e.g. "pull out digits" vs "extract numbers") at WRITE time,
+        complementing read-time ``drift_report``. Ambient episodes
+        (``kind=episode``) never trigger the warning. With
+        ``skip_if_duplicate=True``, a near-duplicate is NOT stored and the
+        return is ``{stored: False, ...warning}``.
+        """
         if not isinstance(task, str) or not task.strip():
             raise ValueError("task must be a non-empty string")
         if not isinstance(answer, str):
@@ -108,6 +121,27 @@ class Memory:
         # embed first (may include a slow first-time model load); then anchor
         # stored_at/expires_at to the moment of the actual write.
         embedding = self.embed(task)
+
+        warning: dict[str, Any] = {}
+        if self.collection.count() > 0:
+            probe = self.collection.query(query_embeddings=[embedding], n_results=3,
+                                          include=["documents", "metadatas", "distances"])
+            pids = probe.get("ids", [[]])[0]
+            pdists = probe.get("distances", [[]])[0]
+            pdocs = probe.get("documents", [[]])[0]
+            pmetas = probe.get("metadatas", [[]])[0]
+            for pid, dist, doc, meta in zip(pids, pdists, pdocs, pmetas, strict=True):
+                # MANDATORY: ambient episodes must not trigger curated-duplicate warnings
+                if meta.get("kind") == "episode":
+                    continue
+                sim = max(0.0, 1.0 - float(dist))
+                if 0.75 <= sim <= 0.92:
+                    warning = {"warning": "near_duplicate", "nearest_task": doc,
+                               "nearest_similarity": round(sim, 4), "nearest_entry_id": pid}
+                break   # only the nearest non-episode neighbour decides
+        if warning and skip_if_duplicate:
+            return {"stored": False, **warning}
+
         stored_at = time.time()
         expires_at: float | None = (stored_at + ttl_seconds) if ttl_seconds is not None else None
 
@@ -130,6 +164,7 @@ class Memory:
             "stored": True,
             "entry_id": entry_id,
             "embedding_dim": len(embedding),
+            **warning,
         }
 
     def ingest_pending(self, limit: int = 100) -> dict[str, int]:
@@ -140,7 +175,6 @@ class Memory:
         inform echo and context surfaces without touching curated recall
         accuracy.
         """
-        from subconscious_mcp.store import EpisodeStore
         store = EpisodeStore(self.config.storage_path / "context.db")
         pending = [e for e in store.pending_episodes(limit=limit)
                    if e["namespace"] == self.config.namespace]
@@ -286,6 +320,7 @@ class Memory:
                 "task_text": document,
                 "stored_at": metadata.get("stored_at"),
                 "tags": json.loads(metadata.get("tags_json", "[]")),
+                "kind": metadata.get("kind", "memory"),
             })
 
         echoes.sort(key=lambda e: e["similarity"], reverse=True)
@@ -350,7 +385,12 @@ class Memory:
         return {"forgotten": present}
 
     def stats(self) -> dict[str, Any]:
-        """Total entries, last hit timestamp, hit rate over the last 100 recalls."""
+        """Total entries, last hit timestamp, hit rate over the last 100 recalls.
+
+        ``total_entries`` counts ALL entries in the collection, including
+        ingested ambient episodes (``kind=episode``), not only curated
+        ``remember()`` entries.
+        """
         total = self.collection.count()
         recent = list(self._recent_calls)
         hit_rate = (sum(1 for h in recent if h) / len(recent)) if recent else 0.0

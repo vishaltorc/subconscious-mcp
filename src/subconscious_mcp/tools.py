@@ -50,6 +50,7 @@ def register_tools(mcp: Any, memory: Memory) -> None:
         answer: str,
         tags: list[str] | None = None,
         ttl_seconds: int | None = None,
+        skip_if_duplicate: bool = False,
     ) -> dict[str, Any]:
         """Persist a (task, answer) pair so a future recall can find it.
 
@@ -59,9 +60,17 @@ def register_tools(mcp: Any, memory: Memory) -> None:
             tags: Optional labels for grouping or future filtering.
             ttl_seconds: Optional time-to-live; entry is filtered out of
                 recalls after this many seconds.
+            skip_if_duplicate: When True, skip the write if the nearest
+                curated entry is a near-duplicate (similarity in the band
+                ``[0.75, 0.92]``); returns ``{"stored": False, ...}`` instead.
 
         Returns:
-            ``{"stored": True, "entry_id": ..., "embedding_dim": ...}``.
+            ``{"stored": True, "entry_id": ..., "embedding_dim": ...}``. If the
+            nearest curated entry's cosine similarity falls in the
+            near-duplicate band ``[0.75, 0.92]``, the result also carries
+            ``warning="near_duplicate"`` with ``nearest_task``,
+            ``nearest_similarity``, and ``nearest_entry_id`` (a write-time
+            first-fill drift guard). Ambient episodes never trigger it.
         """
         logger.debug("tool remember task=%r tags=%s ttl=%s", task[:80], tags, ttl_seconds)
         try:
@@ -70,6 +79,7 @@ def register_tools(mcp: Any, memory: Memory) -> None:
                 answer=answer,
                 tags=tags or [],
                 ttl_seconds=ttl_seconds,
+                skip_if_duplicate=skip_if_duplicate,
             )
         except Exception:
             logger.exception("remember failed")
