@@ -481,7 +481,30 @@ class Memory:
             "stored_at": match["stored_at"],
             "tags": match["tags"],
         }
+    def purge_expired(self) -> dict[str, Any]:
+        """Permanently delete all expired entries from ChromaDB."""
+        if self.collection.count() == 0:
+            return {"purged": 0}
 
+        now = time.time()
+        
+        #clause for: 0 < expires_at <= now
+        where_clause = {
+            "$and": [
+                {"expires_at": {"$gt": 0.0}},
+                {"expires_at": {"$lte": now}}
+            ]
+        }
+
+        expired = self.collection.get(where=where_clause, include=[])
+        ids_to_delete = expired.get("ids", [])
+        n_purged = len(ids_to_delete)
+
+        if n_purged > 0:
+            self.collection.delete(ids=ids_to_delete)
+            logger.info("purged %d expired entries", n_purged)
+
+        return {"purged": n_purged}
     def _record_miss(self, best_sim: float) -> dict[str, Any]:
         self._recent_calls.append(False)
         return {
